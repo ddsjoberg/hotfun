@@ -18,4 +18,5 @@ Suggests:
     covr
 Language: en-US
 Imports: 
-    magrittr
+    magrittr,
+    here
