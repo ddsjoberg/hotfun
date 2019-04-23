@@ -1,4 +1,4 @@
-Package: outfuns
+Package: hotfun
 Title: What the Package Does (One Line, Title Case)
 Version: 0.0.0.9000
 Authors@R: 
@@ -19,4 +19,5 @@ Suggests:
 Language: en-US
 Imports: 
     magrittr,
+    purrr,
     here
