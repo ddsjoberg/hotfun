@@ -4,12 +4,14 @@
 \name{hotfun-package}
 \alias{hotfun}
 \alias{hotfun-package}
-\title{hotfun: What the Package Does (One Line, Title Case)}
+\title{hotfun: Collection of Functions Used in the Health Outcomes Team
+    at MSKCC}
 \description{
-What the package does (one paragraph).
+A mixed-bag of utility functions to ease the
+    analysis and reporting results.
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com}
+\strong{Maintainer}: Daniel D. Sjoberg \email{danieldsjoberg@gmail.com}
 
 }
 \keyword{internal}
