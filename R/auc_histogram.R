@@ -15,7 +15,7 @@
 auc_histogram <- function(x){
 
   # calculating mean
-  mu = weighted.mean(x$mids, x$density)
+  mu = stats::weighted.mean(x$mids, x$density)
 
   x_length = length(x$count)
   x_width = x$breaks[2:(x_length + 1)] - x$breaks[1:x_length]
