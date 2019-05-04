@@ -1,21 +1,27 @@
-Package: outfuns
-Title: What the Package Does (One Line, Title Case)
+Package: hotfun
+Title: Collection of Functions Used in the Health Outcomes Team
+    at MSKCC
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Daniel D.",
+           family = "Sjoberg",
            role = c("aut", "cre"),
-           email = "first.last@example.com")
-Description: What the package does (one paragraph).
+           email = "danieldsjoberg@gmail.com")
+Description: A mixed-bag of utility functions to ease the
+    analysis and reporting results.
 License: MIT + file LICENSE
+Imports: 
+    here (>= 0.1),
+    magrittr (>= 1.5),
+    purrr (>= 0.3.2),
+    tibble (>= 2.1.1),
+    dplyr
+Suggests: 
+    covr (>= 3.2.1),
+    spelling (>= 2.1),
+    testthat (>= 2.0.1)
 Encoding: UTF-8
+Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
-Suggests: 
-    testthat,
-    spelling,
-    covr
-Language: en-US
-Imports: 
-    magrittr

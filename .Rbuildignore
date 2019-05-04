@@ -3,5 +3,6 @@
 ^README\.Rmd$
 ^\.travis\.yml$
 ^LICENSE\.md$
-^outfuns\.Rproj$
+^hotfun\.Rproj$
 ^\.Rproj\.user$
+^docs$

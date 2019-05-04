@@ -1,4 +1,4 @@
 library(testthat)
-library(outfuns)
+library(hotfun)
 
-test_check("outfuns")
+test_check("hotfun")
