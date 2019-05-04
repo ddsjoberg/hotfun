@@ -16,15 +16,15 @@ coverage](https://codecov.io/gh/ddsjoberg/hotfun/branch/master/graph/badge.svg)]
 
 ## Installation
 
-You can install the released version of outfuns from
+You can install the released version of hotfun from
 [GitHub](https://github.com/) with:
 
 ``` r
-remotes::install_github("ddsjoberg/outfuns")
+remotes::install_github("ddsjoberg/hotfun")
 ```
 
 and the development version with:
 
 ``` r
-remotes::install_github("ddsjoberg/outfuns", ref = "dev")
+remotes::install_github("ddsjoberg/hotfun", ref = "dev")
 ```
