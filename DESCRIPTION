@@ -14,7 +14,8 @@ Imports:
     here (>= 0.1),
     magrittr (>= 1.5),
     purrr (>= 0.3.2),
-    tibble (>= 2.1.1)
+    tibble (>= 2.1.1),
+    dplyr
 Suggests: 
     covr (>= 3.2.1),
     spelling (>= 2.1),
