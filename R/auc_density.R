@@ -10,7 +10,6 @@
 #' AUC of the model.
 #'
 #' @author Daniel D Sjoberg \email{sjobergd@@mskcc.org}
-#'
 #' @param density a function name that descirbes the continuous probability density function of the
 #' risk from 0 to 1.
 #' @param cut.points sequence of points in \[0, 1\] where the sensitivity and specificity are calculated.
@@ -20,7 +19,6 @@
 #' @importFrom stats integrate
 #' @return Returns a list sensitities and specifcities at each cut point, the expected value or
 #' mean risk, and the AUC associated with the distribution.
-#'
 #' @examples
 #' auc_density(density = dbeta, shape1 = 1, shape2 = 1)
 #' @export
