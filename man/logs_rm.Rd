@@ -4,10 +4,12 @@
 \alias{logs_rm}
 \title{Deletes log files created by Rscript on the Linux cluster}
 \usage{
-logs_rm(path = here::here())
+logs_rm(path = here::here(), recursive = FALSE)
 }
 \arguments{
 \item{path}{folder location to search for log files}
+
+\item{recursive}{logical. should log files in subdirectories also be deleted?}
 }
 \description{
 When an R script is submitted to the server, Linux generates a log file named
