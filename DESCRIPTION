@@ -10,16 +10,24 @@ Authors@R:
 Description: A mixed-bag of utility functions to ease the
     analysis and reporting results.
 License: MIT + file LICENSE
+Depends: 
+    gtsummary (>= 1.0.0),
+    R (>= 3.4)
 Imports: 
     here (>= 0.1),
     magrittr (>= 1.5),
     purrr (>= 0.3.2),
     tibble (>= 2.1.1),
-    dplyr
+    dplyr,
+    broom,
+    stringr
 Suggests: 
     covr (>= 3.2.1),
+    gtsummary (>= 1.0.0),
     spelling (>= 2.1),
     testthat (>= 2.0.1)
+Remotes:
+    ddsjoberg/gtsummary
 Encoding: UTF-8
 Language: en-US
 LazyData: true
