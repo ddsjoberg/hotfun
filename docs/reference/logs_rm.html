@@ -112,7 +112,7 @@ and removes/deletes them.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>logs_rm</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='kw pkg'>here</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/here/topics/here'>here</a></span>())</pre>
+    <pre class="usage"><span class='fu'>logs_rm</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='kw pkg'>here</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/here/topics/here'>here</a></span>(), <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -120,6 +120,10 @@ and removes/deletes them.</p>
     <tr>
       <th>path</th>
       <td><p>folder location to search for log files</p></td>
+    </tr>
+    <tr>
+      <th>recursive</th>
+      <td><p>logical. should log files in subdirectories also be deleted?</p></td>
     </tr>
     </table>
     
@@ -136,7 +140,7 @@ and removes/deletes them.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by First Last.</p>
+  <p>Developed by Daniel D. Sjoberg.</p>
 </div>
 
 <div class="pkgdown">
