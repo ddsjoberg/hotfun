@@ -5,9 +5,10 @@
 #' and removes/deletes them.
 #'
 #' @param path folder location to search for log files
+#' @param recursive logical. should log files in subdirectories also be deleted?
 #' @export
 
-logs_rm <- function(path = here::here()) {
+logs_rm <- function(path = here::here(), recursive = FALSE) {
   # get list of files in dir
   files <- list.files(path = path)
 
