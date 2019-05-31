@@ -7,7 +7,7 @@
 tbl_ancova(data, y, x, formula = "{y} ~ {x}", label = NULL,
   method.args = NULL, conf.level = 0.95, hide_n = FALSE,
   estimate_fun = style_sigfig, pvalue_fun = style_pvalue,
-  method = "lm")
+  method = lm)
 }
 \arguments{
 \item{data}{data frame to be used in univariate regression modeling.  Data
@@ -15,8 +15,7 @@ frame includes the outcome variable(s) and the independent variables.}
 
 \item{y}{model outcome as a string (e.g. \code{y = recurrence} or \code{y = Surv(time, recur)})}
 
-\item{x}{a list of objects of class \code{lm}.  The binary variable must be the first
-variable in the covariate list.}
+\item{x}{string indicating the binary comparison variable}
 
 \item{formula}{string that becomes the model formula.
 Uses \code{\link[glue]{glue}} syntax. Default is \code{"{y} ~ {x}"}, where \code{{y}}
@@ -50,6 +49,10 @@ and return a string that is the rounded/formatted p-value (e.g.
 }
 \description{
 Provided a \link[stats:lm]{stats::lm} object, a table of adjusted differences are returned.
+}
+\examples{
+trial \%>\%
+  tbl_ancova(y = c("age", "marker"), x = "trt")
 }
 \author{
 Daniel D. Sjoberg

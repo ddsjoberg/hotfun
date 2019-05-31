@@ -1,16 +1,18 @@
 #' Table difference between two groups
 #'
 #' Provided a [stats::lm] object, a table of adjusted differences are returned.
-#' @param x a list of objects of class `lm`.  The binary variable must be the first
-#' variable in the covariate list.
+#' @param x string indicating the binary comparison variable
 #' @inheritParams gtsummary::tbl_uvregression
 #' @author Daniel D. Sjoberg
+#' @examples
+#' trial %>%
+#'   tbl_ancova(y = c("age", "marker"), x = "trt")
 #' @export
 
 tbl_ancova <- function(data, y, x, formula = "{y} ~ {x}", label = NULL,
                        method.args = NULL, conf.level = 0.95,
                        hide_n = FALSE, estimate_fun = style_sigfig,
-                       pvalue_fun = style_pvalue, method = "lm") {
+                       pvalue_fun = style_pvalue, method = lm) {
   # will return call, and all object passed to in tbl_regression call
   # the object func_inputs is a list of every object passed to the function
   func_inputs <- as.list(environment())
@@ -24,7 +26,7 @@ tbl_ancova <- function(data, y, x, formula = "{y} ~ {x}", label = NULL,
   }
 
   # building formula list
-  formula_list <- formula <- map(y, function(y) glue("{y} ~ {x}") %>% stats::as.formula)
+  formula_list <- formula <- map(y, function(y) glue("{y} ~ {x}") %>% stats::as.formula())
 
   # building models
   models_list <-
@@ -132,6 +134,15 @@ gt_tbl_ancova <- quote(list(
   cols_merge_ci =
     "cols_merge(col_1 = vars(conf.low), col_2 = vars(conf.high), pattern = '{1}, {2}')" %>%
     glue::as_glue(),
+
+  # mean (sd) footnote
+  footnote_summary_stat = glue(
+    "tab_footnote(",
+    "footnote = 'Mean (Standard Deviation)',",
+    "locations = cells_column_labels(",
+    "columns = vars(stat_1, stat_2))",
+    ")"
+  ),
 
   # column headers abbreviations footnote
   footnote_abbreviation = glue(
