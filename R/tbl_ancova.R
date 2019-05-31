@@ -3,6 +3,8 @@
 #' Provided a [stats::lm] object, a table of adjusted differences are returned.
 #' @param x a list of objects of class `lm`.  The binary variable must be the first
 #' variable in the covariate list.
+#' @inheritParams gtsummary::tbl_uvregression
+#' @author Daniel D. Sjoberg
 #' @export
 
 tbl_ancova <- function(data, y, x, formula = "{y} ~ {x}", label = NULL,
@@ -22,7 +24,7 @@ tbl_ancova <- function(data, y, x, formula = "{y} ~ {x}", label = NULL,
   }
 
   # building formula list
-  formula_list <- formula <- map(y, function(y) glue("{y} ~ {x}") %>% as.formula)
+  formula_list <- formula <- map(y, function(y) glue("{y} ~ {x}") %>% stats::as.formula)
 
   # building models
   models_list <-
