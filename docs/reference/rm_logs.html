@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • hotfun</title>
+<title>Deletes log files created by Rscript on the Linux cluster — rm_logs • hotfun</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,7 +30,12 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Deletes log files created by Rscript on the Linux cluster — rm_logs" />
+
+<meta property="og:description" content="When an R script is submitted to the server, Linux generates a log file named
+myRscript.R.o######.  This program searches a folder for files named like this
+and removes/deletes them." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -47,7 +52,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -92,78 +97,44 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Deletes log files created by Rscript on the Linux cluster</h1>
+    
+    <div class="hidden name"><code>rm_logs.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    
+    <p>When an R script is submitted to the server, Linux generates a log file named
+<code>myRscript.R.o######</code>.  This program searches a folder for files named like this
+and removes/deletes them.</p>
+    
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
-
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="auc_density.html">auc_density()</a></code> </p>
-        </td>
-        <td><p>Calculate exact AUCs based on the distribution of risk in a population</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="auc_histogram.html">auc_histogram()</a></code> </p>
-        </td>
-        <td><p>Calculate an AUC from a histogram</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="list_labels.html">list_labels()</a></code> </p>
-        </td>
-        <td><p>Get variable labels and store in named list</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="print_hotfun.html">print(<i>&lt;tbl_ancova&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>print and knit_print methods for hotfun objects</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="rm_logs.html">rm_logs()</a></code> </p>
-        </td>
-        <td><p>Deletes log files created by Rscript on the Linux cluster</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="set_derived_variables.html">set_derived_variables()</a></code> </p>
-        </td>
-        <td><p>Apply variable labels to data frame</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="tbl_ancova.html">tbl_ancova()</a></code> </p>
-        </td>
-        <td><p>Table difference between two groups</p></td>
-      </tr>
-    </tbody>
+    <pre class="usage"><span class='fu'>rm_logs</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='kw pkg'>here</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/here/topics/here'>here</a></span>(), <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>path</th>
+      <td><p>folder location to search for log files</p></td>
+    </tr>
+    <tr>
+      <th>recursive</th>
+      <td><p>logical. should log files in subdirectories also be deleted?</p></td>
+    </tr>
     </table>
-  </div>
+    
 
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
-    </ul>
+      <li><a href="#arguments">Arguments</a></li>
+                </ul>
+
   </div>
 </div>
 

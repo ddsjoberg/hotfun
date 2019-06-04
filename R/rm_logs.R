@@ -8,7 +8,7 @@
 #' @param recursive logical. should log files in subdirectories also be deleted?
 #' @export
 
-logs_rm <- function(path = here::here(), recursive = FALSE) {
+rm_logs <- function(path = here::here(), recursive = FALSE) {
   # get list of files in dir
   files <- list.files(path = path)
 
