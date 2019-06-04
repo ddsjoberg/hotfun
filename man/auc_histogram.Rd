@@ -10,7 +10,7 @@ auc_histogram(x)
 \item{x}{histogram object from \link[graphics:hist]{graphics::hist}}
 }
 \description{
-Uses a histogram of event probabilties to calculate a precise AUC.  This is
+Uses a histogram of event probabilities to calculate a precise AUC.  This is
 a discrete approximation.  Use this function with many break points with a
 large number of data points.
 }

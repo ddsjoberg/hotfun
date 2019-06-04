@@ -33,12 +33,12 @@
 <meta property="og:title" content="Calculate exact AUCs based on the distribution of risk in a population — auc_density" />
 
 <meta property="og:description" content="Provided a distribution of risk in a population, this function calculates the
-exact AUC of a model that produces the risk estiamtes.  For example, a logistic
+exact AUC of a model that produces the risk estimates.  For example, a logistic
 regression model built with a normal linear predictor yields logit-normal distributed
-predicted risks.  The AUC from the logisitc regression model is the same as the AUC estimated
-from the distribution of the predicted risks, indpendent of the outcome.  This method for AUC
-calculation is useful for simulative studies where the predicted risks are a mixture of two
-distributions.  The exact prevelance of the outcome can easily be calculated, along with the exact
+predicted risks.  The AUC from the logistic regression model is the same as the AUC estimated
+from the distribution of the predicted risks, independent of the outcome.  This method for AUC
+calculation is useful for simulation studies where the predicted risks are a mixture of two
+distributions.  The exact prevalence of the outcome can easily be calculated, along with the exact
 AUC of the model." />
 <meta name="twitter:card" content="summary" />
 
@@ -70,7 +70,7 @@ AUC of the model." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">hotfun</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -112,12 +112,12 @@ AUC of the model." />
     <div class="ref-description">
     
     <p>Provided a distribution of risk in a population, this function calculates the
-exact AUC of a model that produces the risk estiamtes.  For example, a logistic
+exact AUC of a model that produces the risk estimates.  For example, a logistic
 regression model built with a normal linear predictor yields logit-normal distributed
-predicted risks.  The AUC from the logisitc regression model is the same as the AUC estimated
-from the distribution of the predicted risks, indpendent of the outcome.  This method for AUC
-calculation is useful for simulative studies where the predicted risks are a mixture of two
-distributions.  The exact prevelance of the outcome can easily be calculated, along with the exact
+predicted risks.  The AUC from the logistic regression model is the same as the AUC estimated
+from the distribution of the predicted risks, independent of the outcome.  This method for AUC
+calculation is useful for simulation studies where the predicted risks are a mixture of two
+distributions.  The exact prevalence of the outcome can easily be calculated, along with the exact
 AUC of the model.</p>
     
     </div>
@@ -129,7 +129,7 @@ AUC of the model.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>density</th>
-      <td><p>a function name that descirbes the continuous probability density function of the
+      <td><p>a function name that describes the continuous probability density function of the
 risk from 0 to 1.</p></td>
     </tr>
     <tr>
@@ -146,7 +146,7 @@ has need for two additional arguments to specify the density function (shape1 an
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns a list sensitities and specifcities at each cut point, the expected value or
+    <p>Returns a list sensitivity and specificity at each cut point, the expected value or
 mean risk, and the AUC associated with the distribution.</p>
     
 

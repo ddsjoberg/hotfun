@@ -1,6 +1,6 @@
 #' Calculate an AUC from a histogram
 #'
-#' Uses a histogram of event probabilties to calculate a precise AUC.  This is
+#' Uses a histogram of event probabilities to calculate a precise AUC.  This is
 #' a discrete approximation.  Use this function with many break points with a
 #' large number of data points.
 #'

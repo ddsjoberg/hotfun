@@ -7,7 +7,7 @@
 auc_density(density, cut.points = seq(from = 0, to = 1, by = 0.001), ...)
 }
 \arguments{
-\item{density}{a function name that descirbes the continuous probability density function of the
+\item{density}{a function name that describes the continuous probability density function of the
 risk from 0 to 1.}
 
 \item{cut.points}{sequence of points in [0, 1] where the sensitivity and specificity are calculated.
@@ -17,17 +17,17 @@ More points lead to a more precise estimate of the AUC.  Default is seq(from = 0
 has need for two additional arguments to specify the density function (shape1 and shape2).}
 }
 \value{
-Returns a list sensitities and specifcities at each cut point, the expected value or
+Returns a list sensitivity and specificity at each cut point, the expected value or
 mean risk, and the AUC associated with the distribution.
 }
 \description{
 Provided a distribution of risk in a population, this function calculates the
-exact AUC of a model that produces the risk estiamtes.  For example, a logistic
+exact AUC of a model that produces the risk estimates.  For example, a logistic
 regression model built with a normal linear predictor yields logit-normal distributed
-predicted risks.  The AUC from the logisitc regression model is the same as the AUC estimated
-from the distribution of the predicted risks, indpendent of the outcome.  This method for AUC
-calculation is useful for simulative studies where the predicted risks are a mixture of two
-distributions.  The exact prevelance of the outcome can easily be calculated, along with the exact
+predicted risks.  The AUC from the logistic regression model is the same as the AUC estimated
+from the distribution of the predicted risks, independent of the outcome.  This method for AUC
+calculation is useful for simulation studies where the predicted risks are a mixture of two
+distributions.  The exact prevalence of the outcome can easily be calculated, along with the exact
 AUC of the model.
 }
 \examples{
