@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Apply variable labels to data frame — set_derived_variables • hotfun</title>
+<title>Get variable labels and store in named list — list_labels • hotfun</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,9 @@
 
 
 
-<meta property="og:title" content="Apply variable labels to data frame — set_derived_variables" />
+<meta property="og:title" content="Get variable labels and store in named list — list_labels" />
 
-<meta property="og:description" content="Takes labels from the Derived Variables excel file and applies them to the
-passed data frame.  The function is meant to be used in the pipe." />
+<meta property="og:description" content="Get variable labels and store in named list" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -98,19 +97,18 @@ passed data frame.  The function is meant to be used in the pipe." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Apply variable labels to data frame</h1>
+    <h1>Get variable labels and store in named list</h1>
     
-    <div class="hidden name"><code>set_derived_variables.Rd</code></div>
+    <div class="hidden name"><code>list_labels.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Takes labels from the Derived Variables excel file and applies them to the
-passed data frame.  The function is meant to be used in the pipe.</p>
+    <p>Get variable labels and store in named list</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>set_derived_variables</span>(<span class='no'>data</span>, <span class='no'>path</span>, <span class='kw'>sheet</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>list_labels</span>(<span class='no'>data</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -119,27 +117,34 @@ passed data frame.  The function is meant to be used in the pipe.</p>
       <th>data</th>
       <td><p>Data frame</p></td>
     </tr>
-    <tr>
-      <th>path</th>
-      <td><p>Path to Derived Variables xls/xlsx file</p></td>
-    </tr>
-    <tr>
-      <th>sheet</th>
-      <td><p>Sheet to read. Either a string (the name of a sheet), or an
-integer (the position of the sheet). Ignored if the sheet is specified via
-<code>range</code>. If neither argument specifies the sheet, defaults to the first
-sheet.</p></td>
-    </tr>
-    <tr>
-      <th>drop</th>
-      <td><p>Logical indicating whether to drop unlabelled variables</p></td>
-    </tr>
     </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>trial</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>set_derived_variables</span>(<span class='st'>"derived_variables_sjoberg.xlsx"</span>)</div><div class='output co'>#&gt; <span class='error'>Error: `path` does not exist: 'derived_variables_sjoberg.xlsx'</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>list_labels</span>(<span class='no'>trial</span>)</div><div class='output co'>#&gt; $trt
+#&gt; [1] "Treatment Randomization"
+#&gt; 
+#&gt; $age
+#&gt; [1] "Age, yrs"
+#&gt; 
+#&gt; $marker
+#&gt; [1] "Marker Level, ng/mL"
+#&gt; 
+#&gt; $stage
+#&gt; [1] "T Stage"
+#&gt; 
+#&gt; $grade
+#&gt; [1] "Grade"
+#&gt; 
+#&gt; $response
+#&gt; [1] "Tumor Response"
+#&gt; 
+#&gt; $death
+#&gt; [1] "Patient Died"
+#&gt; 
+#&gt; $ttdeath
+#&gt; [1] "Months to Death/Censor"
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
