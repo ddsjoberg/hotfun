@@ -12,7 +12,7 @@
 tbl_ancova <- function(data, y, x, formula = "{y} ~ {x}", label = NULL,
                        method.args = NULL, conf.level = 0.95,
                        hide_n = FALSE, estimate_fun = style_sigfig,
-                       pvalue_fun = style_pvalue, method = lm) {
+                       pvalue_fun = style_pvalue, method = stats::lm) {
   # will return call, and all object passed to in tbl_regression call
   # the object func_inputs is a list of every object passed to the function
   func_inputs <- as.list(environment())

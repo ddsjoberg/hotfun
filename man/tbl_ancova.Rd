@@ -7,7 +7,7 @@
 tbl_ancova(data, y, x, formula = "{y} ~ {x}", label = NULL,
   method.args = NULL, conf.level = 0.95, hide_n = FALSE,
   estimate_fun = style_sigfig, pvalue_fun = style_pvalue,
-  method = lm)
+  method = stats::lm)
 }
 \arguments{
 \item{data}{data frame to be used in univariate regression modeling.  Data
