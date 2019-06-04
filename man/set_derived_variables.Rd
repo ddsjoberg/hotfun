@@ -4,18 +4,29 @@
 \alias{set_derived_variables}
 \title{Apply variable labels to data frame}
 \usage{
-set_derived_variables(data, path, drop = TRUE)
+set_derived_variables(data, path, sheet = NULL, drop = TRUE)
 }
 \arguments{
-\item{data}{data frame}
+\item{data}{Data frame}
 
-\item{path}{file path to the Derived Variables excel file}
+\item{path}{Path to Derived Variables xls/xlsx file}
 
-\item{drop}{logical indicating whether to drop unlabelled variables}
+\item{sheet}{Sheet to read. Either a string (the name of a sheet), or an
+integer (the position of the sheet). Ignored if the sheet is specified via
+\code{range}. If neither argument specifies the sheet, defaults to the first
+sheet.}
+
+\item{drop}{Logical indicating whether to drop unlabelled variables}
 }
 \description{
 Takes labels from the Derived Variables excel file and applies them to the
 passed data frame.  The function is meant to be used in the pipe.
+}
+\examples{
+\donttest{
+trial \%>\%
+  set_derived_variables("derived_variables_sjoberg.xlsx")
+}
 }
 \author{
 Daniel D. Sjoberg
