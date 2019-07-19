@@ -3,8 +3,7 @@ Title: Collection of Functions Used in the Health Outcomes Team
     at MSKCC
 Version: 0.1.0
 Authors@R: 
-    person(given = "Daniel D.",
-           family = "Sjoberg",
+    person("Daniel D.", "Sjoberg",
            role = c("aut", "cre"),
            email = "danieldsjoberg@gmail.com")
 Description: A mixed-bag of utility functions to ease the
