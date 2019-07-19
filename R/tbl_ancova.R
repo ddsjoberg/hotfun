@@ -26,7 +26,7 @@ tbl_ancova <- function(data, y, x, formula = "{y} ~ {x}", label = NULL,
   }
 
   # building formula list
-  formula_list <- formula <- map(y, function(y) glue("{y} ~ {x}") %>% stats::as.formula())
+  formula_list <- formula <- map(y, function(y) glue(formula) %>% stats::as.formula())
 
   # building models
   models_list <-
