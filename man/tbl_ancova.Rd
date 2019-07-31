@@ -13,7 +13,8 @@ tbl_ancova(data, y, x, formula = "{y} ~ {x}", label = NULL,
 \item{data}{data frame to be used in univariate regression modeling.  Data
 frame includes the outcome variable(s) and the independent variables.}
 
-\item{y}{model outcome as a string (e.g. \code{y = recurrence} or \code{y = Surv(time, recur)})}
+\item{y}{vector of continuous outcome variables.  One ANOVA/ANCOVA model
+will be computed for each outcome.  All results returned in a single table.}
 
 \item{x}{string indicating the binary comparison variable}
 

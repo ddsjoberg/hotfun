@@ -1,6 +1,8 @@
 #' Table difference between two groups
 #'
 #' Provided a [stats::lm] object, a table of adjusted differences are returned.
+#' @param y vector of continuous outcome variables.  One ANOVA/ANCOVA model
+#' will be computed for each outcome.  All results returned in a single table.
 #' @param x string indicating the binary comparison variable
 #' @inheritParams gtsummary::tbl_uvregression
 #' @author Daniel D. Sjoberg
