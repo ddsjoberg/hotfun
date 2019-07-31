@@ -22,8 +22,8 @@ Uses \code{\link[glue]{glue}} syntax. Default is \code{"{y} ~ {x}"}, where \code
 is the dependent variable, and \code{{x}} represents a single covariate. For a
 random intercept, the formula may be \code{formula = "{y} ~ {x} + (1 | gear)"}.}
 
-\item{label}{list of variable labels to override default labels in the table
-output, e.g. \code{list(age60 = "Age > 60")}.}
+\item{label}{list of formulas specifying variables labels,
+e.g. \code{list("age" ~ "Age, yrs", "ptstage" ~ "Path T Stage")}}
 
 \item{method.args}{list of additional arguments passed on to the regression
 function defined by \code{method}.}

@@ -63,7 +63,7 @@ tbl_ancova <- function(data, y, x, formula = "{y} ~ {x}", label = NULL,
     select(c(y, by)) %>%
     tbl_summary(
       by = by,
-      statistic = list(..continuous.. = "{mean} ({sd})"),
+      statistic = list(all_continuous() ~ "{mean} ({sd})"),
       missing = "no"
     )
 
