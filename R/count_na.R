@@ -16,6 +16,6 @@ count_na <- function(data) {
     dplyr::count() %>%
     print()
 
-  data
+  invisible(data)
 }
 
