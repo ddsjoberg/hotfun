@@ -1,7 +1,7 @@
 Package: hotfun
 Title: Collection of Functions Used in the Health Outcomes Team
     at MSKCC
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: 
     person("Daniel D.", "Sjoberg",
            role = c("aut", "cre"),
@@ -10,6 +10,7 @@ Description: A mixed-bag of utility functions to ease the
     analysis and reporting results.
 License: MIT + file LICENSE
 Depends: 
+    gt (>= 0.1.0),
     gtsummary (>= 1.0.0),
     R (>= 3.4)
 Imports: 
@@ -30,7 +31,8 @@ Suggests:
     spelling (>= 2.1),
     testthat (>= 2.0.1)
 Remotes:
-    ddsjoberg/gtsummary
+    ddsjoberg/gtsummary,
+    rstudio/gt
 Encoding: UTF-8
 Language: en-US
 LazyData: true

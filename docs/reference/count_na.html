@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Apply variable labels to data frame — set_derived_variables • hotfun</title>
+<title>Assess  pattern of missing data — count_na • hotfun</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,10 @@
 
 
 
-<meta property="og:title" content="Apply variable labels to data frame — set_derived_variables" />
+<meta property="og:title" content="Assess  pattern of missing data — count_na" />
 
-<meta property="og:description" content="Takes labels from the Derived Variables excel file and applies them to the
-passed data frame.  The function is meant to be used in the pipe." />
+<meta property="og:description" content="Pass a data frame and the missing pattern of all columns in the data frame.
+The data frame is returned unmodified." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -98,48 +98,53 @@ passed data frame.  The function is meant to be used in the pipe." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Apply variable labels to data frame</h1>
+    <h1>Assess  pattern of missing data</h1>
     
-    <div class="hidden name"><code>set_derived_variables.Rd</code></div>
+    <div class="hidden name"><code>count_na.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Takes labels from the Derived Variables excel file and applies them to the
-passed data frame.  The function is meant to be used in the pipe.</p>
+    <p>Pass a data frame and the missing pattern of all columns in the data frame.
+The data frame is returned unmodified.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>set_derived_variables</span>(<span class='no'>data</span>, <span class='no'>path</span>, <span class='kw'>sheet</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>count_na</span>(<span class='no'>data</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>Data frame</p></td>
-    </tr>
-    <tr>
-      <th>path</th>
-      <td><p>Path to Derived Variables xls/xlsx file</p></td>
-    </tr>
-    <tr>
-      <th>sheet</th>
-      <td><p>Sheet to read. Either a string (the name of a sheet), or an
-integer (the position of the sheet). Ignored if the sheet is specified via
-<code>range</code>. If neither argument specifies the sheet, defaults to the first
-sheet.</p></td>
-    </tr>
-    <tr>
-      <th>drop</th>
-      <td><p>Logical indicating whether to drop unlabelled variables</p></td>
+      <td><p>data frame</p></td>
     </tr>
     </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>trial</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>set_derived_variables</span>(<span class='st'>"derived_variables_sjoberg.xlsx"</span>)</div><div class='output co'>#&gt; <span class='error'>Error: `path` does not exist: 'derived_variables_sjoberg.xlsx'</span></div></pre>
+    <pre class="examples"><div class='input'><span class='no'>trial</span> <span class='kw'>%&gt;%</span> <span class='fu'>count_na</span>()</div><div class='output co'>#&gt; [1] "TRUE = 'Available', FALSE = 'Not Available'"
+#&gt; <span style='color: #555555;'># A tibble: 4 x 9</span><span>
+#&gt; </span><span style='color: #555555;'># Groups:   trt, age, marker, stage, grade, response, death, ttdeath [4]</span><span>
+#&gt;   trt   age   marker stage grade response death ttdeath     n
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> TRUE  FALSE TRUE   TRUE  TRUE  TRUE     TRUE  TRUE        9
+#&gt; </span><span style='color: #555555;'>2</span><span> TRUE  TRUE  FALSE  TRUE  TRUE  TRUE     TRUE  TRUE        9
+#&gt; </span><span style='color: #555555;'>3</span><span> TRUE  TRUE  TRUE   TRUE  TRUE  FALSE    TRUE  TRUE        9
+#&gt; </span><span style='color: #555555;'>4</span><span> TRUE  TRUE  TRUE   TRUE  TRUE  TRUE     TRUE  TRUE      173</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 200 x 8</span><span>
+#&gt;    trt       age marker stage grade response death ttdeath
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> Drug       23  0.16  T3    I            1     0   24   
+#&gt; </span><span style='color: #555555;'> 2</span><span> Drug        9  1.11  T4    III          1     1   14.9 
+#&gt; </span><span style='color: #555555;'> 3</span><span> Drug       31  0.277 T1    I            1     0   24   
+#&gt; </span><span style='color: #555555;'> 4</span><span> Placebo    46  2.07  T4    II           1     1   10.2 
+#&gt; </span><span style='color: #555555;'> 5</span><span> Drug       51  2.77  T2    II           0     1   20.0 
+#&gt; </span><span style='color: #555555;'> 6</span><span> Drug       39  0.613 T1    III          1     1   16.6 
+#&gt; </span><span style='color: #555555;'> 7</span><span> Drug       37  0.354 T4    II           1     1   12.2 
+#&gt; </span><span style='color: #555555;'> 8</span><span> Drug       32  1.74  T4    III          0     1    9.18
+#&gt; </span><span style='color: #555555;'> 9</span><span> Drug       31  0.144 T4    I            1     1   19.4 
+#&gt; </span><span style='color: #555555;'>10</span><span> Placebo    34  0.205 T2    III         </span><span style='color: #BB0000;'>NA</span><span>     1    8.65
+#&gt; </span><span style='color: #555555;'># ... with 190 more rows</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -149,8 +154,6 @@ sheet.</p></td>
       <li><a href="#examples">Examples</a></li>
     </ul>
 
-    <h2>Author</h2>
-    <p>Daniel D. Sjoberg</p>
   </div>
 </div>
 
