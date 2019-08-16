@@ -1,0 +1,5 @@
+url: http://www.danieldsjoberg.com/hotfun/
+
+template:
+  params:
+    bootswatch: flatly

@@ -29,7 +29,7 @@ Imports:
 Suggests: 
     covr (>= 3.2.1),
     spelling (>= 2.1),
-    testthat (>= 2.0.1)
+    testthat (>= 2.1.0)
 Remotes:
     ddsjoberg/gtsummary,
     rstudio/gt
