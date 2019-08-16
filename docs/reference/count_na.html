@@ -67,7 +67,7 @@ The data frame is returned unmodified." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">hotfun</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -88,7 +88,12 @@ The data frame is returned unmodified." />
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/ddsjoberg/hotfun">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -114,7 +119,7 @@ The data frame is returned unmodified.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>count_na</span>(<span class='no'>data</span>)</pre>
+    <pre class="usage"><span class='fu'>count_na</span>(<span class='no'>data</span>, <span class='kw'>include</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>exclude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -122,6 +127,14 @@ The data frame is returned unmodified.</p>
     <tr>
       <th>data</th>
       <td><p>data frame</p></td>
+    </tr>
+    <tr>
+      <th>include</th>
+      <td><p>character vector of names to include</p></td>
+    </tr>
+    <tr>
+      <th>exclude</th>
+      <td><p>character vector of names to exclude</p></td>
     </tr>
     </table>
     

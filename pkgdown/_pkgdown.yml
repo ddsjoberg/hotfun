@@ -3,3 +3,8 @@ url: http://www.danieldsjoberg.com/hotfun/
 template:
   params:
     bootswatch: flatly
+
+navbar:
+  right:
+  - icon: fa-github fa-lg
+    href: https://github.com/ddsjoberg/hotfun
