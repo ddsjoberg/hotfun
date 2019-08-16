@@ -1,3 +1,5 @@
+# hotfun 0.1.3
+
 # hotfun 0.1.2
 
 - Added `count_map()` and `count_na()`
