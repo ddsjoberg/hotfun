@@ -45,7 +45,7 @@ count_one <- function(data, vars) {
     mutate(
       ..p.. = style_percent(.data$..n.. / sum(.data$..n..), symbol = TRUE)
     ) %>%
-    as.data.frame() %>%
-    print(., row.names = FALSE)
+    as.matrix() %>%
+    print(.)
 }
 
