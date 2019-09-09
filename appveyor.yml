@@ -10,6 +10,9 @@ init:
 install:
   ps: Bootstrap
 
+cache:
+  - C:\RLibrary
+
 environment:
   global:
     USE_RTOOLS: true
@@ -22,10 +25,6 @@ environment:
       R_ARCH: x64
       GCC_PATH: mingw_64
 
-cache:
-  - C:\RLibrary
-
-environment:
   NOT_CRAN: true
   # env vars that may need to be set, at least temporarily, from time to time
   # see https://github.com/krlmlr/r-appveyor#readme for details
