@@ -1,4 +1,4 @@
-# hotfun (development version)
+# hotfun 0.1.4
 
 - Added Appveyor CI checks, and added addition Travis CI checks
 
