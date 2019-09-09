@@ -38,8 +38,10 @@ count_map <- function(data, checks) {
 
 count_one <- function(data, vars) {
 
-  print(glue::glue("\n{vars[1]}\n"))
+  # printing variable name being checked
+  cat(vars[1], "\n")
 
+  # printing unique obs
   data %>%
     count(!!!syms(vars), sort = TRUE, name = "..n..") %>%
     mutate(
@@ -47,5 +49,8 @@ count_one <- function(data, vars) {
     ) %>%
     as.data.frame() %>%
     print(., row.names = FALSE)
+
+  # adding line break
+  cat("\n")
 }
 
