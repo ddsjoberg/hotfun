@@ -1,3 +1,11 @@
+# hotfun 0.1.4
+
+- Added Appveyor CI checks, and added addition Travis CI checks
+
+- Updated `count_map()` to no longer print row numbers
+
+- Updated `tbl_anova()` to use NS `tbl_summary_()`
+
 # hotfun 0.1.3
 
 - Updated output for `count_map()` and `count_na()`
