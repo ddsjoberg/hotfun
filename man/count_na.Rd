@@ -4,10 +4,14 @@
 \alias{count_na}
 \title{Assess  pattern of missing data}
 \usage{
-count_na(data)
+count_na(data, include = NULL, exclude = NULL)
 }
 \arguments{
 \item{data}{data frame}
+
+\item{include}{character vector of names to include}
+
+\item{exclude}{character vector of names to exclude}
 }
 \description{
 Pass a data frame and the missing pattern of all columns in the data frame.

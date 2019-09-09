@@ -6,6 +6,10 @@
 
 - Updated `tbl_anova()` to use NS `tbl_summary_()`
 
+# hotfun 0.1.3
+
+- Updated output for `count_map()` and `count_na()`
+
 # hotfun 0.1.2
 
 - Added `count_map()` and `count_na()`

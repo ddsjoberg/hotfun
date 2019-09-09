@@ -6,3 +6,4 @@
 ^hotfun\.Rproj$
 ^\.Rproj\.user$
 ^docs$
+^pkgdown$
