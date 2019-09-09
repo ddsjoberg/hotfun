@@ -1,6 +1,6 @@
 # hotfun (development version)
 
-- Added Appveyor CI checks
+- Added Appveyor CI checks, and added addition Travis CI checks
 
 - Updated `count_map()` to no longer print row numbers
 
