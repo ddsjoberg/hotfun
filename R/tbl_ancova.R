@@ -47,7 +47,8 @@ tbl_ancova <- function(data, y, x, formula = "{y} ~ {x}", label = NULL,
           tbl <-
             gtsummary::tbl_regression(
               .x, show_single_row = x, conf.level = conf.level,
-              estimate_fun = style_sigfig, pvalue_fun = style_pvalue
+              estimate_fun = style_sigfig, pvalue_fun = style_pvalue,
+              include = x
             ) %>%
             gtsummary::modify_header(estimate = "**Difference**")
           tbl$table_body$label = .y
@@ -75,7 +76,8 @@ tbl_ancova <- function(data, y, x, formula = "{y} ~ {x}", label = NULL,
     )
 
   # patch together final table -------------------------------------------------
-  tlb_stack <- gtsummary::tbl_stack(results$tbl_merge)
+  if (nrow(results) > 1) tlb_stack <- gtsummary::tbl_stack(results$tbl_merge)
+  else tlb_stack <- results$tbl_merge[[1]]
   tlb_stack$gt_calls$tab_spanner <- NULL
 
   tlb_stack
