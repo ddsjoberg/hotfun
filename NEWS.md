@@ -1,3 +1,7 @@
+# hotfun 0.1.5
+
+- Refactoring `tbl_ancova()` for updated `gtsummary::tbl_merge()`
+
 # hotfun 0.1.4
 
 - Added Appveyor CI checks, and added addition Travis CI checks

@@ -23,8 +23,7 @@ Uses \link[glue:glue]{glue::glue} syntax. Default is \code{"{y} ~ {x}"}, where \
 is the dependent variable, and \code{{x}} represents a single covariate. For a
 random intercept model, the formula may be \code{formula = "{y} ~ {x} + (1 | gear)"}.}
 
-\item{label}{List of formulas specifying variables labels,
-e.g. \code{list("age" ~ "Age, yrs", "ptstage" ~ "Path T Stage")}}
+\item{label}{Named list of labels}
 
 \item{method.args}{List of additional arguments passed on to the regression
 function defined by \code{method}.}
@@ -51,8 +50,7 @@ and return a string that is the rounded/formatted p-value (e.g.
 Provided a \link[stats:lm]{stats::lm} object, a table of adjusted differences are returned.
 }
 \examples{
-trial \%>\%
-  tbl_ancova(y = c("age", "marker"), x = "trt")
+tbl_ancova(trial, y = c("age", "marker"), x = "trt")
 }
 \author{
 Daniel D. Sjoberg
