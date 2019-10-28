@@ -1,3 +1,9 @@
+# hotfun 0.1.5
+
+- Added `assign_timepoint()` function
+
+- Updated `count_map()` to sort by variables rather than frequency
+
 # hotfun 0.1.4
 
 - Added Appveyor CI checks, and added addition Travis CI checks

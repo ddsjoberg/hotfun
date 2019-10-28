@@ -43,10 +43,11 @@ count_one <- function(data, vars) {
 
   # printing unique obs
   data %>%
-    count(!!!syms(vars), sort = TRUE, name = "..n..") %>%
+    count(!!!syms(vars), name = "..n..") %>%
     mutate(
       ..p.. = style_percent(.data$..n.. / sum(.data$..n..), symbol = TRUE)
     ) %>%
+    dplyr::arrange(!!!syms(vars)) %>%
     as.data.frame() %>%
     print(., row.names = FALSE)
 
