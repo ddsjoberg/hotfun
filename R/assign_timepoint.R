@@ -38,7 +38,7 @@ assign_timepoint <- function(data, id, ref_date, measure_date, timepoints, windo
   time_units <- match.arg(time_units)
 
   # checking for duplicates within id and ref_date
-  if (duplicated(yy[c(id, measure_date)]) %>% sum() > 0) {
+  if (duplicated(data[c(id, measure_date)]) %>% sum() > 0) {
     warning("`data` is not unique within `id` and `measure_date`. Results may differ depending on order of `data`.")
   }
 
@@ -60,15 +60,15 @@ assign_timepoint <- function(data, id, ref_date, measure_date, timepoints, windo
     data <-
       data %>%
       dplyr::group_by(.data[[id]]) %>%
-      dplyr::arrange(abs(..time_diff.. - timepoints[i])) %>%
+      dplyr::arrange(abs(.data$..time_diff.. - timepoints[i])) %>%
       dplyr::mutate(
-        ..timepoint.. := dplyr::if_else(
-          between(..time_diff..,
+        ..timepoint.. = dplyr::if_else(
+          between(.data$..time_diff..,
                   timepoints[i] + windows[[i]][1],
                   timepoints[i] + windows[[i]][2]) &
             dplyr::row_number() == 1,
           timepoints[i],
-          ..timepoint..
+          .data$..timepoint..
         )
       )
   }
@@ -78,6 +78,6 @@ assign_timepoint <- function(data, id, ref_date, measure_date, timepoints, windo
   data %>%
     dplyr::ungroup() %>%
     dplyr::arrange(.data[[id]], .data[["..time_diff.."]]) %>%
-    dplyr::select(c(id, ref_date, measure_date, ..timepoint..)) %>%
+    dplyr::select(c(id, ref_date, measure_date), .data$..timepoint..) %>%
     rlang::set_names(c(id, ref_date, measure_date, new_var))
 }

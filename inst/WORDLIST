@@ -1,4 +1,6 @@
 ANCOVA
+Appveyor
+AppVeyor
 Codecov
 coxph
 dbeta
@@ -8,6 +10,7 @@ magrittr
 MSKCC
 pvalue
 Rscript
+timepoint
 unlabelled
 xls
 xlsx
