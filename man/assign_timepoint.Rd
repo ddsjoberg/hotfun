@@ -4,9 +4,16 @@
 \alias{assign_timepoint}
 \title{Assign a timepoint to a long dataset with multiple measures}
 \usage{
-assign_timepoint(data, id, ref_date, measure_date, timepoints, windows,
+assign_timepoint(
+  data,
+  id,
+  ref_date,
+  measure_date,
+  timepoints,
+  windows,
   time_units = c("days", "weeks", "months", "years"),
-  new_var = "timepoint")
+  new_var = "timepoint"
+)
 }
 \arguments{
 \item{data}{data frame}

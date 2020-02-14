@@ -4,10 +4,19 @@
 \alias{tbl_ancova}
 \title{Table difference between two groups}
 \usage{
-tbl_ancova(data, y, x, formula = "{y} ~ {x}", label = NULL,
-  method.args = NULL, conf.level = 0.95, hide_n = FALSE,
-  estimate_fun = style_sigfig, pvalue_fun = style_pvalue,
-  method = stats::lm)
+tbl_ancova(
+  data,
+  y,
+  x,
+  formula = "{y} ~ {x}",
+  label = NULL,
+  method.args = NULL,
+  conf.level = 0.95,
+  hide_n = FALSE,
+  estimate_fun = style_sigfig,
+  pvalue_fun = style_pvalue,
+  method = stats::lm
+)
 }
 \arguments{
 \item{data}{Data frame to be used in univariate regression modeling.  Data
@@ -24,7 +33,7 @@ is the dependent variable, and \code{{x}} represents a single covariate. For a
 random intercept model, the formula may be \code{formula = "{y} ~ {x} + (1 | gear)"}.}
 
 \item{label}{List of formulas specifying variables labels,
-e.g. \code{list("age" ~ "Age, yrs", "ptstage" ~ "Path T Stage")}}
+e.g. \code{list(age ~ "Age, yrs", stage ~ "Path T Stage")}}
 
 \item{method.args}{List of additional arguments passed on to the regression
 function defined by \code{method}.}
@@ -35,11 +44,11 @@ Defaults to 0.95, which corresponds to a 95 percent confidence interval.}
 \item{hide_n}{Hide N column. Default is \code{FALSE}}
 
 \item{estimate_fun}{Function to round and format coefficient estimates.
-Default is \link{style_sigfig} when the coefficients are not transformed, and
-\link{style_ratio} when the coefficients have been exponentiated.}
+Default is \link[gtsummary]{style_sigfig} when the coefficients are not transformed, and
+\link[gtsummary]{style_ratio} when the coefficients have been exponentiated.}
 
 \item{pvalue_fun}{Function to round and format p-values.
-Default is \link{style_pvalue}.
+Default is \link[gtsummary]{style_pvalue}.
 The function must have a numeric vector input (the numeric, exact p-value),
 and return a string that is the rounded/formatted p-value (e.g.
 \code{pvalue_fun = function(x) style_pvalue(x, digits = 2)} or equivalently,
