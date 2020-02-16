@@ -25,6 +25,7 @@ predictor <- "foreign"
 covariates <- c("price", "weight", "headroomcat", "mpgcat")
 #covariates <- NULL
 conflevel <- 0.95
+bootstrapn <- 10
 
 #binarydiff <- function(data, outcome, predictor, covariates = NULL, rev = FALSE, conflevel = 0.95, bootstrapn = 2000) {
 
@@ -33,8 +34,8 @@ conflevel <- 0.95
 # TODO: How to coerce factor to 0/1 always?
   # Rename outcome variable and keep only complete cases
   data <- data %>%
-    dplyr::rename(outcome_name = outcome, predictor_name = predictor) %>%
-    dplyr::mutate(predictor_name = as.numeric(predictor_name)) %>%
+    dplyr::mutate(predictor_name = as.numeric(predictor),
+                  outcome_name = outcome) %>%
     dplyr::select(outcome_name, predictor_name, tidyselect::all_of(covariates)) %>%
     dplyr::filter(stats::complete.cases(.) == TRUE)
 
@@ -46,7 +47,6 @@ conflevel <- 0.95
   dplyr::tibble(outcome = outcome) %>%
   dplyr::mutate(N = nrow(data)) %>%
   dplyr::bind_cols(
-    dplyr::tibble(outcome = outcome),
     uv_binarydiff(data, conflevel = conflevel)
   )
 
@@ -93,22 +93,19 @@ conflevel <- 0.95
     ) %>%
     dplyr::mutate(estimate = (pred1 - pred0))
 
-  # N and pvalue from adjusted model
-  # TODO: change this to broom::Tidy - how to get N?
-  N_pval_predictor <-
-    model_obj %>%
-    gtsummary::tbl_regression() %>%
-    pluck("table_body") %>%
-    filter(variable == "predictor_name" & !is.na(p.value)) %>%
-    select(N, p.value)
+  # pvalue from adjusted model
+  pval_predictor <-
+    broom::tidy(model_obj) %>%
+    dplyr::filter(term == "predictor_name") %>%
+    dplyr::pull(p.value)
 
   # Create list of bootstrap indicators so we don't have to save out data 2000x
-  bs_list <- map(seq_along(1:bootstrapn), ~ sample.int(nrow(data), replace = TRUE))
+  bs_list <- purrr::map(seq_along(1:bootstrapn), ~ sample.int(nrow(data), replace = TRUE))
 
-  # Create map dataframe for all 2000 datasets
+  # Create map dataframe for all datasets
   df_bs_map <-
-    tibble(idn = 1:bootstrapn) %>%
-    mutate(bs_assignment = map(idn, ~ bs_list[[..1]]))
+    dplyr::tibble(idn = 1:bootstrapn) %>%
+    dplyr::mutate(bs_assignment = purrr::map(idn, ~ bs_list[[..1]]))
 
   # Bootstrapping
   df_bs_results <-
@@ -121,32 +118,14 @@ conflevel <- 0.95
           ~ glm(
             as.formula(..1),
             data = data %>% slice(..2),
-            family = family
+            family = "binomial"
           )
         ),
       df_newdata_bs =
         pmap(
           # Save out new data for predictions
           list(bs_assignment),
-          ~ bind_cols(
-            # Mean for continuous
-            data %>%
-              slice(..1) %>%
-              select(covariates) %>%
-              summarize_if(is.numeric, mean, na.rm = TRUE) %>%
-              unique(),
-            # Mode for factors
-            data %>%
-              slice(..1) %>%
-              select(covariates) %>%
-              summarize_if(is.factor, Mode) %>%
-              unique()
-          ) %>%
-            mutate(freq = 2) %>%
-            uncount(freq) %>%
-            bind_cols(
-              data %>% select(predictor_name) %>% unique()
-            )
+          ~ create_newdata(data %>% slice(..1), covariates)
         ),
       # Predicted probabilities and differences
       df_prediction_bs =
@@ -158,45 +137,44 @@ conflevel <- 0.95
             type.predict = "response"
           ) %>%
             # Reshape
-            select(predictor_name, covariates, pred = .fitted) %>%
+            select(predictor_name, tidyselect::all_of(covariates), pred = .fitted) %>%
             pivot_wider(
               names_from = predictor_name,
               names_prefix = "pred",
               values_from = "pred"
             ) %>%
-            mutate(estimate = (pred2 - pred1)*revnum)
+            mutate(estimate = (pred1 - pred0))
         )
     )
 
   # Collapse predicted differences across all bootstraps
   df_ci_results <-
     df_bs_results %>%
-    select(df_prediction_bs) %>%
-    unnest(df_prediction_bs) %>%
-    summarize(
+    dplyr::select(df_prediction_bs) %>%
+    tidyr::unnest(df_prediction_bs) %>%
+    dplyr::summarize(
       conf.low = quantile(estimate, 0.025, na.rm = TRUE),
       conf.high = quantile(estimate, 0.975, na.rm = TRUE)
     )
 
   # Merge in with main results and format
-  if(family == "binomial") conversion <- 100 else conversion <- 1
   df_final_results <-
-    bind_cols(
-      df_unadjusted_pred,
-      df_prediction %>% select(estimate)
+    dplyr::bind_cols(
+      uvresults %>% dplyr::select(-c(estimate, conf.low, conf.high, p.value)),
+      df_prediction %>% dplyr::select(estimate)
     ) %>%
     bind_cols(df_ci_results) %>%
-    bind_cols(N_pval_predictor) %>%
     mutate(
       variable = outcome,
-      stat_1 = style_sigfig(stat_1*conversion),
-      stat_2 = style_sigfig(stat_2*conversion),
-      conf.low = conf.low*conversion,
-      conf.high = conf.high*conversion,
-      estimate = estimate*conversion
+      conf.low = conf.low,
+      conf.high = conf.high,
+      estimate = estimate,
+      p.value = pval_predictor
     ) %>%
-    select(variable, N, stat_1, stat_2, estimate, conf.low, conf.high, p.value)
+    select(variable, N, pred0, pred1, estimate, conf.low, conf.high, p.value)
+
+  # TODO: RETURN THIS AS FORMATTED TABLE (LOOK AT TBL_ANCOVA CODE)
 
   return(df_final_results)
 
-}
+#}
