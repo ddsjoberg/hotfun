@@ -1,7 +1,7 @@
 Package: hotfun
 Title: Collection of Functions Used in the Health Outcomes Team
     at MSKCC
-Version: 0.1.5
+Version: 0.1.5.9000
 Authors@R: 
     person(given = "Daniel D.",
            family = "Sjoberg",
@@ -16,9 +16,11 @@ Depends:
     R (>= 3.4)
 Imports: 
     broom (>= 0.5.2),
+    bstfun (>= 0.0.0.9000),
     dplyr (>= 0.8.0.1),
     glue (>= 1.3.1),
     here (>= 0.1),
+    knitr (>= 1.28),
     labelled (>= 2.1.0),
     lubridate (>= 1.7.4),
     magrittr (>= 1.5),
@@ -27,17 +29,19 @@ Imports:
     rlang (>= 0.3.4),
     stringr (>= 1.4.0),
     tibble (>= 2.1.1),
-    tidyr (>= 0.8.3)
+    tidyr (>= 0.8.3),
+    tidyselect (>= 1.0.0)
 Suggests: 
     covr (>= 3.2.1),
     ggplot2 (>= 3.2.1),
+    gt,
     spelling (>= 2.1),
     testthat (>= 2.1.0)
 Remotes:
-    ddsjoberg/gtsummary,
-    rstudio/gt
+    ddsjoberg/bstfun
+Additional_repositories: http://ddsjoberg.github.io/drat
 Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
