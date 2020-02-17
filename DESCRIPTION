@@ -37,8 +37,7 @@ Suggests:
     spelling (>= 2.1),
     testthat (>= 2.1.0)
 Remotes:
-    ddsjoberg/bstfun,
-    rstudio/gt
+    ddsjoberg/bstfun
 Encoding: UTF-8
 Language: en-US
 LazyData: true
