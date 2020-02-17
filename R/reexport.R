@@ -1,3 +1,5 @@
+#' @aliases reexports
+
 # magrittr ---------------------------------------------------------------------
 #' @export
 #' @importFrom magrittr %>%

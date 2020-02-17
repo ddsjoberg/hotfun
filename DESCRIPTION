@@ -16,10 +16,11 @@ Depends:
     R (>= 3.4)
 Imports: 
     broom (>= 0.5.2),
-    bstfun,
+    bstfun (>= 0.0.0.9000),
     dplyr (>= 0.8.0.1),
     glue (>= 1.3.1),
     here (>= 0.1),
+    knitr (>= 1.28),
     labelled (>= 2.1.0),
     lubridate (>= 1.7.4),
     magrittr (>= 1.5),
@@ -28,15 +29,16 @@ Imports:
     rlang (>= 0.3.4),
     stringr (>= 1.4.0),
     tibble (>= 2.1.1),
-    tidyr (>= 0.8.3)
+    tidyr (>= 0.8.3),
+    tidyselect (>= 1.0.0)
 Suggests: 
     covr (>= 3.2.1),
     ggplot2 (>= 3.2.1),
     spelling (>= 2.1),
     testthat (>= 2.1.0)
 Remotes:
-    rstudio/gt,
-    ddsjoberg/bstfun
+    ddsjoberg/bstfun,
+    rstudio/gt
 Encoding: UTF-8
 Language: en-US
 LazyData: true
