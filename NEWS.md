@@ -1,7 +1,5 @@
 # hotfun (development version)
 
-# hotfun 0.1.6
-
 - Importing `tbl_ancova`, `tbl_cross` and `fix_database_error` functions from {bstfun}
 
 # hotfun 0.1.5
