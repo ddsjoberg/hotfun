@@ -34,7 +34,6 @@ Imports:
 Suggests: 
     covr (>= 3.2.1),
     ggplot2 (>= 3.2.1),
-    gt,
     spelling (>= 2.1),
     testthat (>= 2.1.0)
 Remotes:
