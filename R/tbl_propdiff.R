@@ -35,7 +35,7 @@
 tbl_propdiff <- function(data, outcome, predictor, covariates = NULL,
                          method = c("centile", "mean"),
                          conflevel = 0.95, rev = FALSE,
-                         bootstrapn = ifelse(method == "centiles", 2000, 200),
+                         bootstrapn = ifelse(method == "centile", 2000, 200),
                          estimate_fun = function(x) style_sigfig(x),
                          pvalue_fun = function(x) style_pvalue(x)) {
 
