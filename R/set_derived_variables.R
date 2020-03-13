@@ -14,8 +14,8 @@
 #' trial %>%
 #'   set_derived_variables("derived_variables_sjoberg.xlsx")
 #' }
-
-set_derived_variables <- function(data, path, sheet = NULL, drop =  TRUE) {
+#'
+set_derived_variables <- function(data, path, sheet = NULL, drop = TRUE) {
   # import ---------------------------------------------------------------------
   # reading in excel file of Derived Variables
   df_derived_variables <- readxl::read_excel(path = path, sheet = sheet)

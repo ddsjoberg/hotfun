@@ -9,14 +9,13 @@
 #' @export
 #' @examples
 #' trial %>% count_na()
-
 count_na <- function(data, include = NULL, exclude = NULL) {
   if (is.null(include)) include <- names(data)
   include <- include %>% setdiff(exclude)
 
   cat("TRUE = 'Available', FALSE = 'Not Available'\n\n")
   data[include] %>%
-    mutate_all(~!is.na(.)) %>%
+    mutate_all(~ !is.na(.)) %>%
     dplyr::group_by_all() %>%
     dplyr::count() %>%
     as.data.frame() %>%
@@ -24,4 +23,3 @@ count_na <- function(data, include = NULL, exclude = NULL) {
 
   invisible(data)
 }
-

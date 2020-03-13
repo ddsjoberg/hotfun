@@ -12,15 +12,13 @@ test_that("No Errors/Warning with standard use", {
 })
 
 test_that("Works for a single vector", {
-
   expect_error(
-  trial %>% count_map(c("stage", "grade")),
-  NA
+    trial %>% count_map(c("stage", "grade")),
+    NA
   )
 })
 
 test_that("Gives error for incorrect variable names", {
-
   expect_error(
     trial %>% count_map(list(c("tstage", "grade"))),
     "*"
@@ -30,5 +28,4 @@ test_that("Gives error for incorrect variable names", {
     trial %>% dplyr::mutate(..n.. = 1) %>% count_map(list(c("..n..", "grade"))),
     "*"
   )
-
 })

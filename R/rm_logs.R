@@ -20,9 +20,13 @@ rm_logs <- function(path = here::here(), recursive = FALSE) {
   files <-
     files[
       files %>%
-      {substr(., nchar(.)-6+1, nchar(.))} %>%
-      {!grepl("[^0-9]", .)}
-      ]
+        {
+          substr(., nchar(.) - 6 + 1, nchar(.))
+        } %>%
+        {
+          !grepl("[^0-9]", .)
+        }
+    ]
 
   # deleting log files
   file.path(path, files) %>%

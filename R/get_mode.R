@@ -14,7 +14,6 @@
 #' get_mode(trial$trt)
 #' get_mode(trial$response)
 #' get_mode(trial$grade)
-
 get_mode <- function(x, moden = 1, quiet = FALSE) {
 
   # Vector of all unique values, excluding NA values
@@ -27,14 +26,14 @@ get_mode <- function(x, moden = 1, quiet = FALSE) {
   modes <- sort(ux[tab == max(tab)])
 
   # If there is more than one mode, choose the first and print a message
-  if(length(modes) == 1) {
+  if (length(modes) == 1) {
     final_mode <- modes[1]
-  } else if(length(modes) > 1) {
+  } else if (length(modes) > 1) {
     final_mode <- modes[moden]
 
     # If moden wasn't specified, show message
-    if(length(intersect(names(as.list(match.call())), "moden")) == 0 &
-       quiet == FALSE) {
+    if (length(intersect(names(as.list(match.call())), "moden")) == 0 &
+      quiet == FALSE) {
       message(
         glue(
           "There are multiple modes in this dataset: ",
@@ -47,5 +46,4 @@ get_mode <- function(x, moden = 1, quiet = FALSE) {
   }
 
   return(final_mode)
-
 }
