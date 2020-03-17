@@ -1,9 +1,9 @@
 
 # Calculate unadjusted proportions and difference in proportions
-calculate_uvpropdiff <- function(data, x, y, conf.level = 0.95) {
+calculate_uvpropdiff <- function(data, x, y, conflevel = 0.95) {
+
   uvtest <- stats::prop.test(table(data[[x]], data[[y]]),
-    conf.level = conf.level, correct = FALSE
-  )
+                             conf.level = conflevel, correct = FALSE)
   uvresults <-
     tibble(
       pred0 = uvtest$estimate[[1]],
@@ -16,6 +16,7 @@ calculate_uvpropdiff <- function(data, x, y, conf.level = 0.95) {
     select(-.data$pred0, -.data$pred1)
 
   return(uvresults)
+
 }
 
 # Function to create models and do predictions
@@ -24,10 +25,8 @@ create_model_pred <- function(data, y, x, covariates, pvalue = FALSE) {
 
   # Save out formula for model
   model_formula <-
-    glue(
-      "{y} ~ {x} + ",
-      glue_collapse(covariates, sep = " + ")
-    ) %>%
+    glue("{y} ~ {x} + ",
+         glue_collapse(covariates, sep = " + ")) %>%
     as.character()
 
   # Create model
@@ -63,8 +62,7 @@ create_model_pred <- function(data, y, x, covariates, pvalue = FALSE) {
     ) %>%
     # Reshape
     select(tidyselect::all_of(x), tidyselect::all_of(covariates),
-      pred = .data$.fitted
-    ) %>%
+           pred = .data$.fitted) %>%
     tidyr::pivot_wider(
       names_from = tidyselect::all_of(x),
       names_prefix = "mv_pred",
@@ -73,7 +71,7 @@ create_model_pred <- function(data, y, x, covariates, pvalue = FALSE) {
     mutate(estimate = (.data$mv_pred0 - .data$mv_pred1))
 
   # If pvalue = TRUE
-  if (pvalue == TRUE) {
+  if(pvalue == TRUE) {
 
     # Add pvalue from adjusted model
 
@@ -85,4 +83,5 @@ create_model_pred <- function(data, y, x, covariates, pvalue = FALSE) {
 
   # Return predicted probabilities
   return(df_prediction)
+
 }
