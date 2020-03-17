@@ -320,7 +320,7 @@ tbl_propdiff <- function(data, outcome, predictor, covariates = NULL,
       estimate = .data$estimate*100,
       conf.low = .data$conf.low*100,
       conf.high = .data$conf.high*100,
-      ci = glue("{estimate_fun(.data$conf.low)}%, {estimate_fun(.data$conf.high)}%"),
+      ci = as.character(glue("{estimate_fun(.data$conf.low)}%, {estimate_fun(.data$conf.high)}%")),
       .data$p.value
     )
 
@@ -342,7 +342,7 @@ tbl_propdiff <- function(data, outcome, predictor, covariates = NULL,
     left_join(tbl_results$table_header, by = "column") %>%
     gtsummary:::table_header_fill_missing() %>%
     gtsummary:::table_header_fmt_fun(
-      estimate = function(x) glue("{estimate_fun(x)}%"),
+      estimate = function(x) as.character(glue("{estimate_fun(x)}%")),
       p.value = pvalue_fun
     )
 
