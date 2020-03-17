@@ -56,7 +56,7 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
 
   # browser()
 
-  # Confirm that both outcome and predictor exist
+  # Confirm that outcome, predictor and covariates exist
   if (length(setdiff(c(predictor, outcome), names(data))) != 0) {
     stop(glue(
       "These variables do not exist in the dataset: ",
@@ -96,28 +96,7 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
   # TODO: Warning if there are covariates provided for method exact?
 
   # Matching arguments for method
-  method <- match.arg(method)
-
-  # Messages for methods
-  if (!is.null(covariates) & length(intersect(names(as.list(match.call())), "method")) == 0) {
-    message(glue(
-      "The default method is 'centile' using 2000 bootstrap resamples. ",
-      "To change the method to 'mean', use the option `method=`. ",
-      "To change the number of resamples, use the option `bootstrapn=`."
-    ))
-  } else if (method == "centile" & !is.null(covariates) &
-    length(intersect(names(as.list(match.call())), "bootstrapn")) == 0) {
-    message(glue(
-      "The minimum recommended number of bootstrap resamples for the 'centile' method is 2000, ",
-      "which is the default. This can be changed using the `bootstrapn=` option."
-    ))
-  } else if (method == "mean" & !is.null(covariates) &
-    length(intersect(names(as.list(match.call())), "bootstrapn")) == 0) {
-    message(glue(
-      "The minimum recommended number of bootstrap resamples for the 'mean' method is 200, ",
-      "which is the default. This can be changed using the `bootstrapn=` option."
-    ))
-  }
+  method <- match.arg(method)}
 
   # Confirm no variables in dataset that match temporary variable names
   if (any(c("..predname..", "..prednum..", "..outname..", "..outnum..") %in% names(data)) == TRUE) {
@@ -148,7 +127,6 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
   df_propdiff <-
     list(y = y, x = x) %>%
     purrr::cross_df() %>%
-
 
   ### SETUP-------------------
 
