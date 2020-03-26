@@ -34,12 +34,10 @@ Imports:
 Suggests: 
     covr (>= 3.2.1),
     ggplot2 (>= 3.2.1),
-    gt,
     spelling (>= 2.1),
     testthat (>= 2.1.0)
 Remotes:
     ddsjoberg/bstfun
-Additional_repositories: http://ddsjoberg.github.io/drat
 Encoding: UTF-8
 Language: en-US
 LazyData: true
