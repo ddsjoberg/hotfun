@@ -4,76 +4,27 @@ set.seed(6038503)
 
 test_that("No errors/warnings with standard use", {
   expect_error(
-    tbl_propdiff(data = trial, outcome = "response", predictor = "trt"),
+    tbl_propdiff(data = trial, y = "response", x = "trt"),
     NA
   )
 
   expect_error(
-    tbl_propdiff(data = trial, outcome = c("response", "death"), predictor = "trt"),
-    NA
-  )
-
-  expect_error(
-    tbl_propdiff(
-      data = trial, outcome = "response", predictor = "trt",
-      method = "centile", covariates = c("age", "stage"), bootstrapn = 50
-    ),
+    tbl_propdiff(data = trial, y = c("response", "death"), x = "trt"),
     NA
   )
 
   expect_error(
     tbl_propdiff(
-      data = trial, outcome = "response", predictor = "trt",
-      method = "mean", covariates = c("age", "stage"), bootstrapn = 50
+      data = trial, y = "response", x = "trt", formula = "{y} ~ {x} + age + stage",
+      method = "boot_centile", bootstrapn = 50
     ),
     NA
   )
 
-  expect_warning(
-    tbl_propdiff(data = trial, outcome = "response", predictor = "trt"),
-    NA
-  )
-
-  expect_warning(
+  expect_error(
     tbl_propdiff(
-      data = trial, outcome = c("response", "death"), predictor = "trt",
-      method = "centile", covariates = c("age", "stage"), bootstrapn = 50
-    ),
-    NA
-  )
-
-  expect_warning(
-    tbl_propdiff(
-      data = trial, outcome = "response", predictor = "trt",
-      method = "mean", covariates = c("age", "stage"), bootstrapn = 50
-    ),
-    NA
-  )
-})
-
-test_that("Expect messages if `method` and/or `bootstrapn` not specified", {
-  expect_message(
-    tbl_propdiff(
-      data = trial, outcome = "response", predictor = "trt",
-      covariates = c("age", "stage"), bootstrapn = 50
-    ),
-    "*"
-  )
-
-  expect_message(
-    tbl_propdiff(
-      data = trial, outcome = "response", predictor = "trt",
-      covariates = c("age", "stage"), method = "mean"
-    ),
-    "*"
-  )
-})
-
-test_that("No messages if `method` and `bootstrapn` specified", {
-  expect_message(
-    tbl_propdiff(
-      data = trial, outcome = "response", predictor = "trt",
-      covariates = c("age", "stage"), method = "mean", bootstrapn = 50
+      data = trial, y = "response", x = "trt", formula = "{y} ~ {x} + age + stage",
+      method = "boot_sd", bootstrapn = 50
     ),
     NA
   )
@@ -81,26 +32,19 @@ test_that("No messages if `method` and `bootstrapn` specified", {
 
 test_that("Error if variables do not exist or temporary variables do exist", {
   expect_error(
-    tbl_propdiff(trial, outcome = "response", predictor = "trt_new"),
+    tbl_propdiff(trial, y = "response", x = "trt_new"),
     "*"
   )
 
   expect_error(
-    tbl_propdiff(trial, outcome = "response_new", predictor = "trt"),
-    "*"
-  )
-
-  expect_error(
-    tbl_propdiff(trial %>% rename(..outnum.. = response),
-      outcome = "..outnum..", predictor = "trt"
-    ),
+    tbl_propdiff(trial, y = "response_new", x = "trt"),
     "*"
   )
 })
 
-test_that("Error if `conflevel` outside of 0-1 range", {
+test_that("Error if `conf.level` outside of 0-1 range", {
   expect_error(
-    tbl_propdiff(trial, outcome = "response", predictor = "trt", conflevel = 95),
+    tbl_propdiff(trial, y = "response", x = "trt", conf.level = 95),
     "*"
   )
 })
@@ -109,7 +53,7 @@ test_that("Error if outcome or predictor has more or less than 2 non-missing lev
   expect_error(
     tbl_propdiff(
       data = trial %>% mutate(response2 = sample(c(0:2), size = nrow(trial), replace = TRUE)),
-      outcome = "response2", predictor = "trt"
+      y = "response2", x = "trt"
     ),
     "*"
   )
@@ -117,22 +61,22 @@ test_that("Error if outcome or predictor has more or less than 2 non-missing lev
   expect_error(
     tbl_propdiff(
       data = trial %>% mutate(trt2 = sample(c(0:2), size = nrow(trial), replace = TRUE)),
-      outcome = "response", predictor = "trt2"
+      y = "response", x = "trt2"
     ),
     "*"
   )
 
   expect_error(
-    tbl_propdiff(data = trial %>% mutate(trt2 = 0), outcome = "response", predictor = "trt2"),
+    tbl_propdiff(data = trial %>% mutate(trt2 = 0), y = "response", x = "trt2"),
     "*"
   )
 })
 
-test_that("Predictor and outcome can be character, numeric or factor", {
+test_that("x, y and covariates can be character, numeric or factor", {
   expect_error(
     tbl_propdiff(
       data = trial %>% mutate(response = as.character(response)),
-      outcome = "response", predictor = "trt"
+      y = "response", x = "trt"
     ),
     NA
   )
@@ -140,8 +84,7 @@ test_that("Predictor and outcome can be character, numeric or factor", {
   expect_error(
     tbl_propdiff(
       data = trial %>% mutate(response = as.character(response)),
-      outcome = "response", predictor = "trt",
-      covariates = c("age"), method = "mean", bootstrapn = 50
+      y = "response", x = "trt", formula = "{y} ~ {x} + age", method = "boot_sd", bootstrapn = 50
     ),
     NA
   )
@@ -149,7 +92,7 @@ test_that("Predictor and outcome can be character, numeric or factor", {
   expect_error(
     tbl_propdiff(
       data = trial %>% mutate(trt = as.numeric(as.factor(trt))),
-      outcome = "response", predictor = "trt"
+      y = "response", x = "trt"
     ),
     NA
   )
@@ -157,25 +100,15 @@ test_that("Predictor and outcome can be character, numeric or factor", {
   expect_error(
     tbl_propdiff(
       data = trial %>% mutate(trt = as.numeric(as.factor(trt))),
-      outcome = "response", predictor = "trt",
-      covariates = c("age"), method = "mean", bootstrapn = 50
+      y = "response", x = "trt", formula = "{y} ~ {x} + age", method = "boot_sd", bootstrapn = 50
     ),
     NA
   )
 
   expect_error(
     tbl_propdiff(
-      data = trial %>% mutate(trt = as.factor(trt), response = as.factor(response)),
-      outcome = "response", predictor = "trt"
-    ),
-    NA
-  )
-
-  expect_error(
-    tbl_propdiff(
-      data = trial %>% mutate(trt = as.factor(trt), response = as.factor(response)),
-      outcome = "response", predictor = "trt",
-      covariates = c("age"), method = "mean", bootstrapn = 50
+      data = trial %>% mutate(grade = as.character(grade)),
+      y = "response", x = "trt", formula = "{y} ~ {x} + grade"
     ),
     NA
   )
@@ -185,7 +118,7 @@ test_that("No errors if outcome variable does not have a label", {
   expect_error(
     tbl_propdiff(
       data = trial %>% mutate(response2 = sample(c(0, 1), size = nrow(trial), replace = TRUE)),
-      outcome = "response2", predictor = "trt"
+      y = "response2", x = "trt"
     ),
     NA
   )
@@ -193,22 +126,22 @@ test_that("No errors if outcome variable does not have a label", {
 
 test_that("No errors when using different confidence levels", {
   expect_error(
-    tbl_propdiff(data = trial, outcome = "response", predictor = "trt", conflevel = 0.90),
+    tbl_propdiff(data = trial, y = "response", x = "trt", conf.level = 0.90),
     NA
   )
 
   expect_error(
     tbl_propdiff(
-      data = trial, outcome = "response", predictor = "trt", covariates = c("age", "stage"),
-      method = "centile", conflevel = 0.90, bootstrapn = 50
+      data = trial, y = "response", x = "trt", formula = "{y} ~ {x} + age + stage",
+      method = "boot_centile", conf.level = 0.90, bootstrapn = 50
     ),
     NA
   )
 
   expect_error(
     tbl_propdiff(
-      data = trial, outcome = "response", predictor = "trt", covariates = c("age", "stage"),
-      method = "mean", conflevel = 0.90, bootstrapn = 50
+      data = trial, y = "response", x = "trt", formula = "{y} ~ {x} + age + stage",
+      method = "boot_sd", conf.level = 0.90, bootstrapn = 50
     ),
     NA
   )
@@ -217,7 +150,7 @@ test_that("No errors when using different confidence levels", {
 test_that("`estimate_fun` and `pvalue_fun` are functions", {
   expect_error(
     tbl_propdiff(
-      data = trial, outcome = "response", predictor = "trt",
+      data = trial, y = "response", x = "trt",
       estimate_fun = "style_percent"
     ),
     "*"
@@ -225,7 +158,7 @@ test_that("`estimate_fun` and `pvalue_fun` are functions", {
 
   expect_error(
     tbl_propdiff(
-      data = trial, outcome = "response", predictor = "trt",
+      data = trial, y = "response", x = "trt",
       pvalue_fun = "style_pvalue"
     ),
     "*"

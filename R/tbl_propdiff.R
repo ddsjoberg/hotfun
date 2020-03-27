@@ -3,355 +3,404 @@
 #' This function calculates the unadjusted or adjusted difference in rates with confidence interval.
 #'
 #' @param data A data frame
-#' @param outcome A vector of outcome variable names. Outcome variables can be numeric, character or factor, but must have two and only two non-missing levels
-#' @param predictor The name of the predictor (stratifying) variable. This can be numeric, character or factor, but must have two and only two non-missing levels
-#' @param covariates A vector of variable names that the difference in rates will be adjusted for. The p-value displayed will be from a multivariable logistic regression model containing these covariates. The default option is `NULL` which calculates an unadjusted difference in rates.
-#' @param method The method for calculating confidence intervals around the adjusted difference in rates. The 'centile' option is the default and uses 2000 bootstrap resamples by default and calculates the confidence interval using centiles (by default, 2.5th and 97.5th centiles for a 95% confidence interval). The 'mean' option can also be selected, which uses a default 200 bootstrap resamples and uses the standard deviation for the mean adjusted difference across all resamples to calculate the confidence interval.
-#' @param conflevel Confidence level of the returned confidence interval. Must be a single number between 0 and 1. The default is a 95% confidence interval.
-#' @param rev By default, the rates and difference in rates are presented as group 1, group 2, (group 1 - group 2). To reverse the order of the columns and how the difference is calculated, set this option to `TRUE`
-#' @param bootstrapn The number of bootstrap resamples to use. The default is 2000 when `method = "centile"` and the default is 200 when `method = "mean"`
-#' @param estimate_fun Function to round and format estimates. By default `style_sigfig`, but can take any formatting function
-#' @param pvalue_fun Function to round and format p-value. By default `style_pvalue`, but can take any formatting function
+#' @param y vector of binary outcome variables. Outcome variables can be
+#' numeric, character or factor, but must have two and only two non-missing levels
+#' @param x string indicating the binary stratifying variable. The stratifying
+#' variable can be numeric, character or factor, but must have two and only two
+#' non-missing levels
+#' @param formula By default, "{y} ~ {x}". To include covariates for an adjusted
+#' risk difference, add covariate names to the formula, e.g. "{y} ~ {x} + age"
+#' @param method The method for calculating confidence intervals around the
+#' difference in rates. The options are "exact", for an unadjusted difference
+#' in rates, or "boot_centile" or "boot_sd" for an adjusted difference in rates.
+#' The default method is "exact".
+#' @param conf.level Confidence level of the returned confidence interval.
+#' Must be a single number between 0 and 1. The default is a 95% confidence interval.
+#' @param bootstrapn The number of bootstrap resamples to use. The default is 2000
+#' for "boot_centile" and 200 for "boot_sd"
+#' @param estimate_fun Function to round and format estimates. By default
+#' `style_sigfig`, but can take any formatting function
+#' @param pvalue_fun Function to round and format p-value. By default
+#' `style_pvalue`, but can take any formatting function
 #'
-#' @return A formatted `gt` table with the unadjusted rate in each group, and the difference in rates, confidence interval and p-value for the comparison (unadjusted by default, adjusted if `covariates` option specified)
+#' @return A `tbl_propdiff` object
 #' @export
+#'
+#' @section Methods:
+#'
+#' The `exact`` option gives the exact confidence interval for the unadjusted
+#' difference in proportions as calculated by `prop.test`.
+#'
+#' The `boot_centile` option calculates the adjusted difference between groups
+#' in all bootstrap samples (the default for this method is 2000 resamples)
+#' and generates the confidence intervals from the distribution of these
+#' differences. For the default, a 95% confidence interval, the 2.5 and 97.5
+#' centiles are used.
+#'
+#' The `boot_sd` option calculates the adjusted difference between groups
+#' in all bootstrap samples (the default for this method is 200 resamples).
+#' The mean and standard deviation of the adjusted difference across all
+#' resamples are calculated. The standard deviation is then used as the
+#' standard error to calculate the confidence interval based on the true adjusted difference.
 #'
 #' @examples
 #' tbl_propdiff(
-#' data = trial,
-#' outcome = "response",
-#' predictor = "trt"
+#'   data = trial,
+#'   y = "response",
+#'   x = "trt"
 #' )
 #'
 #' tbl_propdiff(
-#' data = trial,
-#' outcome = "response",
-#' predictor = "trt",
-#' covariates = c("age", "stage"),
-#' method = "mean",
-#' bootstrapn = 250
+#'   data = trial,
+#'   y = "response",
+#'   x = "trt",
+#'   formula = "{y} ~ {x} + age + stage",
+#'   method = "boot_sd",
+#'   bootstrapn = 250
 #' )
-
-tbl_propdiff <- function(data, outcome, predictor, covariates = NULL,
-                         method = c("centile", "mean"),
-                         conflevel = 0.95, rev = FALSE,
-                         bootstrapn = ifelse(method == "centiles", 2000, 200),
-                         estimate_fun = function(x) style_sigfig(x),
-                         pvalue_fun = function(x) style_pvalue(x)) {
+tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
+                         method = c("exact", "boot_sd", "boot_centile"),
+                         conf.level = 0.95,
+                         bootstrapn = ifelse(method == "boot_centile", 2000, 200),
+                         estimate_fun = style_sigfig,
+                         pvalue_fun = style_pvalue) {
 
   ### CHECKS------------------
 
-  #browser()
+  # browser()
 
-  # Confirm that both outcome and predictor exist
-  if (length(setdiff(c(predictor, outcome), names(data))) != 0) {
+  # Matching arguments for method
+  method <- match.arg(method)
+
+  # Save out list of covariates from formula
+  rhs <- map(stringr::str_split(rlang::f_text(stats::as.formula(glue(formula))), pattern = "\\+"), ~ stringr::str_trim(.x)) %>% pluck(1)
+  covariates <- setdiff(rhs, x)
+
+  # Confirm that x and y variables and covariates exist
+  if (length(setdiff(c(x, y, covariates), names(data))) != 0) {
     stop(glue(
       "These variables do not exist in the dataset: ",
-      glue_collapse(setdiff(c(predictor, outcome), names(data)), sep = ", ")),
-      call. = FALSE)
+      glue_collapse(setdiff(c(x, y), names(data)), sep = ", ")
+    ),
+    call. = FALSE
+    )
   }
 
-  # Check that outcomes and predictor are binary
-  if (data[!is.na(data[[predictor]]), ][[predictor]] %>% unique() %>% length() != 2) {
-    stop(glue("The stratifying variable, '{predictor}', must have two and only two non-missing levels."),
-         call. = FALSE)
+  # converting inputs to strings/lists
+  y <- dplyr::select(data[0, , drop = FALSE], {{ y }}) %>% names()
+  x <- dplyr::select(data[0, , drop = FALSE], {{ x }}) %>% names()
+
+  # checking the x variable has two levels
+  if (data[[x]] %>% stats::na.omit() %>% unique() %>% length() != 2) {
+    stop(glue::glue("The stratifying variable, '{x}', must have two levels."),
+      call. = FALSE
+    )
   }
-  if (purrr::every(outcome, function(x) data[!is.na(data[[x]]), ][[x]] %>% unique() %>% length() == 2) == FALSE) {
-    stop(glue(
-      "All outcome variables (",
-      glue_collapse(outcome, sep = ","),
-      ") must have two and only two non-missing levels."),
-      call. = FALSE)
+
+  # checking the y variables have two levels
+  if (purrr::every(y, function(x) {
+    data[[x]] %>%
+      stats::na.omit() %>%
+      unique() %>%
+      length() == 2
+  }) == FALSE) {
+    stop(glue::glue("All outcome variables, '{y}', must have two levels."),
+      call. = FALSE
+    )
   }
 
   # Confirm that conf.level is not < 0 or > 1
-  if (conflevel < 0 | conflevel > 1) {
-    stop("The confidence level specified in the `conflevel=` option must be between 0 and 1.",
-         call. = FALSE)
+  if (conf.level < 0 | conf.level > 1) {
+    stop("The confidence level specified in the `conf.level=` option must be between 0 and 1.",
+      call. = FALSE
+    )
   }
 
   # Matching arguments for method
   method <- match.arg(method)
 
-  # Messages for methods
-  if (!is.null(covariates) & length(intersect(names(as.list(match.call())), "method")) == 0) {
-    message(glue(
-      "The default method is 'centile' using 2000 bootstrap resamples. ",
-      "To change the method to 'mean', use the option `method=`. ",
-      "To change the number of resamples, use the option `bootstrapn=`."
-    ))
-  } else if (method == "centile" & !is.null(covariates) &
-             length(intersect(names(as.list(match.call())), "bootstrapn")) == 0) {
-    message(glue(
-      "The minimum recommended number of bootstrap resamples for the 'centile' method is 2000, ",
-      "which is the default. This can be changed using the `bootstrapn=` option."))
-  } else if(method == "mean" & !is.null(covariates) &
-            length(intersect(names(as.list(match.call())), "bootstrapn")) == 0) {
-    message(glue(
-      "The minimum recommended number of bootstrap resamples for the 'mean' method is 200, ",
-      "which is the default. This can be changed using the `bootstrapn=` option."))
-  }
-
-  # Confirm no variables in dataset that match temporary variable names
-  if(any(c("..predname..", "..prednum..", "..outname..", "..outnum..") %in% names(data)) == TRUE) {
-
-    stop(
-      glue(
-        "The following variable(s) already exist in this dataset: ",
-        glue::glue_collapse(
-          intersect(c("..predname..", "..prednum..", "..outname..", "..outnum.."),
-                    names(data)), sep = ", ")
-      ),
-      call. = FALSE
-    )
-
-  }
-
   # Checking estimate_fun and pvalue_fun are functions
   if (!purrr::every(list(estimate_fun, pvalue_fun), is.function)) {
     stop("Inputs `estimate_fun` and `pvalue_fun` must be functions.",
-         call. = FALSE)
-  }
-
-  ### SETUP-------------------
-
-  # Convert to strings
-  predictor <- select(data[0, ], {{ predictor }}) %>% names()
-  outcome <- select(data[0, ], {{ outcome }}) %>% names()
-
-  # Dataset excluding patients missing predictor (excluded from all analyses)
-  df_full <-
-    data[!is.na(data[[predictor]]), ] %>%
-    rename(..predname.. = tidyselect::all_of(predictor)) %>%
-    mutate(
-      ..prednum.. = dplyr::group_indices(., .data$..predname..) - 1
+      call. = FALSE
     )
-
-  # If rev = TRUE, reverse groups of predictor variable to display correctly
-  if(rev == TRUE) {
-
-    df_full <-
-      df_full %>%
-      mutate(..prednum.. = abs(.data$..prednum.. - 1))
-
   }
 
-  # Pull out column labels to use for table (correctly label after flipping)
-  column_labels <-
-    df_full %>%
-    select(.data$..prednum.., .data$..predname..) %>%
-    unique() %>%
-    arrange(.data$..prednum..) %>%
-    pull(.data$..predname..)
+  ### DATAFRAME FOR ALL MODELS--------------------------------------
 
-  # Pull out outcome labels (editing dataset drops labels)
-  outcome_labels <-
+  df_propdiff <-
+    tibble::enframe(y, name = NULL, value = "y") %>%
+    mutate(x = x)
+
+  # Reverse factor levels for x variable to match tbl_ancova output
+  # Convert y to factor
+  data <-
     data %>%
-    select(tidyselect::all_of(outcome)) %>%
-    map(~ attr(.x, "label"))
+    mutate_at(vars(x), ~ forcats::fct_rev(factor(.))) %>%
+    mutate_at(vars(y), ~ factor(.))
 
-  ### SUMMARY OF UNADJUSTED RATES-----------------------------------
+  ### UNADJUSTED RATES---------------------------------
 
-  # Create table of unadjusted rates
-  tbl_results <-
-    df_full %>%
-    select(.data$..prednum.., tidyselect::all_of(outcome)) %>%
-    mutate(..prednum.. = factor(.data$..prednum.., labels = column_labels)) %>%
-    tbl_summary(by = .data$..prednum.., missing = "no", label = outcome_labels)
-
-  ### UNADJUSTED ESTIMATES AND DIFFERENCE------------------
-
-  if(is.null(covariates)) {
-
-    # Univariate difference
-    df_results <-
-      tibble(outcome = outcome) %>%
-      mutate(
-        # Calculate difference, CI, p-value
-        df_uvresults =
-          map(
-            outcome,
-            ~ calculate_uvpropdiff(
-              data = df_full[!is.na(df_full[[..1]]), ] %>%
-                rename(..outname.. = tidyselect::all_of(..1)) %>%
-                mutate(..outnum.. = dplyr::group_indices(., .data$..outname..) - 1) %>%
-                select(.data$..prednum.., .data$..outnum.., tidyselect::all_of(covariates)) %>%
-                filter(stats::complete.cases(.) == TRUE),
-              x = "..prednum..", y = "..outnum..", conflevel = conflevel)
+  df_propdiff_summary <-
+    df_propdiff %>%
+    mutate(
+      # Before creating tables, save out outcome label
+      outcome_label =
+        map_chr(
+          y,
+          ~ ifelse(!is.null(attr(data[[..1]], "label")),
+            attr(data[[..1]], "label"),
+            y
           )
-      ) %>%
-      select(.data$outcome, .data$df_uvresults) %>%
-      unnest(.data$df_uvresults)
+        ),
+      # Save out table of unadjusted rates
+      tbl_rates =
+        pmap(
+          list(.data$x, .data$y, .data$outcome_label),
+          function(x, y, z) {
+            data %>%
+              select(tidyselect::all_of(x), tidyselect::all_of(y)) %>%
+              tbl_summary(
+                by = .data[[x]], missing = "no",
+                label = list(x = glue("{z}")),
+                type = list(all_categorical() ~ "dichotomous")
+              ) %>%
+              add_n() %>%
+              modify_header(stat_by = gt::md("**{level}**"))
+          }
+        )
+    )
+  # TODO: Bring up with Dan that tbl_ancova is giving error for "response" when it shouldn't
+  # because 3rd level is missing
+  # TODO: What about tbl_summary warnings?
 
-  }
+  ### CALCULATE DIFFERENCES-------------------------
 
-  ### ADJUSTED ESTIMATES-----------------
-
-  if(!is.null(covariates)) {
-
-    # Calculate adjusted difference for full dataset
-    df_results_map <-
-      tibble(outcome = outcome) %>%
+  # For "exact" method
+  if (method == "exact") {
+    df_propdiff_final <-
+      df_propdiff_summary %>%
       mutate(
-        df_prediction =
-          map(
-            outcome,
+        estci =
+          pmap(
+            list(x, y),
+            ~ calculate_exact(
+              data = data %>%
+                select(tidyselect::all_of(..1), tidyselect::all_of(..2)) %>%
+                filter(complete.cases(.) == TRUE),
+              x = ..1,
+              y = ..2,
+              conf.level = conf.level
+            )
+          )
+      )
+
+    # For multivariable bootstrap methods
+  } else if (method %in% c("boot_centile", "boot_sd")) {
+
+    # Calculate central estimate in full dataset
+    df_propdiff_est <-
+      df_propdiff_summary %>%
+      mutate(
+        est =
+          pmap(
+            list(x, y),
             ~ create_model_pred(
-              data = df_full[!is.na(df_full[[..1]]), ] %>%
-                rename(..outname.. = tidyselect::all_of(..1)) %>%
-                mutate(..outnum.. = dplyr::group_indices(., .data$..outname..) - 1) %>%
-                select(.data$..prednum.., .data$..outnum.., tidyselect::all_of(covariates)) %>%
-                filter(stats::complete.cases(.) == TRUE),
-              y = "..outnum..",
-              x = "..prednum..",
+              data = data %>%
+                select(tidyselect::all_of(..1), tidyselect::all_of(..2), tidyselect::all_of(covariates)) %>%
+                filter(complete.cases(.) == TRUE),
+              x = ..1,
+              y = ..2,
               covariates = covariates,
-              pvalue = TRUE)
+              pvalue = TRUE
+            )
           )
-      ) %>%
-      unnest(.data$df_prediction) %>%
-      select(.data$outcome, .data$estimate, .data$p.value)
-
-    ### BOOTSTRAP MODELS------------------
-    # Creation of the models/predictions is the same for both methods
-    # Calculate of the CI at the end is different
+      )
 
     # Create list of indicators for each resample, separately for each outcome
     df_bs_map <-
-      list(outcome = outcome,
-           bsn = 1:bootstrapn) %>%
-      purrr::cross_df() %>%
+      df_propdiff_est %>%
+      select(.data$x, .data$y) %>%
+      mutate(freq = bootstrapn) %>%
+      tidyr::uncount(.data$freq) %>%
       mutate(
         nrow =
-          map_int(
-            outcome,
-            ~ nrow(df_full[!is.na(..1), ] %>%
-                     select(..prednum.., tidyselect::all_of(covariates)) %>%
-                     filter(stats::complete.cases(.) == TRUE))
+          pmap_int(
+            list(x, y),
+            ~ nrow(
+              data %>%
+                select(tidyselect::all_of(..1), tidyselect::all_of(..2), tidyselect::all_of(covariates))
+            )
           ),
         bs_assignment =
           map(
             nrow, ~ sample.int(..1, replace = TRUE)
           ),
         # Bootstrapping adjusted difference
-        df_prediction =
-          map2(
-            .data$outcome, .data$bs_assignment,
+        bs_pred =
+          pmap(
+            list(.data$x, .data$y, .data$bs_assignment),
             ~ create_model_pred(
-              data = df_full[!is.na(df_full[[..1]]), ] %>%
-                rename(..outname.. = tidyselect::all_of(..1)) %>%
-                mutate(..outnum.. = dplyr::group_indices(., .data$..outname..) - 1) %>%
-                select(.data$..prednum.., .data$..outnum.., tidyselect::all_of(covariates)) %>%
-                filter(stats::complete.cases(.) == TRUE) %>%
-                slice(..2),
-              x = "..prednum..",
-              y = "..outnum..",
-              covariates = covariates)
+              data = data %>%
+                select(tidyselect::all_of(..1), tidyselect::all_of(..2), tidyselect::all_of(covariates)) %>%
+                filter(complete.cases(.) == TRUE) %>%
+                slice(..3),
+              x = ..1,
+              y = ..2,
+              covariates = covariates,
+              pvalue = TRUE
+            )
           )
       ) %>%
-      select(.data$outcome, .data$df_prediction) %>%
-      unnest(.data$df_prediction) %>%
-      nest(df_prediction = -c(.data$outcome))
+      select(.data$x, .data$y, .data$bs_pred) %>%
+      unnest(.data$bs_pred) %>%
+      nest(bs_pred = -c(.data$x, .data$y))
+  }
 
-    ### CALCULATE CONFIDENCE INTERVALS----------------------------
+  #### CALCULATE 95% CI---------------------------------
 
-    # Calculate which centiles to use
-    lower_centile <- (1 - conflevel)/2
-    upper_centile <- 1 - (1 - conflevel)/2
+  # 95% CI for exact method already calculated
 
-    # For centile method
-    if(method == "centile") {
+  # Calculate which centiles to use
+  lower_centile <- (1 - conf.level) / 2
+  upper_centile <- 1 - (1 - conf.level) / 2
 
-      # Calculate 95% CI using centiles
-      df_results <-
-        df_bs_map %>%
-        mutate(
-          df_ci_results =
-            map(
-              .data$df_prediction,
-              ~ ..1 %>%
-                summarize(
-                  conf.low = quantile(.data$estimate, lower_centile, na.rm = TRUE),
-                  conf.high = quantile(.data$estimate, upper_centile, na.rm = TRUE)
-                )
-            )
-        ) %>%
-        select(-.data$df_prediction) %>%
-        unnest(.data$df_ci_results) %>%
-        # Merge in main results
-        left_join(
-          df_results_map,
-          by = "outcome"
-        )
+  # For centile method
+  if (method == "boot_centile") {
 
-    } else if(method == "mean") {
+    # Calculate 95% CI using centiles
+    df_propdiff_ci <-
+      df_bs_map %>%
+      mutate(
+        ci =
+          map(
+            .data$bs_pred,
+            ~ ..1 %>%
+              summarize(
+                conf.low_2 = quantile(.data$estimate_2, lower_centile, na.rm = TRUE),
+                conf.high_2 = quantile(.data$estimate_2, upper_centile, na.rm = TRUE)
+              )
+          )
+      ) %>%
+      select(-.data$bs_pred)
 
-      # Calculate standard deviation around mean differences
-      df_results <-
-        df_bs_map %>%
-        mutate(
-          se =
-            purrr::map_dbl(
-              .data$df_prediction,
-              ~ ..1 %>%
-                summarize(se = sd(.data$estimate, na.rm = TRUE)) %>%
-                pull(se)
-            )
-        ) %>%
-        select(-.data$df_prediction) %>%
-        # Merge in main results
-        left_join(
-          df_results_map,
-          by = "outcome"
-        ) %>%
-        mutate(
-          conf.low = .data$estimate + stats::qnorm(lower_centile)*.data$se,
-          conf.high = .data$estimate + stats::qnorm(upper_centile)*.data$se
-        ) %>%
-        select(-.data$se)
-    }
+    # Merge with main results
+    df_propdiff_final <-
+      left_join(
+        df_propdiff_est,
+        df_propdiff_ci,
+        by = c("x", "y")
+      ) %>%
+      mutate(
+        estci = map2(.data$est, .data$ci, ~ bind_cols(..1, ..2))
+      ) %>%
+      select(-.data$est, -.data$ci)
 
+    # For mean/SD method
+  } else if (method == "boot_sd") {
+
+    # Calculate standard deviation around mean differences
+    df_propdiff_ci <-
+      df_bs_map %>%
+      mutate(
+        se =
+          map_dbl(
+            .data$bs_pred,
+            ~ ..1 %>%
+              summarize(se = sd(.data$estimate_2, na.rm = TRUE)) %>%
+              pull(se)
+          )
+      ) %>%
+      select(-.data$bs_pred)
+
+    # Merge with main results
+    df_propdiff_final <-
+      left_join(
+        df_propdiff_est,
+        df_propdiff_ci,
+        by = c("x", "y")
+      ) %>%
+      mutate(
+        estci =
+          map2(
+            .data$est, .data$se,
+            ~ ..1 %>%
+              mutate(
+                conf.low_2 = .data$estimate_2 + stats::qnorm(lower_centile) * ..2,
+                conf.high_2 = .data$estimate_2 + stats::qnorm(upper_centile) * ..2
+              )
+          )
+      ) %>%
+      select(-.data$est, -.data$se)
   }
 
   # Standardize format of results
-  df_results <-
-    df_results %>%
-    dplyr::transmute(
-      variable = .data$outcome,
-      estimate = .data$estimate*100,
-      conf.low = .data$conf.low*100,
-      conf.high = .data$conf.high*100,
-      ci = as.character(glue("{estimate_fun(.data$conf.low)}%, {estimate_fun(.data$conf.high)}%")),
-      .data$p.value
+  df_propdiff_fmt <-
+    df_propdiff_final %>%
+    mutate(
+      estci =
+        map(
+          .data$estci,
+          ~ ..1 %>%
+            mutate_at(
+              vars(.data$estimate_2, .data$conf.low_2, .data$conf.high_2),
+              ~ . * 100
+            ) %>%
+            mutate(
+              ci = as.character(glue("{estimate_fun(.data$conf.low_2)}%, {estimate_fun(.data$conf.high_2)}%"))
+            )
+        )
     )
+
+  # Stack tbl_summary tables
+  tbl_results <-
+    tbl_stack(df_propdiff_fmt$tbl_rates)
+
+  # Unnest difference and 95% CI
+  df_estci <-
+    df_propdiff_fmt %>%
+    select(.data$estci) %>%
+    unnest(cols = c(.data$estci)) %>%
+    select(.data$estimate_2, .data$ci, .data$conf.low_2, .data$conf.high_2, .data$p.value_2)
 
   # Add results to table body
   tbl_results$table_body <-
-    left_join(
+    bind_cols(
       tbl_results$table_body,
-      df_results,
-      by = "variable"
-    )
+      df_estci
+    ) %>%
+    rename(stat_1_1 = .data$stat_1, stat_2_1 = .data$stat_2)
 
   # Update table header
-  if (method %in% c("mean", "centile")) estlabel <- "**Adjusted Difference**" else estlabel <- "**Difference**"
+  if (method == "exact") estlabel <- "**Difference**" else estlabel <- "**Adjusted Difference**"
 
-  # Format estimate function
-
+  # Update header
   tbl_results$table_header <-
-    tibble(column = names(tbl_results$table_body)) %>%
-    left_join(tbl_results$table_header, by = "column") %>%
+    left_join(
+      tibble(column = names(tbl_results$table_body)),
+      tbl_results$table_header %>%
+        mutate(
+          column =
+            dplyr::case_when(
+              column == "stat_1" ~ "stat_1_1",
+              column == "stat_2" ~ "stat_2_1",
+              TRUE ~ column
+            )
+        ),
+      by = "column"
+    ) %>%
     gtsummary:::table_header_fill_missing() %>%
     gtsummary:::table_header_fmt_fun(
-      estimate = function(x) as.character(glue("{estimate_fun(x)}%")),
-      p.value = pvalue_fun
+      estimate_2 = function(x) as.character(glue("{estimate_fun(x)}%")),
+      p.value_2 = pvalue_fun
     )
 
   tbl_results <-
     gtsummary:::modify_header_internal(
       tbl_results,
-      estimate = estlabel,
+      estimate_2 = estlabel,
       ci = "**95% CI**",
-      p.value = "**p-value**"
+      p.value_2 = "**p-value**"
     )
 
   # Update gt calls
@@ -361,5 +410,4 @@ tbl_propdiff <- function(data, outcome, predictor, covariates = NULL,
   class(tbl_results) <- c("tbl_propdiff", "gtsummary")
 
   return(tbl_results)
-
 }
