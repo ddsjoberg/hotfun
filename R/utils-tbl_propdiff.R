@@ -19,6 +19,7 @@ calculate_exact <- function(data, x, y, conf.level = 0.95) {
     select(-.data$pred0, -.data$pred1)
 
   return(exacttest)
+
 }
 
 # Function to create models and do predictions
@@ -27,10 +28,8 @@ create_model_pred <- function(data, y, x, covariates, pvalue = FALSE) {
 
   # Save out formula for model
   model_formula <-
-    glue(
-      "{y} ~ {x} + ",
-      glue_collapse(covariates, sep = " + ")
-    ) %>%
+    glue("{y} ~ {x} + ",
+         glue_collapse(covariates, sep = " + ")) %>%
     as.character()
 
   # Create model (reverse factor levels for consistency with tbl_ancova)
@@ -84,21 +83,17 @@ create_model_pred <- function(data, y, x, covariates, pvalue = FALSE) {
     mutate(estimate_2 = (.data$mv_pred1 - .data$mv_pred2))
 
   # If pvalue = TRUE
-  if (pvalue == TRUE) {
+  if(pvalue == TRUE) {
 
     # Add pvalue from adjusted model
 
     tidy_model_obj <- broom::tidy(model_obj)
-    # TODO: Since names are different, is it okay to just use 2nd row?
     df_prediction <-
       df_prediction %>%
       mutate(p.value_2 = tidy_model_obj$p.value[2])
-    # df_prediction <-
-    # df_prediction %>%
-    # mutate(p.value_2 = tidy_model_obj[tidy_model_obj$term == tidyselect::all_of(x), ][["p.value"]])
-    # tidy_model_obj[tidy_model_obj$term == tidyselect::all_of(x), ]
   }
 
   # Return predicted probabilities
   return(df_prediction)
+
 }

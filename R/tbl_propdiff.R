@@ -1,7 +1,6 @@
 #' Calculating unadjusted and adjusted differences in rates
 #'
-#' This function calculates the unadjusted or adjusted difference in rates with
-#' confidence interval.
+#' This function calculates the unadjusted or adjusted difference in rates with confidence interval.
 #'
 #' @param data A data frame
 #' @param y vector of binary outcome variables. Outcome variables can be
@@ -59,7 +58,7 @@
 #'   method = "boot_sd",
 #'   bootstrapn = 250
 #' )
-#' #
+#'
 tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
                          method = c("exact", "boot_sd", "boot_centile"),
                          conf.level = 0.95,
@@ -69,7 +68,7 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
 
   ### CHECKS------------------
 
-  # browser()
+  #browser()
 
   # Matching arguments for method
   method <- match.arg(method)
@@ -112,20 +111,18 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
   }
 
   # Confirm that conf.level is not < 0 or > 1
-  if (conf.level < 0 | conf.level > 1) {
-    stop("The confidence level specified in the `conf.level=` option must be between 0 and 1.",
-      call. = FALSE
-    )
+  if (conflevel < 0 | conflevel > 1) {
+    stop("The confidence level specified in the `conflevel=` option must be between 0 and 1.",
+         call. = FALSE)
   }
 
-  # TODO: Should we print a message that "exact" method used if no other
-  # method specified, even if covariates are given in formula?
+  # Matching arguments for method
+  method <- match.arg(method)
 
   # Checking estimate_fun and pvalue_fun are functions
   if (!purrr::every(list(estimate_fun, pvalue_fun), is.function)) {
     stop("Inputs `estimate_fun` and `pvalue_fun` must be functions.",
-      call. = FALSE
-    )
+         call. = FALSE)
   }
 
   ### DATAFRAME FOR ALL MODELS--------------------------------------
@@ -214,8 +211,7 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
               x = ..1,
               y = ..2,
               covariates = covariates,
-              pvalue = TRUE
-            )
+              pvalue = TRUE)
           )
       )
 
@@ -412,4 +408,5 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
   class(tbl_results) <- c("tbl_propdiff", "gtsummary")
 
   return(tbl_results)
+
 }
