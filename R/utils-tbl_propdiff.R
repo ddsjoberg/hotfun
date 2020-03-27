@@ -1,7 +1,6 @@
 
 # Calculate unadjusted proportions and difference in proportions
 calculate_exact <- function(data, x, y, conf.level = 0.95) {
-
   exacttest <- stats::prop.test(table(data[[x]], data[[y]]),
     conf.level = conf.level, correct = FALSE
   )
@@ -13,14 +12,13 @@ calculate_exact <- function(data, x, y, conf.level = 0.95) {
       estimate_2 = (.data$pred1 - .data$pred0),
       # Confidence intervals need to be flipped to match difference
       # Difference calculated to match tbl_ancova
-      conf.low_2 = exacttest$conf.int[[2]]*-1,
-      conf.high_2 = exacttest$conf.int[[1]]*-1,
+      conf.low_2 = exacttest$conf.int[[2]] * -1,
+      conf.high_2 = exacttest$conf.int[[1]] * -1,
       p.value_2 = exacttest$p.value
     ) %>%
     select(-.data$pred0, -.data$pred1)
 
   return(exacttest)
-
 }
 
 # Function to create models and do predictions
@@ -95,12 +93,12 @@ create_model_pred <- function(data, y, x, covariates, pvalue = FALSE) {
     df_prediction <-
       df_prediction %>%
       mutate(p.value_2 = tidy_model_obj$p.value[2])
-    #df_prediction <-
-     # df_prediction %>%
-      #mutate(p.value_2 = tidy_model_obj[tidy_model_obj$term == tidyselect::all_of(x), ][["p.value"]])
-    #tidy_model_obj[tidy_model_obj$term == tidyselect::all_of(x), ]
+    # df_prediction <-
+    # df_prediction %>%
+    # mutate(p.value_2 = tidy_model_obj[tidy_model_obj$term == tidyselect::all_of(x), ][["p.value"]])
+    # tidy_model_obj[tidy_model_obj$term == tidyselect::all_of(x), ]
   }
 
   # Return predicted probabilities
- return(df_prediction)
+  return(df_prediction)
 }

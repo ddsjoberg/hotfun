@@ -28,7 +28,6 @@ test_that("No errors/warnings with standard use", {
     ),
     NA
   )
-
 })
 
 test_that("Error if variables do not exist or temporary variables do exist", {
@@ -41,7 +40,6 @@ test_that("Error if variables do not exist or temporary variables do exist", {
     tbl_propdiff(trial, y = "response_new", x = "trt"),
     "*"
   )
-
 })
 
 test_that("Error if `conflevel` outside of 0-1 range", {
@@ -114,7 +112,6 @@ test_that("x, y and covariates can be character, numeric or factor", {
     ),
     NA
   )
-
 })
 
 test_that("No errors if outcome variable does not have a label", {

@@ -59,8 +59,7 @@
 #'   method = "boot_sd",
 #'   bootstrapn = 250
 #' )
-#
-
+#' #
 tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
                          method = c("exact", "boot_sd", "boot_centile"),
                          conf.level = 0.95,
@@ -70,7 +69,7 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
 
   ### CHECKS------------------
 
-  #browser()
+  # browser()
 
   # Matching arguments for method
   method <- match.arg(method)
@@ -96,19 +95,26 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
   # checking the x variable has two levels
   if (data[[x]] %>% stats::na.omit() %>% unique() %>% length() != 2) {
     stop(glue::glue("The stratifying variable, '{x}', must have two levels."),
-         call. = FALSE)
+      call. = FALSE
+    )
   }
 
   # checking the y variables have two levels
-  if (purrr::every(y, function(x) data[[x]] %>% stats::na.omit() %>% unique() %>% length() == 2) == FALSE) {
+  if (purrr::every(y, function(x) {
+    data[[x]] %>%
+      stats::na.omit() %>%
+      unique() %>%
+      length() == 2
+  }) == FALSE) {
     stop(glue::glue("All outcome variables, '{y}', must have two levels."),
-         call. = FALSE)
+      call. = FALSE
+    )
   }
 
   # Confirm that conf.level is not < 0 or > 1
   if (conf.level < 0 | conf.level > 1) {
     stop("The confidence level specified in the `conf.level=` option must be between 0 and 1.",
-         call. = FALSE
+      call. = FALSE
     )
   }
 
@@ -118,7 +124,7 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
   # Checking estimate_fun and pvalue_fun are functions
   if (!purrr::every(list(estimate_fun, pvalue_fun), is.function)) {
     stop("Inputs `estimate_fun` and `pvalue_fun` must be functions.",
-         call. = FALSE
+      call. = FALSE
     )
   }
 
@@ -145,21 +151,24 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
         map_chr(
           y,
           ~ ifelse(!is.null(attr(data[[..1]], "label")),
-                   attr(data[[..1]], "label"),
-                   y)
-          ),
+            attr(data[[..1]], "label"),
+            y
+          )
+        ),
       # Save out table of unadjusted rates
       tbl_rates =
         pmap(
           list(x, y, outcome_label),
           function(x, y, z) {
-              data %>%
-            select(tidyselect::all_of(x), tidyselect::all_of(y)) %>%
-            tbl_summary(by = .data[[x]], missing = "no",
-                        label = list(x = glue("{z}")),
-                        type = list(all_categorical() ~ "dichotomous")) %>%
-            add_n() %>%
-            modify_header(stat_by = gt::md("**{level}**"))
+            data %>%
+              select(tidyselect::all_of(x), tidyselect::all_of(y)) %>%
+              tbl_summary(
+                by = .data[[x]], missing = "no",
+                label = list(x = glue("{z}")),
+                type = list(all_categorical() ~ "dichotomous")
+              ) %>%
+              add_n() %>%
+              modify_header(stat_by = gt::md("**{level}**"))
           }
         )
     )
@@ -171,7 +180,6 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
 
   # For "exact" method
   if (method == "exact") {
-
     df_propdiff_final <-
       df_propdiff_summary %>%
       mutate(
@@ -326,7 +334,6 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
           )
       ) %>%
       select(-est, -se)
-
   }
 
   # Standardize format of results
@@ -405,5 +412,4 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
   class(tbl_results) <- c("tbl_propdiff", "gtsummary")
 
   return(tbl_results)
-
 }
