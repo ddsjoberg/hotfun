@@ -42,7 +42,7 @@ test_that("Error if variables do not exist or temporary variables do exist", {
   )
 })
 
-test_that("Error if `conflevel` outside of 0-1 range", {
+test_that("Error if `conf.level` outside of 0-1 range", {
   expect_error(
     tbl_propdiff(trial, y = "response", x = "trt", conf.level = 95),
     "*"

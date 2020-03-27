@@ -76,7 +76,7 @@ create_model_pred <- function(data, y, x, covariates, pvalue = FALSE) {
     mutate(reshapen = 1:dplyr::n()) %>%
     select(-tidyselect::all_of(x)) %>%
     tidyr::pivot_wider(
-      names_from = reshapen,
+      names_from = .data$reshapen,
       names_prefix = "mv_pred",
       values_from = "pred"
     ) %>%

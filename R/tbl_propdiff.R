@@ -73,7 +73,7 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
   method <- match.arg(method)
 
   # Save out list of covariates from formula
-  rhs <- map(stringr::str_split(rlang::f_text(as.formula(glue(formula))), pattern = "\\+"), ~ stringr::str_trim(.x)) %>% pluck(1)
+  rhs <- map(stringr::str_split(rlang::f_text(stats::as.formula(glue(formula))), pattern = "\\+"), ~ stringr::str_trim(.x)) %>% pluck(1)
   covariates <- setdiff(rhs, x)
 
   # Confirm that x and y variables and covariates exist
@@ -110,8 +110,8 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
   }
 
   # Confirm that conf.level is not < 0 or > 1
-  if (conflevel < 0 | conflevel > 1) {
-    stop("The confidence level specified in the `conflevel=` option must be between 0 and 1.",
+  if (conf.level < 0 | conf.level > 1) {
+    stop("The confidence level specified in the `conf.level=` option must be between 0 and 1.",
       call. = FALSE
     )
   }
@@ -156,7 +156,7 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
       # Save out table of unadjusted rates
       tbl_rates =
         pmap(
-          list(x, y, outcome_label),
+          list(.data$x, .data$y, .data$outcome_label),
           function(x, y, z) {
             data %>%
               select(tidyselect::all_of(x), tidyselect::all_of(y)) %>%
@@ -222,7 +222,7 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
       df_propdiff_est %>%
       select(.data$x, .data$y) %>%
       mutate(freq = bootstrapn) %>%
-      tidyr::uncount(freq) %>%
+      tidyr::uncount(.data$freq) %>%
       mutate(
         nrow =
           pmap_int(
@@ -239,7 +239,7 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
         # Bootstrapping adjusted difference
         bs_pred =
           pmap(
-            list(x, y, bs_assignment),
+            list(.data$x, .data$y, .data$bs_assignment),
             ~ create_model_pred(
               data = data %>%
                 select(tidyselect::all_of(..1), tidyselect::all_of(..2), tidyselect::all_of(covariates)) %>%
@@ -292,9 +292,9 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
         by = c("x", "y")
       ) %>%
       mutate(
-        estci = map2(est, ci, ~ bind_cols(..1, ..2))
+        estci = map2(.data$est, .data$ci, ~ bind_cols(..1, ..2))
       ) %>%
-      select(-est, -ci)
+      select(-.data$est, -.data$ci)
 
     # For mean/SD method
   } else if (method == "boot_sd") {
@@ -323,7 +323,7 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
       mutate(
         estci =
           map2(
-            est, se,
+            .data$est, .data$se,
             ~ ..1 %>%
               mutate(
                 conf.low_2 = .data$estimate_2 + stats::qnorm(lower_centile) * ..2,
@@ -331,7 +331,7 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
               )
           )
       ) %>%
-      select(-est, -se)
+      select(-.data$est, -.data$se)
   }
 
   # Standardize format of results
@@ -340,7 +340,7 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
     mutate(
       estci =
         map(
-          estci,
+          .data$estci,
           ~ ..1 %>%
             mutate_at(
               vars(.data$estimate_2, .data$conf.low_2, .data$conf.high_2),
@@ -359,9 +359,9 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
   # Unnest difference and 95% CI
   df_estci <-
     df_propdiff_fmt %>%
-    select(estci) %>%
-    unnest(cols = c(estci)) %>%
-    select(estimate_2, ci, conf.low_2, conf.high_2, p.value_2)
+    select(.data$estci) %>%
+    unnest(cols = c(.data$estci)) %>%
+    select(.data$estimate_2, .data$ci, .data$conf.low_2, .data$conf.high_2, .data$p.value_2)
 
   # Add results to table body
   tbl_results$table_body <-
@@ -369,7 +369,7 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
       tbl_results$table_body,
       df_estci
     ) %>%
-    rename(stat_1_1 = stat_1, stat_2_1 = stat_2)
+    rename(stat_1_1 = .data$stat_1, stat_2_1 = .data$stat_2)
 
   # Update table header
   if (method == "exact") estlabel <- "**Difference**" else estlabel <- "**Adjusted Difference**"

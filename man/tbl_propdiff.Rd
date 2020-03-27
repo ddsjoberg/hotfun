@@ -50,8 +50,7 @@ for "boot_centile" and 200 for "boot_sd"}
 A \code{tbl_propdiff} object
 }
 \description{
-This function calculates the unadjusted or adjusted difference in rates with
-confidence interval.
+This function calculates the unadjusted or adjusted difference in rates with confidence interval.
 }
 \section{Methods}{
 
