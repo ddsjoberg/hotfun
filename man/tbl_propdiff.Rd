@@ -6,57 +6,84 @@
 \usage{
 tbl_propdiff(
   data,
-  outcome,
-  predictor,
-  covariates = NULL,
-  method = c("centile", "mean"),
-  conflevel = 0.95,
-  rev = FALSE,
-  bootstrapn = ifelse(method == "centiles", 2000, 200),
-  estimate_fun = function(x) style_sigfig(x),
-  pvalue_fun = function(x) style_pvalue(x)
+  y,
+  x,
+  formula = "{y} ~ {x}",
+  method = c("exact", "boot_sd", "boot_centile"),
+  conf.level = 0.95,
+  bootstrapn = ifelse(method == "boot_centile", 2000, 200),
+  estimate_fun = style_sigfig,
+  pvalue_fun = style_pvalue
 )
 }
 \arguments{
 \item{data}{A data frame}
 
-\item{outcome}{A vector of outcome variable names. Outcome variables can be numeric, character or factor, but must have two and only two non-missing levels}
+\item{y}{vector of binary outcome variables. Outcome variables can be
+numeric, character or factor, but must have two and only two non-missing levels}
 
-\item{predictor}{The name of the predictor (stratifying) variable. This can be numeric, character or factor, but must have two and only two non-missing levels}
+\item{x}{string indicating the binary stratifying variable. The stratifying
+variable can be numeric, character or factor, but must have two and only two
+non-missing levels}
 
-\item{covariates}{A vector of variable names that the difference in rates will be adjusted for. The p-value displayed will be from a multivariable logistic regression model containing these covariates. The default option is \code{NULL} which calculates an unadjusted difference in rates.}
+\item{formula}{By default, "{y} ~ {x}". To include covariates for an adjusted
+risk difference, add covariate names to the formula, e.g. "{y} ~ {x} + age"}
 
-\item{method}{The method for calculating confidence intervals around the adjusted difference in rates. The 'centile' option is the default and uses 2000 bootstrap resamples by default and calculates the confidence interval using centiles (by default, 2.5th and 97.5th centiles for a 95\% confidence interval). The 'mean' option can also be selected, which uses a default 200 bootstrap resamples and uses the standard deviation for the mean adjusted difference across all resamples to calculate the confidence interval.}
+\item{method}{The method for calculating confidence intervals around the
+difference in rates. The options are "exact", for an unadjusted difference
+in rates, or "boot_centile" or "boot_sd" for an adjusted difference in rates.
+The default method is "exact".}
 
-\item{conflevel}{Confidence level of the returned confidence interval. Must be a single number between 0 and 1. The default is a 95\% confidence interval.}
+\item{conf.level}{Confidence level of the returned confidence interval.
+Must be a single number between 0 and 1. The default is a 95\% confidence interval.}
 
-\item{rev}{By default, the rates and difference in rates are presented as group 1, group 2, (group 1 - group 2). To reverse the order of the columns and how the difference is calculated, set this option to \code{TRUE}}
+\item{bootstrapn}{The number of bootstrap resamples to use. The default is 2000
+for "boot_centile" and 200 for "boot_sd"}
 
-\item{bootstrapn}{The number of bootstrap resamples to use. The default is 2000 when \code{method = "centile"} and the default is 200 when \code{method = "mean"}}
+\item{estimate_fun}{Function to round and format estimates. By default
+\code{style_sigfig}, but can take any formatting function}
 
-\item{estimate_fun}{Function to round and format estimates. By default \code{style_sigfig}, but can take any formatting function}
-
-\item{pvalue_fun}{Function to round and format p-value. By default \code{style_pvalue}, but can take any formatting function}
+\item{pvalue_fun}{Function to round and format p-value. By default
+\code{style_pvalue}, but can take any formatting function}
 }
 \value{
-A formatted \code{gt} table with the unadjusted rate in each group, and the difference in rates, confidence interval and p-value for the comparison (unadjusted by default, adjusted if \code{covariates} option specified)
+A \code{tbl_propdiff} object
 }
 \description{
-This function calculates the unadjusted or adjusted difference in rates with confidence interval.
+This function calculates the unadjusted or adjusted difference in rates with
+confidence interval.
 }
+\section{Methods}{
+
+
+The \verb{exact`` option gives the exact confidence interval for the unadjusted difference in proportions as calculated by }prop.test`.
+
+The \code{boot_centile} option calculates the adjusted difference between groups
+in all bootstrap samples (the default for this method is 2000 resamples)
+and generates the confidence intervals from the distribution of these
+differences. For the default, a 95\% confidence interval, the 2.5 and 97.5
+centiles are used.
+
+The \code{boot_sd} option calculates the adjusted difference between groups
+in all bootstrap samples (the default for this method is 200 resamples).
+The mean and standard deviation of the adjusted difference across all
+resamples are calculated. The standard deviation is then used as the
+standard error to calculate the confidence interval based on the true adjusted difference.
+}
+
 \examples{
 tbl_propdiff(
-data = trial,
-outcome = "response",
-predictor = "trt"
+  data = trial,
+  y = "response",
+  x = "trt"
 )
 
 tbl_propdiff(
-data = trial,
-outcome = "response",
-predictor = "trt",
-covariates = c("age", "stage"),
-method = "mean",
-bootstrapn = 250
+  data = trial,
+  y = "response",
+  x = "trt",
+  formula = "{y} ~ {x} + age + stage",
+  method = "boot_sd",
+  bootstrapn = 250
 )
 }

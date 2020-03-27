@@ -42,16 +42,16 @@ closest to 3 months within a defined window.
 }
 \examples{
 ggplot2::economics_long \%>\%
-dplyr::group_by(variable) \%>\%
-dplyr::mutate(min_date = min(date)) \%>\%
-dplyr::ungroup() \%>\%
-assign_timepoint(
-  id = "variable",
-  ref_date = "min_date",
-  measure_date = "date",
-  timepoints = c(6, 12, 24),
-  windows = list(c(-2, 2), c(-2, 2), c(-2, 2)),
-  time_units = "months"
-) \%>\%
-dplyr::filter(!is.na(timepoint))
+  dplyr::group_by(variable) \%>\%
+  dplyr::mutate(min_date = min(date)) \%>\%
+  dplyr::ungroup() \%>\%
+  assign_timepoint(
+    id = "variable",
+    ref_date = "min_date",
+    measure_date = "date",
+    timepoints = c(6, 12, 24),
+    windows = list(c(-2, 2), c(-2, 2), c(-2, 2)),
+    time_units = "months"
+  ) \%>\%
+  dplyr::filter(!is.na(timepoint))
 }
