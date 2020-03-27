@@ -19,7 +19,6 @@ calculate_exact <- function(data, x, y, conf.level = 0.95) {
     select(-.data$pred0, -.data$pred1)
 
   return(exacttest)
-
 }
 
 # Function to create models and do predictions
@@ -28,8 +27,10 @@ create_model_pred <- function(data, y, x, covariates, pvalue = FALSE) {
 
   # Save out formula for model
   model_formula <-
-    glue("{y} ~ {x} + ",
-         glue_collapse(covariates, sep = " + ")) %>%
+    glue(
+      "{y} ~ {x} + ",
+      glue_collapse(covariates, sep = " + ")
+    ) %>%
     as.character()
 
   # Create model (reverse factor levels for consistency with tbl_ancova)
@@ -83,7 +84,7 @@ create_model_pred <- function(data, y, x, covariates, pvalue = FALSE) {
     mutate(estimate_2 = (.data$mv_pred1 - .data$mv_pred2))
 
   # If pvalue = TRUE
-  if(pvalue == TRUE) {
+  if (pvalue == TRUE) {
 
     # Add pvalue from adjusted model
 
@@ -95,5 +96,4 @@ create_model_pred <- function(data, y, x, covariates, pvalue = FALSE) {
 
   # Return predicted probabilities
   return(df_prediction)
-
 }
