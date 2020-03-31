@@ -71,6 +71,7 @@ standard error to calculate the confidence interval based on the true adjusted d
 }
 
 \examples{
+library(gtsummary)
 tbl_propdiff(
   data = trial,
   y = "response",

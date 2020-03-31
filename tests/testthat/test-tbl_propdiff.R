@@ -1,5 +1,6 @@
 context("tbl_propdiff")
 
+library(gtsummary)
 set.seed(6038503)
 
 test_that("No errors/warnings with standard use", {

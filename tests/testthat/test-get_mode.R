@@ -1,5 +1,7 @@
 context("get_mode")
 
+library(gtsummary)
+
 test_that("get_mode function works on numeric, character or factor", {
   expect_error(
     get_mode(trial$age),

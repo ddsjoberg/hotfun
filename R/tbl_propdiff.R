@@ -44,6 +44,7 @@
 #' standard error to calculate the confidence interval based on the true adjusted difference.
 #'
 #' @examples
+#' library(gtsummary)
 #' tbl_propdiff(
 #'   data = trial,
 #'   y = "response",
@@ -116,9 +117,6 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
     )
   }
 
-  # Matching arguments for method
-  method <- match.arg(method)
-
   # Checking estimate_fun and pvalue_fun are functions
   if (!purrr::every(list(estimate_fun, pvalue_fun), is.function)) {
     stop("Inputs `estimate_fun` and `pvalue_fun` must be functions.",
@@ -166,13 +164,10 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
                 type = list(all_categorical() ~ "dichotomous")
               ) %>%
               add_n() %>%
-              modify_header(stat_by = gt::md("**{level}**"))
+              modify_header(stat_by = "**{level}**")
           }
         )
     )
-  # TODO: Bring up with Dan that tbl_ancova is giving error for "response" when it shouldn't
-  # because 3rd level is missing
-  # TODO: What about tbl_summary warnings?
 
   ### CALCULATE DIFFERENCES-------------------------
 
@@ -187,7 +182,7 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
             ~ calculate_exact(
               data = data %>%
                 select(tidyselect::all_of(..1), tidyselect::all_of(..2)) %>%
-                filter(complete.cases(.) == TRUE),
+                filter(stats::complete.cases(.) == TRUE),
               x = ..1,
               y = ..2,
               conf.level = conf.level
@@ -208,7 +203,7 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
             ~ create_model_pred(
               data = data %>%
                 select(tidyselect::all_of(..1), tidyselect::all_of(..2), tidyselect::all_of(covariates)) %>%
-                filter(complete.cases(.) == TRUE),
+                filter(stats::complete.cases(.) == TRUE),
               x = ..1,
               y = ..2,
               covariates = covariates,
@@ -243,7 +238,7 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
             ~ create_model_pred(
               data = data %>%
                 select(tidyselect::all_of(..1), tidyselect::all_of(..2), tidyselect::all_of(covariates)) %>%
-                filter(complete.cases(.) == TRUE) %>%
+                filter(stats::complete.cases(.) == TRUE) %>%
                 slice(..3),
               x = ..1,
               y = ..2,
