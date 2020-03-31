@@ -14,11 +14,7 @@ test_that("No Errors/Warning with standard use", {
 test_that("Works for a single vector", {
   expect_error(
     trial %>% count_map(c("stage", "grade")),
-<<<<<<< HEAD
-    NA
-=======
   NA
->>>>>>> 90dd68eb44a824550d1a697992f6570ccf41cee9
   )
 })
 
