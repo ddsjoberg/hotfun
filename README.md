@@ -3,12 +3,10 @@
 
 <!-- badges: start -->
 
-[![Travis build
-status](https://travis-ci.org/ddsjoberg/hotfun.svg?branch=master)](https://travis-ci.org/ddsjoberg/hotfun)
-[![AppVeyor build
-status](https://ci.appveyor.com/api/projects/status/github/ddsjoberg/hotfun?branch=master&svg=true)](https://ci.appveyor.com/project/ddsjoberg/hotfun)
 [![Codecov test
 coverage](https://codecov.io/gh/ddsjoberg/hotfun/branch/master/graph/badge.svg)](https://codecov.io/gh/ddsjoberg/hotfun?branch=master)
+[![R build
+status](https://github.com/ddsjoberg/hotfun/workflows/R-CMD-check/badge.svg)](https://github.com/ddsjoberg/hotfun/actions)
 <!-- badges: end -->
 
 # hotfun
@@ -22,11 +20,11 @@ You can install the released version of hotfun from
 [GitHub](https://github.com/) with:
 
 ``` r
-remotes::install_github("ddsjoberg/hotfun")
+install.packages('hotfun', repos = "http://rspm/MSKREPO/latest")
 ```
 
 and the development version with:
 
 ``` r
-remotes::install_github("ddsjoberg/hotfun", ref = "dev")
+remotes::install_github("ddsjoberg/hotfun")
 ```
