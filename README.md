@@ -20,11 +20,12 @@ You can install the released version of hotfun from
 [GitHub](https://github.com/) with:
 
 ``` r
-install.packages('hotfun', repos = "http://rspm/MSKREPO/latest")
+install.packages("hotfun", repos = "http://rspm/MSKREPO/latest")
 ```
 
 and the development version with:
 
 ``` r
+# install.packages("remotes")
 remotes::install_github("ddsjoberg/hotfun")
 ```
