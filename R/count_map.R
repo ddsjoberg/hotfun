@@ -8,13 +8,12 @@
 #'   mtcars,
 #'   list(c("cyl", "am"), c("gear", "carb"))
 #' )
-
 count_map <- function(data, checks) {
   # checking inputs
   stopifnot(is.data.frame(data))
 
   # if checks is a single vector, wrapping it in list
-  if(rlang::is_bare_character(checks)) checks <- list(checks)
+  if (rlang::is_bare_character(checks)) checks <- list(checks)
 
   # checking all variables are in data
   not_in_data <- unlist(checks) %>% setdiff(names(data))
@@ -54,4 +53,3 @@ count_one <- function(data, vars) {
   # adding line break
   cat("\n")
 }
-

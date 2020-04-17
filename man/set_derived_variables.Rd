@@ -27,6 +27,7 @@ passed data frame.  The function is meant to be used in the pipe.
 trial \%>\%
   set_derived_variables("derived_variables_sjoberg.xlsx")
 }
+
 }
 \author{
 Daniel D. Sjoberg

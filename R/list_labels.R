@@ -5,8 +5,7 @@
 #' @export
 #' @examples
 #' list_labels(trial)
-
 list_labels <- function(data) {
-  map(data, ~attr(.x, "label")) %>%
+  map(data, ~ attr(.x, "label")) %>%
     compact()
 }

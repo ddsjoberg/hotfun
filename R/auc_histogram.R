@@ -11,14 +11,13 @@
 #' runif(10000) %>%
 #'   hist(breaks = 250) %>%
 #'   auc_histogram()
-
-auc_histogram <- function(x){
+auc_histogram <- function(x) {
 
   # calculating mean
-  mu = stats::weighted.mean(x$mids, x$density)
+  mu <- stats::weighted.mean(x$mids, x$density)
 
-  x_length = length(x$count)
-  x_width = x$breaks[2:(x_length + 1)] - x$breaks[1:x_length]
+  x_length <- length(x$count)
+  x_width <- x$breaks[2:(x_length + 1)] - x$breaks[1:x_length]
 
   # calculating sensitivity and specificity
   sens_spec <-
@@ -26,19 +25,18 @@ auc_histogram <- function(x){
       1:x_length,
       function(i) {
         # calculating Sens and Spec using Bayes Rule
-        sens = sum(x$mids[i:x_length] * x$density[i:x_length] * x_width[i:x_length]) / mu
-        spec = ( sum(x$density[1:i] * x_width[1:i]) -
-                   sum(x$mids[1:i] * x$density[1:i] * x_width[1:i]) ) / (1 - mu)
+        sens <- sum(x$mids[i:x_length] * x$density[i:x_length] * x_width[i:x_length]) / mu
+        spec <- (sum(x$density[1:i] * x_width[1:i]) -
+          sum(x$mids[1:i] * x$density[1:i] * x_width[1:i])) / (1 - mu)
         tibble::tibble(x = x$mids[i], sensitivity = sens, specificity = spec)
       }
     )
 
   # calculating the AUC (using the trapezoidal rule)
-  idx = 2:x_length
-  auc = -(sens_spec$specificity[idx-1] - sens_spec$specificity[idx]) %*%
-    (sens_spec$sensitivity[idx] + sens_spec$sensitivity[idx-1]) / 2
+  idx <- 2:x_length
+  auc <- -(sens_spec$specificity[idx - 1] - sens_spec$specificity[idx]) %*%
+    (sens_spec$sensitivity[idx] + sens_spec$sensitivity[idx - 1]) / 2
 
 
   auc %>% as.vector()
 }
-

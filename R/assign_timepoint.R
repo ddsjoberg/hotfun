@@ -18,23 +18,21 @@
 #' @return data frame passed in `data` with additional column `new_var`
 #' @examples
 #' ggplot2::economics_long %>%
-#' dplyr::group_by(variable) %>%
-#' dplyr::mutate(min_date = min(date)) %>%
-#' dplyr::ungroup() %>%
-#' assign_timepoint(
-#'   id = "variable",
-#'   ref_date = "min_date",
-#'   measure_date = "date",
-#'   timepoints = c(6, 12, 24),
-#'   windows = list(c(-2, 2), c(-2, 2), c(-2, 2)),
-#'   time_units = "months"
-#' ) %>%
-#' dplyr::filter(!is.na(timepoint))
-
-
+#'   dplyr::group_by(variable) %>%
+#'   dplyr::mutate(min_date = min(date)) %>%
+#'   dplyr::ungroup() %>%
+#'   assign_timepoint(
+#'     id = "variable",
+#'     ref_date = "min_date",
+#'     measure_date = "date",
+#'     timepoints = c(6, 12, 24),
+#'     windows = list(c(-2, 2), c(-2, 2), c(-2, 2)),
+#'     time_units = "months"
+#'   ) %>%
+#'   dplyr::filter(!is.na(timepoint))
 assign_timepoint <- function(data, id, ref_date, measure_date, timepoints, windows,
-                         time_units = c("days", "weeks", "months", "years"),
-                         new_var = "timepoint") {
+                             time_units = c("days", "weeks", "months", "years"),
+                             new_var = "timepoint") {
   time_units <- match.arg(time_units)
 
   # checking for duplicates within id and ref_date
@@ -63,9 +61,11 @@ assign_timepoint <- function(data, id, ref_date, measure_date, timepoints, windo
       dplyr::arrange(abs(.data$..time_diff.. - timepoints[i])) %>%
       dplyr::mutate(
         ..timepoint.. = dplyr::if_else(
-          between(.data$..time_diff..,
-                  timepoints[i] + windows[[i]][1],
-                  timepoints[i] + windows[[i]][2]) &
+          between(
+            .data$..time_diff..,
+            timepoints[i] + windows[[i]][1],
+            timepoints[i] + windows[[i]][2]
+          ) &
             dplyr::row_number() == 1,
           timepoints[i],
           .data$..timepoint..
