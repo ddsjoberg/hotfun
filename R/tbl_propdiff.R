@@ -57,7 +57,7 @@
 #'   x = "trt",
 #'   formula = "{y} ~ {x} + age + stage",
 #'   method = "boot_sd",
-#'   bootstrapn = 250
+#'   bootstrapn = 25
 #' )
 tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
                          method = c("exact", "boot_sd", "boot_centile"),
@@ -67,9 +67,6 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
                          pvalue_fun = style_pvalue) {
 
   ### CHECKS------------------
-
-  # browser()
-
   # Matching arguments for method
   method <- match.arg(method)
 
@@ -157,14 +154,14 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
           list(.data$x, .data$y, .data$outcome_label),
           function(x, y, z) {
             data %>%
-              select(tidyselect::all_of(x), tidyselect::all_of(y)) %>%
-              tbl_summary(
+              select(all_of(c(x, y))) %>%
+              gtsummary::tbl_summary(
                 by = .data[[x]], missing = "no",
                 label = list(x = glue("{z}")),
                 type = list(all_categorical() ~ "dichotomous")
               ) %>%
-              add_n() %>%
-              modify_header(stat_by = "**{level}**")
+              gtsummary::add_n() %>%
+              gtsummary::modify_header(stat_by = "**{level}**")
           }
         )
     )
@@ -178,14 +175,14 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
       mutate(
         estci =
           pmap(
-            list(x, y),
+            list(.data$x, .data$y),
             ~ calculate_exact(
-              data = data %>%
-                select(tidyselect::all_of(..1), tidyselect::all_of(..2)) %>%
-                filter(stats::complete.cases(.) == TRUE),
+              data = .env$data %>%
+                select(all_of(c(..1, ..2))) %>%
+                tidyr::drop_na(),
               x = ..1,
               y = ..2,
-              conf.level = conf.level
+              conf.level = .env$conf.level
             )
           )
       )
@@ -199,11 +196,11 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
       mutate(
         est =
           pmap(
-            list(x, y),
+            list(.data$x, .data$y),
             ~ create_model_pred(
-              data = data %>%
-                select(tidyselect::all_of(..1), tidyselect::all_of(..2), tidyselect::all_of(covariates)) %>%
-                filter(stats::complete.cases(.) == TRUE),
+              data = .env$data %>%
+                select(all_of(c(..1, ..2, covariates))) %>%
+                tidyr::drop_na(),
               x = ..1,
               y = ..2,
               covariates = covariates,
@@ -221,24 +218,24 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
       mutate(
         nrow =
           pmap_int(
-            list(x, y),
+            list(.data$x, .data$y),
             ~ nrow(
-              data %>%
-                select(tidyselect::all_of(..1), tidyselect::all_of(..2), tidyselect::all_of(covariates))
+              .env$data %>%
+                select(all_of(c(..1, ..2, covariates)))
             )
           ),
         bs_assignment =
           map(
-            nrow, ~ sample.int(..1, replace = TRUE)
+            .data$nrow, ~ sample.int(..1, replace = TRUE)
           ),
         # Bootstrapping adjusted difference
         bs_pred =
           pmap(
             list(.data$x, .data$y, .data$bs_assignment),
             ~ create_model_pred(
-              data = data %>%
-                select(tidyselect::all_of(..1), tidyselect::all_of(..2), tidyselect::all_of(covariates)) %>%
-                filter(stats::complete.cases(.) == TRUE) %>%
+              data = .env$data %>%
+                select(all_of(c(..1, ..2, covariates))) %>%
+                tidyr::drop_na() %>%
                 slice(..3),
               x = ..1,
               y = ..2,
@@ -271,7 +268,7 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
           map(
             .data$bs_pred,
             ~ ..1 %>%
-              summarize(
+              dplyr::summarize(
                 conf.low_2 = quantile(.data$estimate_2, lower_centile, na.rm = TRUE),
                 conf.high_2 = quantile(.data$estimate_2, upper_centile, na.rm = TRUE)
               )
@@ -302,7 +299,7 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
           map_dbl(
             .data$bs_pred,
             ~ ..1 %>%
-              summarize(se = sd(.data$estimate_2, na.rm = TRUE)) %>%
+              dplyr::summarize(se = sd(.data$estimate_2, na.rm = TRUE)) %>%
               pull(se)
           )
       ) %>%
@@ -349,7 +346,7 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
 
   # Stack tbl_summary tables
   tbl_results <-
-    tbl_stack(df_propdiff_fmt$tbl_rates)
+    gtsummary::tbl_stack(df_propdiff_fmt$tbl_rates)
 
   # Unnest difference and 95% CI
   df_estci <-
@@ -384,22 +381,19 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
         ),
       by = "column"
     ) %>%
-    gtsummary:::table_header_fill_missing() %>%
-    gtsummary:::table_header_fmt_fun(
+    table_header_fill_missing() %>%
+    table_header_fmt_fun(
       estimate_2 = function(x) as.character(glue("{estimate_fun(x)}%")),
       p.value_2 = pvalue_fun
     )
 
   tbl_results <-
-    gtsummary:::modify_header_internal(
+    modify_header_internal(
       tbl_results,
       estimate_2 = estlabel,
       ci = "**95% CI**",
       p.value_2 = "**p-value**"
     )
-
-  # Update gt calls
-  tbl_results <- gtsummary:::update_calls_from_table_header(tbl_results)
 
   # Add class
   class(tbl_results) <- c("tbl_propdiff", "gtsummary")

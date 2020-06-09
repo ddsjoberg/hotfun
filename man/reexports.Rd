@@ -18,7 +18,6 @@
 \alias{last_col}
 \alias{one_of}
 \alias{tbl_ancova}
-\alias{tbl_cross}
 \alias{fix_database_error}
 \title{Objects exported from other packages}
 \keyword{internal}
@@ -27,7 +26,7 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{bstfun}{\code{\link[bstfun]{fix_database_error}}, \code{\link[bstfun]{tbl_ancova}}, \code{\link[bstfun]{tbl_cross}}}
+  \item{bstfun}{\code{\link[bstfun]{fix_database_error}}, \code{\link[bstfun]{tbl_ancova}}}
 
   \item{dplyr}{\code{\link[dplyr]{vars}}}
 

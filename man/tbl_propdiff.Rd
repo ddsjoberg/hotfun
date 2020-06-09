@@ -84,6 +84,6 @@ tbl_propdiff(
   x = "trt",
   formula = "{y} ~ {x} + age + stage",
   method = "boot_sd",
-  bootstrapn = 250
+  bootstrapn = 25
 )
 }

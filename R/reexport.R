@@ -66,10 +66,6 @@ tidyselect::one_of
 #' @export
 bstfun::tbl_ancova
 
-#' @importFrom bstfun tbl_cross
-#' @export
-bstfun::tbl_cross
-
 #' @importFrom bstfun fix_database_error
 #' @export
 bstfun::fix_database_error
