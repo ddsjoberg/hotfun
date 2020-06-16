@@ -1,4 +1,4 @@
-# hotfun (development version)
+# hotfun 0.1.6
 
 - Removed {bstfun} dependency 
 
