@@ -125,14 +125,14 @@ closest to 3 months within a defined window.</p>
     </div>
 
     <pre class="usage"><span class='fu'>assign_timepoint</span>(
-  <span class='no'>data</span>,
-  <span class='no'>id</span>,
-  <span class='no'>ref_date</span>,
-  <span class='no'>measure_date</span>,
-  <span class='no'>timepoints</span>,
-  <span class='no'>windows</span>,
-  <span class='kw'>time_units</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"days"</span>, <span class='st'>"weeks"</span>, <span class='st'>"months"</span>, <span class='st'>"years"</span>),
-  <span class='kw'>new_var</span> <span class='kw'>=</span> <span class='st'>"timepoint"</span>
+  <span class='kw'>data</span>,
+  <span class='kw'>id</span>,
+  <span class='kw'>ref_date</span>,
+  <span class='kw'>measure_date</span>,
+  <span class='kw'>timepoints</span>,
+  <span class='kw'>windows</span>,
+  time_units = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"days"</span>, <span class='st'>"weeks"</span>, <span class='st'>"months"</span>, <span class='st'>"years"</span>),
+  new_var = <span class='st'>"timepoint"</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -177,19 +177,19 @@ closest to 3 months within a defined window.</p>
     <p>data frame passed in <code>data</code> with additional column <code>new_var</code></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='no'><a href='https://ggplot2.tidyverse.org/reference/economics.html'>economics_long</a></span> <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>variable</span>) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>min_date</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span>(<span class='no'>date</span>)) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup</a></span>() <span class='kw'>%&gt;%</span>
+    <pre class="examples"><div class='input'><span class='kw'>ggplot2</span>::<span class='kw'><a href='https://ggplot2.tidyverse.org/reference/economics.html'>economics_long</a></span> <span class='op'>%&gt;%</span>
+  <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='kw'>variable</span>) <span class='op'>%&gt;%</span>
+  <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(min_date = <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span>(<span class='kw'>date</span>)) <span class='op'>%&gt;%</span>
+  <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup</a></span>() <span class='op'>%&gt;%</span>
   <span class='fu'>assign_timepoint</span>(
-    <span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>"variable"</span>,
-    <span class='kw'>ref_date</span> <span class='kw'>=</span> <span class='st'>"min_date"</span>,
-    <span class='kw'>measure_date</span> <span class='kw'>=</span> <span class='st'>"date"</span>,
-    <span class='kw'>timepoints</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>6</span>, <span class='fl'>12</span>, <span class='fl'>24</span>),
-    <span class='kw'>windows</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>2</span>, <span class='fl'>2</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>2</span>, <span class='fl'>2</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>2</span>, <span class='fl'>2</span>)),
-    <span class='kw'>time_units</span> <span class='kw'>=</span> <span class='st'>"months"</span>
-  ) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(!<span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span>(<span class='no'>timepoint</span>))</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 15 x 4</span><span>
+    id = <span class='st'>"variable"</span>,
+    ref_date = <span class='st'>"min_date"</span>,
+    measure_date = <span class='st'>"date"</span>,
+    timepoints = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>6</span>, <span class='fl'>12</span>, <span class='fl'>24</span>),
+    windows = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='op'>-</span><span class='fl'>2</span>, <span class='fl'>2</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='op'>-</span><span class='fl'>2</span>, <span class='fl'>2</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='op'>-</span><span class='fl'>2</span>, <span class='fl'>2</span>)),
+    time_units = <span class='st'>"months"</span>
+  ) <span class='op'>%&gt;%</span>
+  <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span>(<span class='kw'>timepoint</span>))</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 15 x 4</span><span>
 #&gt;    variable min_date   date       timepoint
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;date&gt;</span><span>         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span> pce      1967-07-01 1968-01-01         6

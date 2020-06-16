@@ -120,7 +120,7 @@
     <p>This function calculates the most common value(s) of a given set</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_mode</span>(<span class='no'>x</span>, <span class='kw'>moden</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>get_mode</span>(<span class='kw'>x</span>, moden = <span class='fl'>1</span>, quiet = <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -144,8 +144,8 @@
     <p>A vector of length 1 containing the mode</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>get_mode</span>(<span class='no'>trial</span>$<span class='no'>stage</span>)</div><div class='output co'>#&gt; [1] T2
-#&gt; Levels: T1 T2 T3 T4</div><div class='input'><span class='fu'>get_mode</span>(<span class='no'>trial</span>$<span class='no'>trt</span>)</div><div class='output co'>#&gt; [1] "Drug B"</div><div class='input'><span class='fu'>get_mode</span>(<span class='no'>trial</span>$<span class='no'>response</span>)</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'>get_mode</span>(<span class='no'>trial</span>$<span class='no'>grade</span>)</div><div class='output co'>#&gt; <span class='message'>There are multiple modes in this dataset: I II. By default, the first mode 'I' was selected. The selected mode can be changed using the `moden=` option.</span></div><div class='output co'>#&gt; [1] I
+    <pre class="examples"><div class='input'><span class='fu'>get_mode</span>(<span class='kw'>trial</span><span class='op'>$</span><span class='kw'>stage</span>)</div><div class='output co'>#&gt; [1] T2
+#&gt; Levels: T1 T2 T3 T4</div><div class='input'><span class='fu'>get_mode</span>(<span class='kw'>trial</span><span class='op'>$</span><span class='kw'>trt</span>)</div><div class='output co'>#&gt; [1] "Drug B"</div><div class='input'><span class='fu'>get_mode</span>(<span class='kw'>trial</span><span class='op'>$</span><span class='kw'>response</span>)</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'>get_mode</span>(<span class='kw'>trial</span><span class='op'>$</span><span class='kw'>grade</span>)</div><div class='output co'>#&gt; <span class='message'>There are multiple modes in this dataset: I II. By default, the first mode 'I' was selected. The selected mode can be changed using the `moden=` option.</span></div><div class='output co'>#&gt; [1] I
 #&gt; Levels: I II III</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
