@@ -1,0 +1,29 @@
+**What changes are proposed in this pull request?**
+
+
+**If there is an GitHub issue associated with this pull request, please provide link.**
+
+
+--------------------------------------------------------------------------------
+
+Checklist for PR reviewer
+
+- [ ] PR branch has pulled the most recent updates from master branch
+- [ ] NEWS.md has been updated
+- [ ] `usethis::use_spell_check()` runs with no spelling errors in documentation
+- [ ] If a new function was added, function included in `pkgdown.yml`
+- [ ] If a bug was fixed, a unit test was added for the bug check
+- [ ] Run `pkgdown::build_site()`. Check the R console for errors, and review the rendered website.
+- [ ] Code coverage is suitable for any new functions/features. Review coverage with `covr::report()`.
+- [ ] R CMD Check runs without errors, warnings, and notes
+
+If you **are NOT** making a release
+
+- [ ] When the branch is ready to be merged into master, increment the version number using `usethis::use_version(which = "dev")` and merge the PR.
+
+If you **are** making a release
+
+- [ ] When the branch is ready to be merged into master, increment the version number using `usethis::use_version(which = "patch")` and merge the PR.
+- *After the pull request has been merged*
+  - Run `usethis::use_github_release()`
+  - Publish the GitHub release

@@ -13,32 +13,29 @@ License: MIT + file LICENSE
 Depends: 
     R (>= 3.4)
 Imports: 
-    broom (>= 0.5.2),
-    bstfun (>= 0.0.0.9000),
-    dplyr (>= 0.8.0.1),
-    glue (>= 1.3.1),
-    gt (>= 0.2.0.5),
-    gtsummary (>= 1.3.0),
+    broom (>= 0.5.6),
+    dplyr (>= 1.0.0),
+    forcats (>= 0.5.0),
+    glue (>= 1.4.1),
+    gt (>= 0.2.1),
+    gtsummary (>= 1.3.2),
     here (>= 0.1),
     knitr (>= 1.28),
-    labelled (>= 2.1.0),
-    lubridate (>= 1.7.4),
+    labelled (>= 2.4.0),
+    lubridate (>= 1.7.9),
     magrittr (>= 1.5),
-    purrr (>= 0.3.2),
+    purrr (>= 0.3.4),
     readxl (>= 1.3.1),
-    rlang (>= 0.3.4),
+    rlang (>= 0.4.6),
     stringr (>= 1.4.0),
-    tibble (>= 2.1.1),
-    tidyr (>= 0.8.3),
-    tidyselect (>= 1.0.0),
-    forcats
+    tibble (>= 3.0.1),
+    tidyr (>= 1.1.0),
+    tidyselect (>= 1.1.0)
 Suggests: 
-    covr (>= 3.2.1),
-    ggplot2 (>= 3.2.1),
+    covr (>= 3.5.0),
+    ggplot2 (>= 3.3.1),
     spelling (>= 2.1),
-    testthat (>= 2.1.0)
-Remotes:
-    ddsjoberg/bstfun
+    testthat (>= 2.3.2)
 Encoding: UTF-8
 Language: en-US
 LazyData: true

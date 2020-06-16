@@ -60,12 +60,3 @@ tidyselect::last_col
 #' @importFrom tidyselect one_of
 #' @export
 tidyselect::one_of
-
-# bstfun -----------------------------------------------------------------------
-#' @importFrom bstfun tbl_ancova
-#' @export
-bstfun::tbl_ancova
-
-#' @importFrom bstfun fix_database_error
-#' @export
-bstfun::fix_database_error
