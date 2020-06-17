@@ -23,9 +23,11 @@ Takes labels from the Derived Variables excel file and applies them to the
 passed data frame.  The function is meant to be used in the pipe.
 }
 \examples{
+\dontrun{
 \donttest{
 trial \%>\%
   set_derived_variables("derived_variables_sjoberg.xlsx")
+}
 }
 
 }
