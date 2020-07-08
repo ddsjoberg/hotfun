@@ -8,22 +8,21 @@
 #' @param x string indicating the binary stratifying variable. The stratifying
 #' variable can be numeric, character or factor, but must have two and only two
 #' non-missing levels
-#' @param formula By default, "{y} ~ {x}". To include covariates for an adjusted
-#' risk difference, add covariate names to the formula, e.g. "{y} ~ {x} + age"
+#' @param formula By default, `"{y} ~ {x}"`. To include covariates for an adjusted
+#' risk difference, add covariate names to the formula, e.g. `"{y} ~ {x} + age"`
 #' @param method The method for calculating p-values and confidence intervals around the
-#' difference in rates. The options are "chisq" or "exact", for an unadjusted difference
-#' in rates, or "boot_centile" or "boot_sd" for an adjusted difference in rates.
-#' The default method is "chisq".
+#' difference in rates. The options are `"chisq"`, `"exact"`, `"boot_centile"`,
+#' and `"boot_sd"`. See below for details. Default method is `"chisq"`.
 #' @param conf.level Confidence level of the returned confidence interval.
 #' Must be a single number between 0 and 1. The default is a 95% confidence interval.
 #' @param bootstrapn The number of bootstrap resamples to use. The default is 2000
-#' for "boot_centile" and 200 for "boot_sd"
+#' for `"boot_centile"` and 200 for `"boot_sd"`
 #' @param estimate_fun Function to round and format estimates. By default
 #' `style_sigfig`, but can take any formatting function
 #' @param pvalue_fun Function to round and format p-value. By default
 #' `style_pvalue`, but can take any formatting function
 #'
-#' @return A `tbl_propdiff` object
+#' @return A `tbl_propdiff` object, with sub-class `"gtsummary"`
 #' @export
 #'
 #' @section Methods:
