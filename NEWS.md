@@ -1,8 +1,8 @@
-# hotfun (development version)
+# hotfun 0.1.6
 
-- Removing {gt} dependency 
+- Removed {bstfun} dependency 
 
-- Importing `tbl_ancova`, `tbl_cross` and `fix_database_error` functions from {bstfun}
+- Removed {gt} dependency 
 
 # hotfun 0.1.5
 
