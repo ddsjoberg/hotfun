@@ -1,24 +1,40 @@
 
-# Calculate unadjusted proportions and difference in proportions
-calculate_exact <- function(data, x, y, conf.level = 0.95) {
-  exacttest <- stats::prop.test(table(data[[x]], data[[y]]),
-    conf.level = conf.level, correct = FALSE
-  )
+# Calculate unadjusted proportions and difference in proportions - chisq p value (chisq.test and prop.test same)
+calculate_unadjusted <- function(data, method = c("chisq", "exact"), x, y, conf.level = 0.95) {
 
-  exacttest <-
+  # Regardless of method, unadjusted difference gives normal approximation confidence interval
+  chisqtest <- stats::prop.test(table(data[[x]], data[[y]]),
+                                conf.level = conf.level, correct = FALSE)
+
+  df_chisqtest <-
     tibble(
-      pred0 = exacttest$estimate[[1]],
-      pred1 = exacttest$estimate[[2]],
+      pred0 = chisqtest$estimate[[1]],
+      pred1 = chisqtest$estimate[[2]],
       estimate_2 = (.data$pred1 - .data$pred0),
       # Confidence intervals need to be flipped to match difference
       # Difference calculated to match tbl_ancova
-      conf.low_2 = exacttest$conf.int[[2]] * -1,
-      conf.high_2 = exacttest$conf.int[[1]] * -1,
-      p.value_2 = exacttest$p.value
+      conf.low_2 = chisqtest$conf.int[[2]] * -1,
+      conf.high_2 = chisqtest$conf.int[[1]] * -1,
     ) %>%
     select(-.data$pred0, -.data$pred1)
 
-  return(exacttest)
+  # If chisq specified, use p-value from prop.test, otherwise use fisher.test
+  if (method == "chisq") {
+    df_unadjusted <-
+      df_chisqtest %>%
+      mutate(
+        p.value_2 = chisqtest$p.value
+      )
+  } else if (method == "exact") {
+    fishertest <- stats::fisher.test(table(data[[x]], data[[y]]))
+    df_unadjusted <-
+      df_chisqtest %>%
+      mutate(
+        p.value_2 = fishertest$p.value
+      )
+  }
+
+  return(df_unadjusted)
 }
 
 # Function to create models and do predictions

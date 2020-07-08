@@ -15,6 +15,11 @@ test_that("No errors/warnings with standard use", {
   )
 
   expect_error(
+    tbl_propdiff(data = trial, method = "exact", y = "response", x = "trt"),
+    NA
+  )
+
+  expect_error(
     tbl_propdiff(
       data = trial, y = "response", x = "trt", formula = "{y} ~ {x} + age + stage",
       method = "boot_centile", bootstrapn = 50
@@ -73,7 +78,7 @@ test_that("Error if outcome or predictor has more or less than 2 non-missing lev
   )
 })
 
-test_that("x, y and covariates can be character, numeric or factor", {
+test_that("x, y and covariates can be character, numeric, logical or factor", {
   expect_error(
     tbl_propdiff(
       data = trial %>% mutate(response = as.character(response)),
@@ -113,6 +118,32 @@ test_that("x, y and covariates can be character, numeric or factor", {
     ),
     NA
   )
+
+  expect_error(
+    tbl_propdiff(
+      data = trial %>% mutate(response = as.logical(response)),
+      y = "response", x = "trt", method = "exact"
+    ),
+    NA
+  )
+
+  expect_error(
+    tbl_propdiff(
+      data = trial %>% mutate(response = as.logical(response)),
+      y = "response", x = "trt", formula = "{y} ~ {x} + grade",
+      method = "boot_sd", bootstrapn = 50
+    ),
+    NA
+  )
+
+  expect_error(
+    tbl_propdiff(
+      data = trial %>% mutate(trt2 = as.logical(dplyr::if_else(trt == "Drug A", 1, 0))),
+      y = "response", x = "trt2", method = "exact"
+    ),
+    NA
+  )
+
 })
 
 test_that("No errors if outcome variable does not have a label", {
