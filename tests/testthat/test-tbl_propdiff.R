@@ -1,7 +1,15 @@
 context("tbl_propdiff")
 
-library(gtsummary)
 set.seed(6038503)
+
+# results_chisq <- tbl_propdiff(data = trial, y = "response", x = "trt", method = "chisq")
+# results_exact <- tbl_propdiff(data = trial, y = "response", x = "trt", method = "exact")
+# results_boot_sd <- tbl_propdiff(data = trial, y = "response", x = "trt", formula = "{y} ~ {x} + age", method = "boot_sd")
+# results_boot_centile <- tbl_propdiff(data = trial, y = "response", x = "trt", formula = "{y} ~ {x} + age", method = "boot_centile")
+#
+# allresults <-
+#   gtsummary::tbl_stack(list(results_chisq, results_exact, results_boot_sd, results_boot_centile),
+#             group_header = c("Chi-squared", "Exact", "Bootstrap (SD)", "Bootstrap (Centile)"))
 
 test_that("No errors/warnings with standard use", {
   expect_error(
@@ -192,6 +200,24 @@ test_that("`estimate_fun` and `pvalue_fun` are functions", {
     tbl_propdiff(
       data = trial, y = "response", x = "trt",
       pvalue_fun = "style_pvalue"
+    ),
+    "*"
+  )
+})
+
+test_that("Methods 'boot_sd' and 'boot_centile' require covariates", {
+  expect_error(
+    tbl_propdiff(
+      data = trial, y = "response", x = "trt",
+      method = "boot_sd"
+    ),
+    "*"
+  )
+
+  expect_error(
+    tbl_propdiff(
+      data = trial, y = "response", x = "trt",
+      method = "boot_centile"
     ),
     "*"
   )

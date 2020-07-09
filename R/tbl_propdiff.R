@@ -49,7 +49,6 @@
 #' standard error to calculate the confidence interval based on the true adjusted difference.
 #'
 #' @examples
-#' library(gtsummary)
 #' tbl_propdiff(
 #'   data = trial,
 #'   y = "response",
@@ -76,7 +75,7 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
   method <- match.arg(method)
 
   # Save out list of covariates from formula
-  rhs <- map(stringr::str_split(rlang::f_text(stats::as.formula(glue(formula))), pattern = "\\+"), ~ stringr::str_trim(.x)) %>% pluck(1)
+  rhs <- formula %>% stringr::str_replace_all(pattern = "\\{y\\}|\\{x\\}", ".") %>% stats::as.formula() %>% all.vars() %>% setdiff(".")
   covariates <- setdiff(rhs, x)
 
   # Confirm that x and y variables and covariates exist
@@ -87,6 +86,11 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
     ),
     call. = FALSE
     )
+  }
+
+  # If selecting a multivariable method but no covariates
+  if (method %in% c("boot_sd", "boot_centile") & length(covariates) == 0) {
+    stop("If selecting 'boot_sd' or 'boot_centile' as the method, the `formula` option must be specified and must include covariates.", .call = FALSE)
   }
 
   # converting inputs to strings/lists
@@ -401,7 +405,8 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
       estimate_2 = estlabel,
       ci = "**95% CI**",
       p.value_2 = "**p-value**"
-    )
+    ) %>%
+    gtsummary::modify_footnote(ci ~ "CI = Confidence Interval", abbreviation = TRUE)
 
   # Add class
   class(tbl_results) <- c("tbl_propdiff", "gtsummary")
