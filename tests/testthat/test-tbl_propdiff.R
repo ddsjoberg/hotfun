@@ -204,21 +204,3 @@ test_that("`estimate_fun` and `pvalue_fun` are functions", {
     "*"
   )
 })
-
-test_that("Methods 'boot_sd' and 'boot_centile' require covariates", {
-  expect_error(
-    tbl_propdiff(
-      data = trial, y = "response", x = "trt",
-      method = "boot_sd"
-    ),
-    "*"
-  )
-
-  expect_error(
-    tbl_propdiff(
-      data = trial, y = "response", x = "trt",
-      method = "boot_centile"
-    ),
-    "*"
-  )
-})

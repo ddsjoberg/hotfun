@@ -10,11 +10,10 @@ calculate_unadjusted <- function(data, method = c("chisq", "exact"), x, y, conf.
     tibble(
       pred0 = chisqtest$estimate[[1]],
       pred1 = chisqtest$estimate[[2]],
-      estimate_2 = (.data$pred1 - .data$pred0),
-      # Confidence intervals need to be flipped to match difference
       # Difference calculated to match tbl_ancova
-      conf.low_2 = chisqtest$conf.int[[2]] * -1,
-      conf.high_2 = chisqtest$conf.int[[1]] * -1,
+      estimate_2 = (.data$pred0 - .data$pred1),
+      conf.low_2 = chisqtest$conf.int[[1]],
+      conf.high_2 = chisqtest$conf.int[[2]]
     ) %>%
     select(-.data$pred0, -.data$pred1)
 
@@ -41,13 +40,49 @@ calculate_unadjusted <- function(data, method = c("chisq", "exact"), x, y, conf.
 # Have the option to return p-value so we don't have to build model again to get this
 create_model_pred <- function(data, y, x, covariates, pvalue = FALSE) {
 
-  # Save out formula for model
-  model_formula <-
-    glue(
-      "{y} ~ {x} + ",
-      glue_collapse(covariates, sep = " + ")
-    ) %>%
-    as.character()
+  # If univariate
+  if (length(covariates) == 0) {
+
+    # Create model formula
+    model_formula <- as.character(glue("{y} ~ {x}"))
+
+    # New data for predictions - two "x" groups only
+    df_newdata <-
+      data %>% select(tidyselect::all_of(x)) %>% unique()
+
+    # If multivariable
+  } else if (length(covariates) > 0) {
+
+    # Create model formula
+    model_formula <-
+      as.character(
+        glue("{y} ~ {x} + ",
+             glue_collapse(covariates, sep = " + ")
+        )
+      )
+
+    # Create new data using means/modes of selected covariates
+    df_newdata <-
+      bind_cols(
+        data %>%
+          select(tidyselect::all_of(covariates)) %>%
+          summarize_if(is.numeric, mean, na.rm = TRUE),
+        data %>%
+          select(tidyselect::all_of(covariates)) %>%
+          summarize_if(is.factor, get_mode, quiet = TRUE)
+      ) %>%
+      bind_cols(
+        data %>%
+          select(tidyselect::all_of(covariates)) %>%
+          summarize_if(is.character, get_mode, quiet = TRUE)
+      ) %>%
+      mutate(freq = 2) %>%
+      uncount(.data$freq) %>%
+      bind_cols(
+        data %>% select(tidyselect::all_of(x)) %>% unique()
+      )
+
+  }
 
   # Create model (reverse factor levels for consistency with tbl_ancova)
   model_obj <-
@@ -55,27 +90,6 @@ create_model_pred <- function(data, y, x, covariates, pvalue = FALSE) {
       stats::as.formula(model_formula),
       data = data,
       family = "binomial"
-    )
-
-  # Create new data using means/modes of selected covariates
-  df_newdata <-
-    bind_cols(
-      data %>%
-        select(tidyselect::all_of(covariates)) %>%
-        summarize_if(is.numeric, mean, na.rm = TRUE),
-      data %>%
-        select(tidyselect::all_of(covariates)) %>%
-        summarize_if(is.factor, get_mode, quiet = TRUE)
-    ) %>%
-    bind_cols(
-      data %>%
-        select(tidyselect::all_of(covariates)) %>%
-        summarize_if(is.character, get_mode, quiet = TRUE)
-    ) %>%
-    mutate(freq = 2) %>%
-    uncount(.data$freq) %>%
-    bind_cols(
-      data %>% select(tidyselect::all_of(x)) %>% unique()
     )
 
   # Adjusted probabilities and differences
@@ -87,17 +101,17 @@ create_model_pred <- function(data, y, x, covariates, pvalue = FALSE) {
     ) %>%
     # Reshape
     select(tidyselect::all_of(x), tidyselect::all_of(covariates),
-      pred = .data$.fitted
+           pred = .data$.fitted
     ) %>%
     mutate(reshapen = 1:dplyr::n()) %>%
     select(-tidyselect::all_of(x)) %>%
     tidyr::pivot_wider(
       names_from = .data$reshapen,
-      names_prefix = "mv_pred",
+      names_prefix = "bs_pred",
       values_from = "pred"
     ) %>%
     # This matches tbl_ancova
-    mutate(estimate_2 = (.data$mv_pred1 - .data$mv_pred2))
+    mutate(estimate_2 = (.data$bs_pred1 - .data$bs_pred2))
 
   # If pvalue = TRUE
   if (pvalue == TRUE) {

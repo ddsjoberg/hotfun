@@ -89,8 +89,10 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
 
   # If selecting a multivariable method but no covariates
   if (method %in% c("boot_sd", "boot_centile") & length(covariates) == 0) {
-    stop("If selecting 'boot_sd' or 'boot_centile' as the method, the `formula` option must be specified and must include covariates.", .call = FALSE)
-  }
+    message(glue(
+      "Method '{method}' was selected but no covariates were provided. ",
+      "The {conf.level*100}% confidence interval around the unadjusted difference in rates will be bootstrapped."))
+    }
 
   # converting inputs to strings/lists
   y <- dplyr::select(data[0, , drop = FALSE], {{ y }}) %>% names()
