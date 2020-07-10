@@ -9,7 +9,7 @@ tbl_propdiff(
   y,
   x,
   formula = "{y} ~ {x}",
-  method = c("exact", "boot_sd", "boot_centile"),
+  method = c("chisq", "exact", "boot_sd", "boot_centile"),
   conf.level = 0.95,
   bootstrapn = ifelse(method == "boot_centile", 2000, 200),
   estimate_fun = style_sigfig,
@@ -26,19 +26,18 @@ numeric, character or factor, but must have two and only two non-missing levels}
 variable can be numeric, character or factor, but must have two and only two
 non-missing levels}
 
-\item{formula}{By default, "{y} ~ {x}". To include covariates for an adjusted
-risk difference, add covariate names to the formula, e.g. "{y} ~ {x} + age"}
+\item{formula}{By default, \code{"{y} ~ {x}"}. To include covariates for an adjusted
+risk difference, add covariate names to the formula, e.g. \code{"{y} ~ {x} + age"}}
 
-\item{method}{The method for calculating confidence intervals around the
-difference in rates. The options are "exact", for an unadjusted difference
-in rates, or "boot_centile" or "boot_sd" for an adjusted difference in rates.
-The default method is "exact".}
+\item{method}{The method for calculating p-values and confidence intervals around the
+difference in rates. The options are \code{"chisq"}, \code{"exact"}, \code{"boot_centile"},
+and \code{"boot_sd"}. See below for details. Default method is \code{"chisq"}.}
 
 \item{conf.level}{Confidence level of the returned confidence interval.
 Must be a single number between 0 and 1. The default is a 95\% confidence interval.}
 
 \item{bootstrapn}{The number of bootstrap resamples to use. The default is 2000
-for "boot_centile" and 200 for "boot_sd"}
+for \code{"boot_centile"} and 200 for \code{"boot_sd"}}
 
 \item{estimate_fun}{Function to round and format estimates. By default
 \code{style_sigfig}, but can take any formatting function}
@@ -47,27 +46,31 @@ for "boot_centile" and 200 for "boot_sd"}
 \code{style_pvalue}, but can take any formatting function}
 }
 \value{
-A \code{tbl_propdiff} object
+A \code{tbl_propdiff} object, with sub-class \code{"gtsummary"}
 }
 \description{
 This function calculates the unadjusted or adjusted difference in rates with confidence interval.
 }
 \section{Methods}{
 
-
-The \verb{exact`` option gives the exact confidence interval for the unadjusted difference in proportions as calculated by }prop.test`.
-
-The \code{boot_centile} option calculates the adjusted difference between groups
+\itemize{
+\item The \code{chisq} option returns a p-value from the \code{prop.test} function and a
+confidence interval for the unadjusted difference in proportions based on
+the normal approximation.
+\item The \code{exact} option returns a p-value from the \code{fisher.test} function. The
+confidence interval returned by this option is the same as the confidence
+interval returned by the \code{chisq} option and is based on the normal approximation.
+\item The \code{boot_centile} option calculates the adjusted difference between groups
 in all bootstrap samples (the default for this method is 2000 resamples)
 and generates the confidence intervals from the distribution of these
 differences. For the default, a 95\% confidence interval, the 2.5 and 97.5
 centiles are used.
-
-The \code{boot_sd} option calculates the adjusted difference between groups
+\item The \code{boot_sd} option calculates the adjusted difference between groups
 in all bootstrap samples (the default for this method is 200 resamples).
 The mean and standard deviation of the adjusted difference across all
 resamples are calculated. The standard deviation is then used as the
 standard error to calculate the confidence interval based on the true adjusted difference.
+}
 }
 
 \examples{

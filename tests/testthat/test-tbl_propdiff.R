@@ -2,6 +2,15 @@ context("tbl_propdiff")
 
 set.seed(6038503)
 
+# results_chisq <- tbl_propdiff(data = trial, y = "response", x = "trt", method = "chisq")
+# results_exact <- tbl_propdiff(data = trial, y = "response", x = "trt", method = "exact")
+# results_boot_sd <- tbl_propdiff(data = trial, y = "response", x = "trt", formula = "{y} ~ {x} + age", method = "boot_sd")
+# results_boot_centile <- tbl_propdiff(data = trial, y = "response", x = "trt", formula = "{y} ~ {x} + age", method = "boot_centile")
+#
+# allresults <-
+#   gtsummary::tbl_stack(list(results_chisq, results_exact, results_boot_sd, results_boot_centile),
+#             group_header = c("Chi-squared", "Exact", "Bootstrap (SD)", "Bootstrap (Centile)"))
+
 test_that("No errors/warnings with standard use", {
   expect_error(
     tbl_propdiff(data = trial, y = "response", x = "trt"),
@@ -10,6 +19,11 @@ test_that("No errors/warnings with standard use", {
 
   expect_error(
     tbl_propdiff(data = trial, y = c("response", "death"), x = "trt"),
+    NA
+  )
+
+  expect_error(
+    tbl_propdiff(data = trial, method = "exact", y = "response", x = "trt"),
     NA
   )
 
@@ -72,7 +86,7 @@ test_that("Error if outcome or predictor has more or less than 2 non-missing lev
   )
 })
 
-test_that("x, y and covariates can be character, numeric or factor", {
+test_that("x, y and covariates can be character, numeric, logical or factor", {
   expect_error(
     tbl_propdiff(
       data = trial %>% mutate(response = as.character(response)),
@@ -112,6 +126,32 @@ test_that("x, y and covariates can be character, numeric or factor", {
     ),
     NA
   )
+
+  expect_error(
+    tbl_propdiff(
+      data = trial %>% mutate(response = as.logical(response)),
+      y = "response", x = "trt", method = "exact"
+    ),
+    NA
+  )
+
+  expect_error(
+    tbl_propdiff(
+      data = trial %>% mutate(response = as.logical(response)),
+      y = "response", x = "trt", formula = "{y} ~ {x} + grade",
+      method = "boot_sd", bootstrapn = 50
+    ),
+    NA
+  )
+
+  expect_error(
+    tbl_propdiff(
+      data = trial %>% mutate(trt2 = as.logical(dplyr::if_else(trt == "Drug A", 1, 0))),
+      y = "response", x = "trt2", method = "exact"
+    ),
+    NA
+  )
+
 })
 
 test_that("No errors if outcome variable does not have a label", {

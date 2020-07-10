@@ -8,36 +8,40 @@
 #' @param x string indicating the binary stratifying variable. The stratifying
 #' variable can be numeric, character or factor, but must have two and only two
 #' non-missing levels
-#' @param formula By default, "{y} ~ {x}". To include covariates for an adjusted
-#' risk difference, add covariate names to the formula, e.g. "{y} ~ {x} + age"
-#' @param method The method for calculating confidence intervals around the
-#' difference in rates. The options are "exact", for an unadjusted difference
-#' in rates, or "boot_centile" or "boot_sd" for an adjusted difference in rates.
-#' The default method is "exact".
+#' @param formula By default, `"{y} ~ {x}"`. To include covariates for an adjusted
+#' risk difference, add covariate names to the formula, e.g. `"{y} ~ {x} + age"`
+#' @param method The method for calculating p-values and confidence intervals around the
+#' difference in rates. The options are `"chisq"`, `"exact"`, `"boot_centile"`,
+#' and `"boot_sd"`. See below for details. Default method is `"chisq"`.
 #' @param conf.level Confidence level of the returned confidence interval.
 #' Must be a single number between 0 and 1. The default is a 95% confidence interval.
 #' @param bootstrapn The number of bootstrap resamples to use. The default is 2000
-#' for "boot_centile" and 200 for "boot_sd"
+#' for `"boot_centile"` and 200 for `"boot_sd"`
 #' @param estimate_fun Function to round and format estimates. By default
 #' `style_sigfig`, but can take any formatting function
 #' @param pvalue_fun Function to round and format p-value. By default
 #' `style_pvalue`, but can take any formatting function
 #'
-#' @return A `tbl_propdiff` object
+#' @return A `tbl_propdiff` object, with sub-class `"gtsummary"`
 #' @export
 #'
 #' @section Methods:
 #'
-#' The `exact`` option gives the exact confidence interval for the unadjusted
-#' difference in proportions as calculated by `prop.test`.
+#' * The `chisq` option returns a p-value from the `prop.test` function and a
+#' confidence interval for the unadjusted difference in proportions based on
+#' the normal approximation.
 #'
-#' The `boot_centile` option calculates the adjusted difference between groups
+#' * The `exact` option returns a p-value from the `fisher.test` function. The
+#' confidence interval returned by this option is the same as the confidence
+#' interval returned by the `chisq` option and is based on the normal approximation.
+#'
+#' * The `boot_centile` option calculates the adjusted difference between groups
 #' in all bootstrap samples (the default for this method is 2000 resamples)
 #' and generates the confidence intervals from the distribution of these
 #' differences. For the default, a 95% confidence interval, the 2.5 and 97.5
 #' centiles are used.
 #'
-#' The `boot_sd` option calculates the adjusted difference between groups
+#' * The `boot_sd` option calculates the adjusted difference between groups
 #' in all bootstrap samples (the default for this method is 200 resamples).
 #' The mean and standard deviation of the adjusted difference across all
 #' resamples are calculated. The standard deviation is then used as the
@@ -59,7 +63,7 @@
 #'   bootstrapn = 25
 #' )
 tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
-                         method = c("exact", "boot_sd", "boot_centile"),
+                         method = c("chisq", "exact", "boot_sd", "boot_centile"),
                          conf.level = 0.95,
                          bootstrapn = ifelse(method == "boot_centile", 2000, 200),
                          estimate_fun = style_sigfig,
@@ -70,7 +74,7 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
   method <- match.arg(method)
 
   # Save out list of covariates from formula
-  rhs <- map(stringr::str_split(rlang::f_text(stats::as.formula(glue(formula))), pattern = "\\+"), ~ stringr::str_trim(.x)) %>% pluck(1)
+  rhs <- formula %>% stringr::str_replace_all(pattern = "\\{y\\}|\\{x\\}", ".") %>% stats::as.formula() %>% all.vars() %>% setdiff(".")
   covariates <- setdiff(rhs, x)
 
   # Confirm that x and y variables and covariates exist
@@ -82,6 +86,13 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
     call. = FALSE
     )
   }
+
+  # If selecting a multivariable method but no covariates
+  if (method %in% c("boot_sd", "boot_centile") & length(covariates) == 0) {
+    message(glue(
+      "Method '{method}' was selected but no covariates were provided. ",
+      "The {conf.level*100}% confidence interval around the unadjusted difference in rates will be bootstrapped."))
+    }
 
   # converting inputs to strings/lists
   y <- dplyr::select(data[0, , drop = FALSE], {{ y }}) %>% names()
@@ -113,9 +124,6 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
     )
   }
 
-  # Matching arguments for method
-  method <- match.arg(method)
-
   # Checking estimate_fun and pvalue_fun are functions
   if (!purrr::every(list(estimate_fun, pvalue_fun), is.function)) {
     stop("Inputs `estimate_fun` and `pvalue_fun` must be functions.",
@@ -129,10 +137,12 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
     tibble::enframe(y, name = NULL, value = "y") %>%
     mutate(x = x)
 
+  # If logical, convert to 0/1
   # Reverse factor levels for x variable to match tbl_ancova output
   # Convert y to factor
   data <-
     data %>%
+    dplyr::mutate_if(is.logical, as.numeric) %>%
     mutate_at(vars(x), ~ forcats::fct_rev(factor(.))) %>%
     mutate_at(vars(y), ~ factor(.))
 
@@ -170,18 +180,19 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
 
   ### CALCULATE DIFFERENCES-------------------------
 
-  # For "exact" method
-  if (method == "exact") {
+  # For "chisq" or "exact" method
+  if (method %in% c("chisq", "exact")) {
     df_propdiff_final <-
       df_propdiff_summary %>%
       mutate(
         estci =
           pmap(
             list(.data$x, .data$y),
-            ~ calculate_exact(
+            ~ calculate_unadjusted(
               data = .env$data %>%
                 select(all_of(c(..1, ..2))) %>%
                 tidyr::drop_na(),
+              method = .env$method,
               x = ..1,
               y = ..2,
               conf.level = .env$conf.level
@@ -366,7 +377,7 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
     rename(stat_1_1 = .data$stat_1, stat_2_1 = .data$stat_2)
 
   # Update table header
-  if (method == "exact") estlabel <- "**Difference**" else estlabel <- "**Adjusted Difference**"
+  if (method %in% c("chisq", "exact")) estlabel <- "**Difference**" else estlabel <- "**Adjusted Difference**"
 
   # Update header
   tbl_results$table_header <-
@@ -395,7 +406,8 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
       estimate_2 = estlabel,
       ci = "**95% CI**",
       p.value_2 = "**p-value**"
-    )
+    ) %>%
+    gtsummary::modify_footnote(ci ~ "CI = Confidence Interval", abbreviation = TRUE)
 
   # Add class
   class(tbl_results) <- c("tbl_propdiff", "gtsummary")
