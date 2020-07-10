@@ -1,6 +1,5 @@
 Appveyor
 bstfun
-centile
 centiles
 Codecov
 dbeta
@@ -8,7 +7,6 @@ mL
 MSKCC
 ng
 Rscript
-sd
 timepoint
 unadjusted
 unlabelled

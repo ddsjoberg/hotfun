@@ -1,3 +1,7 @@
+# hotfun 0.1.7
+
+- Updated `tbl_propdiff()` to give chi-squared or Fisher's exact p-value, and fixed issue caused by having logical `"x"` variable.
+
 # hotfun 0.1.6
 
 - Removed {bstfun} dependency 
