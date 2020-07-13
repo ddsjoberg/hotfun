@@ -10,6 +10,9 @@
 #' non-missing levels
 #' @param formula By default, `"{y} ~ {x}"`. To include covariates for an adjusted
 #' risk difference, add covariate names to the formula, e.g. `"{y} ~ {x} + age"`
+#' @param label List of formulas specifying variables labels, If a variable's label is
+#' not specified here, the label attribute (`attr(data$high_grade, "label")`) is used.
+#' If attribute label is `NULL`, the variable name will be used.
 #' @param method The method for calculating p-values and confidence intervals around the
 #' difference in rates. The options are `"chisq"`, `"exact"`, `"boot_centile"`,
 #' and `"boot_sd"`. See below for details. Default method is `"chisq"`.
@@ -62,12 +65,17 @@
 #'   method = "boot_sd",
 #'   bootstrapn = 25
 #' )
-tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
+tbl_propdiff <- function(data, y, x,
+                         formula = "{y} ~ {x}", label = NULL,
                          method = c("chisq", "exact", "boot_sd", "boot_centile"),
                          conf.level = 0.95,
                          bootstrapn = ifelse(method == "boot_centile", 2000, 200),
                          estimate_fun = style_sigfig,
                          pvalue_fun = style_pvalue) {
+  # converting inputs to named list --------------------------------------------
+  y <- var_input_to_string(data = data, select_input = {{ y }}, arg_name = "y", select_single = FALSE)
+  x <- var_input_to_string(data = data, select_input = {{ x }}, arg_name = "x", select_single = TRUE)
+  label <- tidyselect_to_list(.data = data, x = {{ label }}, arg_name = "label", select_single = FALSE)
 
   ### CHECKS------------------
   # Matching arguments for method
@@ -93,10 +101,6 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
       "Method '{method}' was selected but no covariates were provided. ",
       "The {conf.level*100}% confidence interval around the unadjusted difference in rates will be bootstrapped."))
     }
-
-  # converting inputs to strings/lists
-  y <- dplyr::select(data[0, , drop = FALSE], {{ y }}) %>% names()
-  x <- dplyr::select(data[0, , drop = FALSE], {{ x }}) %>% names()
 
   # checking the x variable has two levels
   if (data[[x]] %>% stats::na.omit() %>% unique() %>% length() != 2) {
@@ -143,7 +147,6 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
   data <-
     data %>%
     dplyr::mutate_if(is.logical, as.numeric) %>%
-    mutate_at(vars(x), ~ forcats::fct_rev(factor(.))) %>%
     mutate_at(vars(y), ~ factor(.))
 
   ### UNADJUSTED RATES---------------------------------
@@ -155,10 +158,7 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
       outcome_label =
         map_chr(
           y,
-          ~ ifelse(!is.null(attr(data[[..1]], "label")),
-            attr(data[[..1]], "label"),
-            y
-          )
+          ~ label[[..1]] %||% attr(data[[..1]], "label") %||% ..1
         ),
       # Save out table of unadjusted rates
       tbl_rates =
@@ -167,10 +167,11 @@ tbl_propdiff <- function(data, y, x, formula = "{y} ~ {x}",
           function(x, y, z) {
             data %>%
               select(all_of(c(x, y))) %>%
+              mutate_at(vars(any_of(x)), forcats::fct_rev) %>%
               gtsummary::tbl_summary(
                 by = .data[[x]], missing = "no",
-                label = list(x = glue("{z}")),
-                type = list(all_categorical() ~ "dichotomous")
+                label = list(z) %>% rlang::set_names(y),
+                type = list(everything() ~ "dichotomous")
               ) %>%
               gtsummary::add_n() %>%
               gtsummary::modify_header(stat_by = "**{level}**")
