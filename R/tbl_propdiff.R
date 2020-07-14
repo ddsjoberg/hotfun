@@ -167,7 +167,7 @@ tbl_propdiff <- function(data, y, x,
           function(x, y, z) {
             data %>%
               select(all_of(c(x, y))) %>%
-              mutate_at(vars(any_of(x)), forcats::fct_rev) %>%
+              mutate_at(vars(any_of(x)), ~factor(.) %>% forcats::fct_rev()) %>%
               gtsummary::tbl_summary(
                 by = .data[[x]], missing = "no",
                 label = list(z) %>% rlang::set_names(y),
