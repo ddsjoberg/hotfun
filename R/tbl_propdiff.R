@@ -13,6 +13,7 @@
 #' @param label List of formulas specifying variables labels, If a variable's label is
 #' not specified here, the label attribute (`attr(data$high_grade, "label")`) is used.
 #' If attribute label is `NULL`, the variable name will be used.
+#' @param statistic Statistics to display for each group. Default `"{n} ({p}%)"`
 #' @param method The method for calculating p-values and confidence intervals around the
 #' difference in rates. The options are `"chisq"`, `"exact"`, `"boot_centile"`,
 #' and `"boot_sd"`. See below for details. Default method is `"chisq"`.
@@ -67,7 +68,9 @@
 #'   bootstrapn = 25
 #' )
 tbl_propdiff <- function(data, y, x,
-                         formula = "{y} ~ {x}", label = NULL,
+                         formula = "{y} ~ {x}",
+                         label = NULL,
+                         statistic = "{n} ({p}%)",
                          method = c("chisq", "exact", "boot_sd", "boot_centile"),
                          conf.level = 0.95,
                          bootstrapn = ifelse(method == "boot_centile", 2000, 200),
@@ -172,7 +175,8 @@ tbl_propdiff <- function(data, y, x,
               gtsummary::tbl_summary(
                 by = .data[[x]], missing = "no",
                 label = list(z) %>% rlang::set_names(y),
-                type = list(everything() ~ "dichotomous")
+                type = list(everything() ~ "dichotomous"),
+                statistic = list(everything() ~ glue("{statistic}"))
               ) %>%
               gtsummary::add_n() %>%
               gtsummary::modify_header(stat_by = "**{level}**")
