@@ -1,3 +1,7 @@
+# hotfun 0.1.8
+
+- Updated `tbl_propdiff()` so that unadjusted and adjusted differences are presented as the rate in the right column subtracted from the rate in the left column to match results of `bstfun::tbl_ancova`
+
 # hotfun 0.1.7
 
 - Updated `tbl_propdiff()` to give chi-squared or Fisher's exact p-value, and fixed issue caused by having logical `"x"` variable.

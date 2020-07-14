@@ -91,7 +91,7 @@ tbl_propdiff <- function(data, y, x,
   if (length(setdiff(c(x, y, covariates), names(data))) != 0) {
     stop(glue(
       "These variables do not exist in the dataset: ",
-      glue_collapse(setdiff(c(x, y), names(data)), sep = ", ")
+      glue_collapse(setdiff(c(x, y, covariates), names(data)), sep = ", ")
     ),
     call. = FALSE
     )

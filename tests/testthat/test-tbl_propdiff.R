@@ -55,6 +55,19 @@ test_that("Error if variables do not exist or temporary variables do exist", {
     tbl_propdiff(trial, y = "response_new", x = "trt"),
     "*"
   )
+
+  expect_error(
+    tbl_propdiff(trial, y = "response", x = "trt", formula = "{y} ~ {x} + age_new",
+                 method = "boot_sd", bootstrapn = 50),
+    "*"
+  )
+})
+
+test_that("Message if no covariates given but 'boot_sd' or 'boot_centile' method selected", {
+  expect_message(
+    tbl_propdiff(trial, y = "response", x = "trt", method = "boot_sd", bootstrapn = 50),
+    "*"
+  )
 })
 
 test_that("Error if formula with covariates specified without multivariable method", {
