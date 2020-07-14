@@ -42,13 +42,14 @@
 #' in all bootstrap samples (the default for this method is 2000 resamples)
 #' and generates the confidence intervals from the distribution of these
 #' differences. For the default, a 95% confidence interval, the 2.5 and 97.5
-#' centiles are used.
+#' centiles are used. The p-value presented is from a logistic regression model.
 #'
 #' * The `boot_sd` option calculates the adjusted difference between groups
 #' in all bootstrap samples (the default for this method is 200 resamples).
 #' The mean and standard deviation of the adjusted difference across all
 #' resamples are calculated. The standard deviation is then used as the
-#' standard error to calculate the confidence interval based on the true adjusted difference.
+#' standard error to calculate the confidence interval based on the true
+#' adjusted difference. The p-value presented is from a logistic regression model.
 #'
 #' @examples
 #' tbl_propdiff(
