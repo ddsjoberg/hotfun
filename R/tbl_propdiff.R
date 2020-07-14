@@ -73,6 +73,7 @@ tbl_propdiff <- function(data, y, x,
                          bootstrapn = ifelse(method == "boot_centile", 2000, 200),
                          estimate_fun = style_sigfig,
                          pvalue_fun = style_pvalue) {
+
   # converting inputs to named list --------------------------------------------
   y <- var_input_to_string(data = data, select_input = {{ y }}, arg_name = "y", select_single = FALSE)
   x <- var_input_to_string(data = data, select_input = {{ x }}, arg_name = "x", select_single = TRUE)
@@ -94,6 +95,14 @@ tbl_propdiff <- function(data, y, x,
     ),
     call. = FALSE
     )
+  }
+
+  # If specifying covariates but not specifying a multivariable method
+  if (length(covariates) != 0 & !(method %in% c("boot_centile", "boot_sd"))) {
+    stop(glue(
+      "When specifying a formula that includes covariates, you must specify one of the two multivariable methods ('boot_centile' or 'boot_sd')."
+    ),
+    call. = FALSE)
   }
 
   # If selecting a multivariable method but no covariates

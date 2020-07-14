@@ -57,6 +57,19 @@ test_that("Error if variables do not exist or temporary variables do exist", {
   )
 })
 
+test_that("Error if formula with covariates specified without multivariable method", {
+  expect_error(
+    tbl_propdiff(trial, y = "response", x = "trt", formula = "{y} ~ {x} + age", method = "exact"),
+    "*"
+  )
+
+  expect_error(
+    tbl_propdiff(trial, y = "response", x = "trt", formula = "{y} ~ {x} + age", method = "chisq"),
+    "*"
+  )
+
+})
+
 test_that("Error if `conf.level` outside of 0-1 range", {
   expect_error(
     tbl_propdiff(trial, y = "response", x = "trt", conf.level = 95),
@@ -123,7 +136,7 @@ test_that("x, y and covariates can be character, numeric, logical or factor", {
   expect_error(
     tbl_propdiff(
       data = trial %>% mutate(grade = as.character(grade)),
-      y = "response", x = "trt", formula = "{y} ~ {x} + grade"
+      y = "response", x = "trt", formula = "{y} ~ {x} + grade", method = "boot_sd", bootstrapn = 50
     ),
     NA
   )
