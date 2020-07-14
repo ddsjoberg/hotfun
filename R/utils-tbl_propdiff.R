@@ -63,6 +63,7 @@ create_model_pred <- function(data, y, x, covariates, pvalue = FALSE) {
 
     # Create new data using means/modes of selected covariates
     df_newdata <-
+      tibble(freq = 2) %>%
       bind_cols(
         data %>%
           select(tidyselect::all_of(covariates)) %>%
@@ -76,7 +77,6 @@ create_model_pred <- function(data, y, x, covariates, pvalue = FALSE) {
           select(tidyselect::all_of(covariates)) %>%
           summarize_if(is.character, get_mode, quiet = TRUE)
       ) %>%
-      mutate(freq = 2) %>%
       uncount(.data$freq) %>%
       bind_cols(
         data %>% select(tidyselect::all_of(x)) %>% unique()
@@ -84,7 +84,7 @@ create_model_pred <- function(data, y, x, covariates, pvalue = FALSE) {
 
   }
 
-  # Create model (reverse factor levels for consistency with tbl_ancova)
+  # Create model
   model_obj <-
     stats::glm(
       stats::as.formula(model_formula),
@@ -111,7 +111,7 @@ create_model_pred <- function(data, y, x, covariates, pvalue = FALSE) {
       values_from = "pred"
     ) %>%
     # This matches tbl_ancova
-    mutate(estimate_2 = (.data$bs_pred1 - .data$bs_pred2))
+    mutate(estimate_2 = (.data$bs_pred2 - .data$bs_pred1))
 
   # If pvalue = TRUE
   if (pvalue == TRUE) {

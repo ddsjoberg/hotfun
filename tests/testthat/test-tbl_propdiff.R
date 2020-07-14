@@ -1,4 +1,5 @@
 context("tbl_propdiff")
+library(dplyr)
 
 set.seed(6038503)
 
@@ -54,6 +55,32 @@ test_that("Error if variables do not exist or temporary variables do exist", {
     tbl_propdiff(trial, y = "response_new", x = "trt"),
     "*"
   )
+
+  expect_error(
+    tbl_propdiff(trial, y = "response", x = "trt", formula = "{y} ~ {x} + age_new",
+                 method = "boot_sd", bootstrapn = 50),
+    "*"
+  )
+})
+
+test_that("Message if no covariates given but 'boot_sd' or 'boot_centile' method selected", {
+  expect_message(
+    tbl_propdiff(trial, y = "response", x = "trt", method = "boot_sd", bootstrapn = 50),
+    "*"
+  )
+})
+
+test_that("Error if formula with covariates specified without multivariable method", {
+  expect_error(
+    tbl_propdiff(trial, y = "response", x = "trt", formula = "{y} ~ {x} + age", method = "exact"),
+    "*"
+  )
+
+  expect_error(
+    tbl_propdiff(trial, y = "response", x = "trt", formula = "{y} ~ {x} + age", method = "chisq"),
+    "*"
+  )
+
 })
 
 test_that("Error if `conf.level` outside of 0-1 range", {
@@ -122,7 +149,7 @@ test_that("x, y and covariates can be character, numeric, logical or factor", {
   expect_error(
     tbl_propdiff(
       data = trial %>% mutate(grade = as.character(grade)),
-      y = "response", x = "trt", formula = "{y} ~ {x} + grade"
+      y = "response", x = "trt", formula = "{y} ~ {x} + grade", method = "boot_sd", bootstrapn = 50
     ),
     NA
   )

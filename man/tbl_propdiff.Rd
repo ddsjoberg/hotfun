@@ -9,6 +9,8 @@ tbl_propdiff(
   y,
   x,
   formula = "{y} ~ {x}",
+  label = NULL,
+  statistic = "{n} ({p}\%)",
   method = c("chisq", "exact", "boot_sd", "boot_centile"),
   conf.level = 0.95,
   bootstrapn = ifelse(method == "boot_centile", 2000, 200),
@@ -28,6 +30,12 @@ non-missing levels}
 
 \item{formula}{By default, \code{"{y} ~ {x}"}. To include covariates for an adjusted
 risk difference, add covariate names to the formula, e.g. \code{"{y} ~ {x} + age"}}
+
+\item{label}{List of formulas specifying variables labels, If a variable's label is
+not specified here, the label attribute (\code{attr(data$high_grade, "label")}) is used.
+If attribute label is \code{NULL}, the variable name will be used.}
+
+\item{statistic}{Statistics to display for each group. Default \code{"{n} ({p}\%)"}}
 
 \item{method}{The method for calculating p-values and confidence intervals around the
 difference in rates. The options are \code{"chisq"}, \code{"exact"}, \code{"boot_centile"},
@@ -64,12 +72,13 @@ interval returned by the \code{chisq} option and is based on the normal approxim
 in all bootstrap samples (the default for this method is 2000 resamples)
 and generates the confidence intervals from the distribution of these
 differences. For the default, a 95\% confidence interval, the 2.5 and 97.5
-centiles are used.
+centiles are used. The p-value presented is from a logistic regression model.
 \item The \code{boot_sd} option calculates the adjusted difference between groups
 in all bootstrap samples (the default for this method is 200 resamples).
 The mean and standard deviation of the adjusted difference across all
 resamples are calculated. The standard deviation is then used as the
-standard error to calculate the confidence interval based on the true adjusted difference.
+standard error to calculate the confidence interval based on the true
+adjusted difference. The p-value presented is from a logistic regression model.
 }
 }
 
