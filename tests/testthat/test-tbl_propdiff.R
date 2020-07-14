@@ -1,4 +1,5 @@
 context("tbl_propdiff")
+library(dplyr)
 
 set.seed(6038503)
 
