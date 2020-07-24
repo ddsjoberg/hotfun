@@ -7,8 +7,8 @@
 \title{hotfun: Collection of Functions Used in the Health Outcomes Team
     at MSKCC}
 \description{
-A mixed-bag of utility functions to ease the
-    analysis and reporting results.
+A mixed-bag of utility functions to ease
+    analyses and reporting results.
 }
 \author{
 \strong{Maintainer}: Daniel D. Sjoberg \email{danieldsjoberg@gmail.com}
