@@ -31,7 +31,7 @@ add_splines <- function(data, variable, knots = NULL, nk = 5, norm = 2, new_name
         "`new_names=` must be the same length as the number of new columns (n = {ncol(df_sp)})"
       ), call. = FALSE)
   }
-  else new_names <- paste0("sp", variable, seq(1, ncol(df_sp)))
+  else if (is.null(new_names)) new_names <- paste0("sp", variable, seq(1, ncol(df_sp)))
   names(df_sp) <- new_names
 
   # combining original data with splines ---------------------------------------
