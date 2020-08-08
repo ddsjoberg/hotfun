@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">hotfun</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
       </span>
     </div>
 
@@ -125,7 +125,9 @@
   <span class='kw'>y</span>,
   <span class='kw'>x</span>,
   formula = <span class='st'>"{y} ~ {x}"</span>,
-  method = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"exact"</span>, <span class='st'>"boot_sd"</span>, <span class='st'>"boot_centile"</span>),
+  label = <span class='kw'>NULL</span>,
+  statistic = <span class='st'>"{n} ({p}%)"</span>,
+  method = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"chisq"</span>, <span class='st'>"exact"</span>, <span class='st'>"boot_sd"</span>, <span class='st'>"boot_centile"</span>),
   conf.level = <span class='fl'>0.95</span>,
   bootstrapn = <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='kw'>method</span> <span class='op'>==</span> <span class='st'>"boot_centile"</span>, <span class='fl'>2000</span>, <span class='fl'>200</span>),
   estimate_fun = <span class='kw'>style_sigfig</span>,
@@ -152,15 +154,24 @@ non-missing levels</p></td>
     </tr>
     <tr>
       <th>formula</th>
-      <td><p>By default, "y ~ x". To include covariates for an adjusted
-risk difference, add covariate names to the formula, e.g. "y ~ x + age"</p></td>
+      <td><p>By default, <code>"{y} ~ {x}"</code>. To include covariates for an adjusted
+risk difference, add covariate names to the formula, e.g. <code>"{y} ~ {x} + age"</code></p></td>
+    </tr>
+    <tr>
+      <th>label</th>
+      <td><p>List of formulas specifying variables labels, If a variable's label is
+not specified here, the label attribute (<code><a href='https://rdrr.io/r/base/attr.html'>attr(data$high_grade, "label")</a></code>) is used.
+If attribute label is <code>NULL</code>, the variable name will be used.</p></td>
+    </tr>
+    <tr>
+      <th>statistic</th>
+      <td><p>Statistics to display for each group. Default <code>"{n} ({p}%)"</code></p></td>
     </tr>
     <tr>
       <th>method</th>
-      <td><p>The method for calculating confidence intervals around the
-difference in rates. The options are "exact", for an unadjusted difference
-in rates, or "boot_centile" or "boot_sd" for an adjusted difference in rates.
-The default method is "exact".</p></td>
+      <td><p>The method for calculating p-values and confidence intervals around the
+difference in rates. The options are <code>"chisq"</code>, <code>"exact"</code>, <code>"boot_centile"</code>,
+and <code>"boot_sd"</code>. See below for details. Default method is <code>"chisq"</code>.</p></td>
     </tr>
     <tr>
       <th>conf.level</th>
@@ -170,7 +181,7 @@ Must be a single number between 0 and 1. The default is a 95% confidence interva
     <tr>
       <th>bootstrapn</th>
       <td><p>The number of bootstrap resamples to use. The default is 2000
-for "boot_centile" and 200 for "boot_sd"</p></td>
+for <code>"boot_centile"</code> and 200 for <code>"boot_sd"</code></p></td>
     </tr>
     <tr>
       <th>estimate_fun</th>
@@ -186,23 +197,31 @@ for "boot_centile" and 200 for "boot_sd"</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>tbl_propdiff</code> object</p>
+    <p>A <code>tbl_propdiff</code> object, with sub-class <code>"gtsummary"</code></p>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
 
-
-<p>The <code>exact`` option gives the exact confidence interval for the unadjusted difference in proportions as calculated by </code>prop.test`.</p>
-<p>The <code>boot_centile</code> option calculates the adjusted difference between groups
+<ul>
+<li><p>The <code>chisq</code> option returns a p-value from the <code>prop.test</code> function and a
+confidence interval for the unadjusted difference in proportions based on
+the normal approximation.</p></li>
+<li><p>The <code>exact</code> option returns a p-value from the <code>fisher.test</code> function. The
+confidence interval returned by this option is the same as the confidence
+interval returned by the <code>chisq</code> option and is based on the normal approximation.</p></li>
+<li><p>The <code>boot_centile</code> option calculates the adjusted difference between groups
 in all bootstrap samples (the default for this method is 2000 resamples)
 and generates the confidence intervals from the distribution of these
 differences. For the default, a 95% confidence interval, the 2.5 and 97.5
-centiles are used.</p>
-<p>The <code>boot_sd</code> option calculates the adjusted difference between groups
+centiles are used. The p-value presented is from a logistic regression model.</p></li>
+<li><p>The <code>boot_sd</code> option calculates the adjusted difference between groups
 in all bootstrap samples (the default for this method is 200 resamples).
 The mean and standard deviation of the adjusted difference across all
 resamples are calculated. The standard deviation is then used as the
-standard error to calculate the confidence interval based on the true adjusted difference.</p>
+standard error to calculate the confidence interval based on the true
+adjusted difference. The p-value presented is from a logistic regression model.</p></li>
+</ul>
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>tbl_propdiff</span>(
@@ -220,6 +239,8 @@ standard error to calculate the confidence interval based on the true adjusted d
 #&gt;   margin-right: auto;
 #&gt;   color: #333333;
 #&gt;   font-size: 16px;
+#&gt;   font-weight: normal;
+#&gt;   font-style: normal;
 #&gt;   background-color: #FFFFFF;
 #&gt;   width: auto;
 #&gt;   border-top-style: solid;
@@ -378,10 +399,6 @@ standard error to calculate the confidence interval based on the true adjusted d
 #&gt;   vertical-align: middle;
 #&gt; }
 #&gt; 
-#&gt; #htzqfrzqcq .gt_striped {
-#&gt;   background-color: rgba(128, 128, 128, 0.05);
-#&gt; }
-#&gt; 
 #&gt; #htzqfrzqcq .gt_from_md &gt; :first-child {
 #&gt;   margin-top: 0;
 #&gt; }
@@ -459,6 +476,10 @@ standard error to calculate the confidence interval based on the true adjusted d
 #&gt;   border-top-style: double;
 #&gt;   border-top-width: 6px;
 #&gt;   border-top-color: #D3D3D3;
+#&gt; }
+#&gt; 
+#&gt; #htzqfrzqcq .gt_striped {
+#&gt;   background-color: rgba(128, 128, 128, 0.05);
 #&gt; }
 #&gt; 
 #&gt; #htzqfrzqcq .gt_table_body {
@@ -552,7 +573,7 @@ standard error to calculate the confidence interval based on the true adjusted d
 #&gt;       &lt;th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"&gt;&lt;strong&gt;Drug B&lt;/strong&gt;&lt;sup class="gt_footnote_marks"&gt;1&lt;/sup&gt;&lt;/th&gt;
 #&gt;       &lt;th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"&gt;&lt;strong&gt;Drug A&lt;/strong&gt;&lt;sup class="gt_footnote_marks"&gt;1&lt;/sup&gt;&lt;/th&gt;
 #&gt;       &lt;th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"&gt;&lt;strong&gt;Difference&lt;/strong&gt;&lt;/th&gt;
-#&gt;       &lt;th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"&gt;&lt;strong&gt;95% CI&lt;/strong&gt;&lt;/th&gt;
+#&gt;       &lt;th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"&gt;&lt;strong&gt;95% CI&lt;/strong&gt;&lt;sup class="gt_footnote_marks"&gt;2&lt;/sup&gt;&lt;/th&gt;
 #&gt;       &lt;th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"&gt;&lt;strong&gt;p-value&lt;/strong&gt;&lt;/th&gt;
 #&gt;     &lt;/tr&gt;
 #&gt;   &lt;/thead&gt;
@@ -579,6 +600,14 @@ standard error to calculate the confidence interval based on the true adjusted d
 #&gt;           Statistics presented: n (%)
 #&gt;           &lt;br /&gt;
 #&gt;         &lt;/p&gt;
+#&gt;         &lt;p class="gt_footnote"&gt;
+#&gt;           &lt;sup class="gt_footnote_marks"&gt;
+#&gt;             &lt;em&gt;2&lt;/em&gt;
+#&gt;           &lt;/sup&gt;
+#&gt;            
+#&gt;           CI = Confidence Interval
+#&gt;           &lt;br /&gt;
+#&gt;         &lt;/p&gt;
 #&gt;       &lt;/td&gt;
 #&gt;     &lt;/tr&gt;
 #&gt;   &lt;/tfoot&gt;
@@ -601,6 +630,8 @@ standard error to calculate the confidence interval based on the true adjusted d
 #&gt;   margin-right: auto;
 #&gt;   color: #333333;
 #&gt;   font-size: 16px;
+#&gt;   font-weight: normal;
+#&gt;   font-style: normal;
 #&gt;   background-color: #FFFFFF;
 #&gt;   width: auto;
 #&gt;   border-top-style: solid;
@@ -759,10 +790,6 @@ standard error to calculate the confidence interval based on the true adjusted d
 #&gt;   vertical-align: middle;
 #&gt; }
 #&gt; 
-#&gt; #xocmxndeqm .gt_striped {
-#&gt;   background-color: rgba(128, 128, 128, 0.05);
-#&gt; }
-#&gt; 
 #&gt; #xocmxndeqm .gt_from_md &gt; :first-child {
 #&gt;   margin-top: 0;
 #&gt; }
@@ -840,6 +867,10 @@ standard error to calculate the confidence interval based on the true adjusted d
 #&gt;   border-top-style: double;
 #&gt;   border-top-width: 6px;
 #&gt;   border-top-color: #D3D3D3;
+#&gt; }
+#&gt; 
+#&gt; #xocmxndeqm .gt_striped {
+#&gt;   background-color: rgba(128, 128, 128, 0.05);
 #&gt; }
 #&gt; 
 #&gt; #xocmxndeqm .gt_table_body {
@@ -933,7 +964,7 @@ standard error to calculate the confidence interval based on the true adjusted d
 #&gt;       &lt;th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"&gt;&lt;strong&gt;Drug B&lt;/strong&gt;&lt;sup class="gt_footnote_marks"&gt;1&lt;/sup&gt;&lt;/th&gt;
 #&gt;       &lt;th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"&gt;&lt;strong&gt;Drug A&lt;/strong&gt;&lt;sup class="gt_footnote_marks"&gt;1&lt;/sup&gt;&lt;/th&gt;
 #&gt;       &lt;th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"&gt;&lt;strong&gt;Adjusted Difference&lt;/strong&gt;&lt;/th&gt;
-#&gt;       &lt;th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"&gt;&lt;strong&gt;95% CI&lt;/strong&gt;&lt;/th&gt;
+#&gt;       &lt;th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"&gt;&lt;strong&gt;95% CI&lt;/strong&gt;&lt;sup class="gt_footnote_marks"&gt;2&lt;/sup&gt;&lt;/th&gt;
 #&gt;       &lt;th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"&gt;&lt;strong&gt;p-value&lt;/strong&gt;&lt;/th&gt;
 #&gt;     &lt;/tr&gt;
 #&gt;   &lt;/thead&gt;
@@ -943,8 +974,8 @@ standard error to calculate the confidence interval based on the true adjusted d
 #&gt;       &lt;td class="gt_row gt_center"&gt;193&lt;/td&gt;
 #&gt;       &lt;td class="gt_row gt_center"&gt;33 (34%)&lt;/td&gt;
 #&gt;       &lt;td class="gt_row gt_center"&gt;28 (29%)&lt;/td&gt;
-#&gt;       &lt;td class="gt_row gt_center"&gt;-2.6%&lt;/td&gt;
-#&gt;       &lt;td class="gt_row gt_center"&gt;-16%, 10%&lt;/td&gt;
+#&gt;       &lt;td class="gt_row gt_center"&gt;2.6%&lt;/td&gt;
+#&gt;       &lt;td class="gt_row gt_center"&gt;-10%, 16%&lt;/td&gt;
 #&gt;       &lt;td class="gt_row gt_center"&gt;0.7&lt;/td&gt;
 #&gt;     &lt;/tr&gt;
 #&gt;   &lt;/tbody&gt;
@@ -958,6 +989,14 @@ standard error to calculate the confidence interval based on the true adjusted d
 #&gt;           &lt;/sup&gt;
 #&gt;            
 #&gt;           Statistics presented: n (%)
+#&gt;           &lt;br /&gt;
+#&gt;         &lt;/p&gt;
+#&gt;         &lt;p class="gt_footnote"&gt;
+#&gt;           &lt;sup class="gt_footnote_marks"&gt;
+#&gt;             &lt;em&gt;2&lt;/em&gt;
+#&gt;           &lt;/sup&gt;
+#&gt;            
+#&gt;           CI = Confidence Interval
 #&gt;           &lt;br /&gt;
 #&gt;         &lt;/p&gt;
 #&gt;       &lt;/td&gt;
