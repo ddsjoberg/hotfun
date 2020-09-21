@@ -1,3 +1,7 @@
+# hotfun 0.1.10
+
+- Added error message to `add_splines()` when new variable names already exist in data frame.
+
 # hotfun 0.1.9
 
 - Added function `add_splines()` to calculate spline terms and attach the spline terms and knots to the original data
