@@ -34,6 +34,15 @@ add_splines <- function(data, variable, knots = NULL, nk = 5, norm = 2, new_name
   else if (is.null(new_names)) new_names <- paste0("sp", variable, seq(1, ncol(df_sp)))
   names(df_sp) <- new_names
 
+  # check names (given or default) do not already exist in data
+  if (length(intersect(names(data), new_names)) > 0) {
+    stop(
+      stringr::str_glue(
+        "The variable(s) {glue::glue_collapse(intersect(names(data), new_names), sep = ', ')} already exist in this dataset"
+        ), call. = FALSE
+    )
+  }
+
   # combining original data with splines ---------------------------------------
   df_return <-
     dplyr::bind_cols(data, df_sp) %>%
