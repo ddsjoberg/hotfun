@@ -82,7 +82,7 @@ create_model_pred <- function(data, y, x, covariates, pvalue = FALSE) {
         data %>%
           select(tidyselect::all_of(x)) %>%
           unique() %>%
-          arrange_at(tidyselect::all_of(x))
+          dplyr::arrange_at(tidyselect::all_of(x))
       )
   }
 
