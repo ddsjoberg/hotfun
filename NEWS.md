@@ -1,3 +1,7 @@
+# hotfun (development version)
+
+- Fixed issue with calculation of adjusted difference when reversing factor levels in `tbl_propdiff`
+
 # hotfun 0.1.10
 
 - Added error message to `add_splines()` when new variable names already exist in data frame.
