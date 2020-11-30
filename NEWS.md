@@ -1,4 +1,4 @@
-# hotfun (development version)
+# hotfun 0.1.11
 
 - Fixed issue with calculation of adjusted difference when reversing factor levels in `tbl_propdiff`
 
