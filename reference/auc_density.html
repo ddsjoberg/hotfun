@@ -79,7 +79,7 @@ AUC of the model." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">hotfun</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.11</span>
       </span>
     </div>
 
@@ -128,7 +128,7 @@ distributions.  The exact prevalence of the outcome can easily be calculated, al
 AUC of the model.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>auc_density</span>(<span class='kw'>density</span>, cut.points = <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(from = <span class='fl'>0</span>, to = <span class='fl'>1</span>, by = <span class='fl'>0.001</span>), <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>auc_density</span><span class='op'>(</span><span class='va'>density</span>, cut.points <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span>from <span class='op'>=</span> <span class='fl'>0</span>, to <span class='op'>=</span> <span class='fl'>1</span>, by <span class='op'>=</span> <span class='fl'>0.001</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -159,7 +159,7 @@ mean risk, and the AUC associated with the distribution.</p>
     <p>Daniel D Sjoberg <a href='mailto:sjobergd@mskcc.org'>sjobergd@mskcc.org</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>auc_density</span>(density = <span class='kw'>dbeta</span>, shape1 = <span class='fl'>1</span>, shape2 = <span class='fl'>1</span>)
+    <pre class="examples"><div class='input'><span class='fu'>auc_density</span><span class='op'>(</span>density <span class='op'>=</span> <span class='va'>dbeta</span>, shape1 <span class='op'>=</span> <span class='fl'>1</span>, shape2 <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $cut.point
 #&gt;    [1] 0.000 0.001 0.002 0.003 0.004 0.005 0.006 0.007 0.008 0.009 0.010 0.011
 #&gt;   [13] 0.012 0.013 0.014 0.015 0.016 0.017 0.018 0.019 0.020 0.021 0.022 0.023

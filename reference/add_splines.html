@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">hotfun</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.11</span>
       </span>
     </div>
 
@@ -114,7 +114,7 @@
     <p>Adds spline terms calculated via <code><a href='https://rdrr.io/pkg/Hmisc/man/rcspline.eval.html'>Hmisc::rcspline.eval()</a></code> to a data frame.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>add_splines</span>(<span class='kw'>data</span>, <span class='kw'>variable</span>, knots = <span class='kw'>NULL</span>, nk = <span class='fl'>5</span>, norm = <span class='fl'>2</span>, new_names = <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>add_splines</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>variable</span>, knots <span class='op'>=</span> <span class='cn'>NULL</span>, nk <span class='op'>=</span> <span class='fl'>5</span>, norm <span class='op'>=</span> <span class='fl'>2</span>, new_names <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -166,8 +166,8 @@
 <p>Knot locations are returned in <code><a href='https://rdrr.io/r/base/attr.html'>attr(data[[variable]], "knots")</a></code></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>trial</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>add_splines</span>(<span class='kw'>age</span>)
+    <pre class="examples"><div class='input'><span class='va'>trial</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>add_splines</span><span class='op'>(</span><span class='va'>age</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 200 x 11</span><span>
 #&gt;    trt     age spage1   spage2  spage3 marker stage grade response death ttdeath
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>

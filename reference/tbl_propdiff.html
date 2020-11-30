@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">hotfun</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.11</span>
       </span>
     </div>
 
@@ -114,19 +114,19 @@
     <p>This function calculates the unadjusted or adjusted difference in rates with confidence interval.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tbl_propdiff</span>(
-  <span class='kw'>data</span>,
-  <span class='kw'>y</span>,
-  <span class='kw'>x</span>,
-  formula = <span class='st'>"{y} ~ {x}"</span>,
-  label = <span class='kw'>NULL</span>,
-  statistic = <span class='st'>"{n} ({p}%)"</span>,
-  method = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"chisq"</span>, <span class='st'>"exact"</span>, <span class='st'>"boot_sd"</span>, <span class='st'>"boot_centile"</span>),
-  conf.level = <span class='fl'>0.95</span>,
-  bootstrapn = <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='kw'>method</span> <span class='op'>==</span> <span class='st'>"boot_centile"</span>, <span class='fl'>2000</span>, <span class='fl'>200</span>),
-  estimate_fun = <span class='kw'>style_sigfig</span>,
-  pvalue_fun = <span class='kw'>style_pvalue</span>
-)</pre>
+    <pre class="usage"><span class='fu'>tbl_propdiff</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  <span class='va'>y</span>,
+  <span class='va'>x</span>,
+  formula <span class='op'>=</span> <span class='st'>"{y} ~ {x}"</span>,
+  label <span class='op'>=</span> <span class='cn'>NULL</span>,
+  statistic <span class='op'>=</span> <span class='st'>"{n} ({p}%)"</span>,
+  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"chisq"</span>, <span class='st'>"exact"</span>, <span class='st'>"boot_sd"</span>, <span class='st'>"boot_centile"</span><span class='op'>)</span>,
+  conf.level <span class='op'>=</span> <span class='fl'>0.95</span>,
+  bootstrapn <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>method</span> <span class='op'>==</span> <span class='st'>"boot_centile"</span>, <span class='fl'>2000</span>, <span class='fl'>200</span><span class='op'>)</span>,
+  estimate_fun <span class='op'>=</span> <span class='va'>style_sigfig</span>,
+  pvalue_fun <span class='op'>=</span> <span class='va'>style_pvalue</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -218,11 +218,11 @@ adjusted difference. The p-value presented is from a logistic regression model.<
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>tbl_propdiff</span>(
-  data = <span class='kw'>trial</span>,
-  y = <span class='st'>"response"</span>,
-  x = <span class='st'>"trt"</span>
-)
+    <pre class="examples"><div class='input'><span class='fu'>tbl_propdiff</span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='va'>trial</span>,
+  y <span class='op'>=</span> <span class='st'>"response"</span>,
+  x <span class='op'>=</span> <span class='st'>"trt"</span>
+<span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;style&gt;html {
 #&gt;   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 #&gt; }
@@ -607,14 +607,14 @@ adjusted difference. The p-value presented is from a logistic regression model.<
 #&gt;     &lt;/tr&gt;
 #&gt;   &lt;/tfoot&gt;
 #&gt; &lt;/table&gt;&lt;/div&gt;</div><div class='input'>
-<span class='fu'>tbl_propdiff</span>(
-  data = <span class='kw'>trial</span>,
-  y = <span class='st'>"response"</span>,
-  x = <span class='st'>"trt"</span>,
-  formula = <span class='st'>"{y} ~ {x} + age + stage"</span>,
-  method = <span class='st'>"boot_sd"</span>,
-  bootstrapn = <span class='fl'>25</span>
-)
+<span class='fu'>tbl_propdiff</span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='va'>trial</span>,
+  y <span class='op'>=</span> <span class='st'>"response"</span>,
+  x <span class='op'>=</span> <span class='st'>"trt"</span>,
+  formula <span class='op'>=</span> <span class='st'>"{y} ~ {x} + age + stage"</span>,
+  method <span class='op'>=</span> <span class='st'>"boot_sd"</span>,
+  bootstrapn <span class='op'>=</span> <span class='fl'>25</span>
+<span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;style&gt;html {
 #&gt;   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 #&gt; }
@@ -971,7 +971,7 @@ adjusted difference. The p-value presented is from a logistic regression model.<
 #&gt;       &lt;td class="gt_row gt_center"&gt;33 (34%)&lt;/td&gt;
 #&gt;       &lt;td class="gt_row gt_center"&gt;28 (29%)&lt;/td&gt;
 #&gt;       &lt;td class="gt_row gt_center"&gt;2.6%&lt;/td&gt;
-#&gt;       &lt;td class="gt_row gt_center"&gt;-10%, 16%&lt;/td&gt;
+#&gt;       &lt;td class="gt_row gt_center"&gt;-9.9%, 15%&lt;/td&gt;
 #&gt;       &lt;td class="gt_row gt_center"&gt;0.7&lt;/td&gt;
 #&gt;     &lt;/tr&gt;
 #&gt;   &lt;/tbody&gt;
