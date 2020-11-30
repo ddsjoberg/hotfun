@@ -79,9 +79,11 @@ create_model_pred <- function(data, y, x, covariates, pvalue = FALSE) {
       ) %>%
       uncount(.data$freq) %>%
       bind_cols(
-        data %>% select(tidyselect::all_of(x)) %>% unique()
+        data %>%
+          select(tidyselect::all_of(x)) %>%
+          unique() %>%
+          dplyr::arrange_at(tidyselect::all_of(x))
       )
-
   }
 
   # Create model
