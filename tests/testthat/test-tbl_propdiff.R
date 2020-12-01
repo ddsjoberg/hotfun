@@ -247,6 +247,23 @@ test_that("Using fct_rev() correctly calculates difference", {
       pull(estimate_2) * -1
   )
 
+  # Multivariable methods without covariates
+  expect_equal(
+    tbl_propdiff(
+      data = trial, y = "response", x = "trt",
+      formula = "{y} ~ {x}",
+      method = "boot_centile", bootstrapn = 10
+    ) %>% purrr::pluck("table_body") %>%
+      pull(estimate_2),
+    tbl_propdiff(
+      data = trial %>% mutate(trt = forcats::fct_rev(trt)),
+      y = "response", x = "trt",
+      formula = "{y} ~ {x}",
+      method = "boot_centile", bootstrapn = 10
+    ) %>% purrr::pluck("table_body") %>%
+      pull(estimate_2) * -1
+  )
+
   # Multivariable
   expect_equal(
     tbl_propdiff(
