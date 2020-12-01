@@ -48,7 +48,10 @@ create_model_pred <- function(data, y, x, covariates, pvalue = FALSE) {
 
     # New data for predictions - two "x" groups only
     df_newdata <-
-      data %>% select(tidyselect::all_of(x)) %>% unique()
+      data %>%
+      select(tidyselect::all_of(x)) %>%
+      dplyr::arrange_at(tidyselect::all_of(x)) %>%
+      unique()
 
     # If multivariable
   } else if (length(covariates) > 0) {
