@@ -1,4 +1,4 @@
-# hotfun (development version)
+# hotfun 0.1.12
 
 - Fixed issue with reversing factor levels for multivariable methods with no covariates specified in `tbl_propdiff`
 
