@@ -45,6 +45,8 @@
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -56,9 +58,15 @@
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -114,7 +122,7 @@
     <p>Get variable labels and store in named list</p>
     </div>
 
-    <pre class="usage"><span class='fu'>list_labels</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span></pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>list_labels</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -130,31 +138,32 @@
     <p>Daniel D. Sjoberg</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>list_labels</span><span class='op'>(</span><span class='va'>trial</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $trt
-#&gt; [1] "Chemotherapy Treatment"
-#&gt; 
-#&gt; $age
-#&gt; [1] "Age, yrs"
-#&gt; 
-#&gt; $marker
-#&gt; [1] "Marker Level, ng/mL"
-#&gt; 
-#&gt; $stage
-#&gt; [1] "T Stage"
-#&gt; 
-#&gt; $grade
-#&gt; [1] "Grade"
-#&gt; 
-#&gt; $response
-#&gt; [1] "Tumor Response"
-#&gt; 
-#&gt; $death
-#&gt; [1] "Patient Died"
-#&gt; 
-#&gt; $ttdeath
-#&gt; [1] "Months to Death/Censor"
-#&gt; </div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'>list_labels</span><span class='op'>(</span><span class='va'>trial</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $trt</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Chemotherapy Treatment"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $age</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Age, yrs"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $marker</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Marker Level, ng/mL"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $stage</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "T Stage"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $grade</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Grade"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $response</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Tumor Response"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $death</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Patient Died"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $ttdeath</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Months to Death/Censor"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -166,11 +175,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Daniel D. Sjoberg.</p>
+  <p><p>Developed by Daniel D. Sjoberg.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -178,6 +187,8 @@
 
   
 
+
+  
 
   </body>
 </html>

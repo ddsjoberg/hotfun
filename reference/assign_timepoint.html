@@ -47,6 +47,8 @@ closest to 3 months within a defined window." />
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -58,9 +60,15 @@ closest to 3 months within a defined window." />
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -118,7 +126,7 @@ for example the 3 month measurement, this function will find the measure
 closest to 3 months within a defined window.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>assign_timepoint</span><span class='op'>(</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>assign_timepoint</span><span class='op'>(</span>
   <span class='va'>data</span>,
   <span class='va'>id</span>,
   <span class='va'>ref_date</span>,
@@ -127,7 +135,7 @@ closest to 3 months within a defined window.</p>
   <span class='va'>windows</span>,
   time_units <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"days"</span>, <span class='st'>"weeks"</span>, <span class='st'>"months"</span>, <span class='st'>"years"</span><span class='op'>)</span>,
   new_var <span class='op'>=</span> <span class='st'>"timepoint"</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -158,7 +166,7 @@ closest to 3 months within a defined window.</p>
     </tr>
     <tr>
       <th>time_units</th>
-      <td><p>one of <code><a href='https://rdrr.io/r/base/c.html'>c("days", "weeks", "months", "years")</a></code></p></td>
+      <td><p>one of <code>c("days", "weeks", "months", "years")</code></p></td>
     </tr>
     <tr>
       <th>new_var</th>
@@ -171,37 +179,38 @@ closest to 3 months within a defined window.</p>
     <p>data frame passed in <code>data</code> with additional column <code>new_var</code></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>ggplot2</span><span class='fu'>::</span><span class='va'><a href='https://ggplot2.tidyverse.org/reference/economics.html'>economics_long</a></span> <span class='op'>%&gt;%</span>
-  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>variable</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>min_date <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='va'>date</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>assign_timepoint</span><span class='op'>(</span>
-    id <span class='op'>=</span> <span class='st'>"variable"</span>,
-    ref_date <span class='op'>=</span> <span class='st'>"min_date"</span>,
-    measure_date <span class='op'>=</span> <span class='st'>"date"</span>,
-    timepoints <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>6</span>, <span class='fl'>12</span>, <span class='fl'>24</span><span class='op'>)</span>,
-    windows <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>,
-    time_units <span class='op'>=</span> <span class='st'>"months"</span>
-  <span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>timepoint</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 15 x 4</span><span>
-#&gt;    variable min_date   date       timepoint
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;date&gt;</span><span>         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> pce      1967-07-01 1968-01-01         6
-#&gt; </span><span style='color: #555555;'> 2</span><span> pce      1967-07-01 1968-07-01        12
-#&gt; </span><span style='color: #555555;'> 3</span><span> pce      1967-07-01 1969-07-01        24
-#&gt; </span><span style='color: #555555;'> 4</span><span> pop      1967-07-01 1968-01-01         6
-#&gt; </span><span style='color: #555555;'> 5</span><span> pop      1967-07-01 1968-07-01        12
-#&gt; </span><span style='color: #555555;'> 6</span><span> pop      1967-07-01 1969-07-01        24
-#&gt; </span><span style='color: #555555;'> 7</span><span> psavert  1967-07-01 1968-01-01         6
-#&gt; </span><span style='color: #555555;'> 8</span><span> psavert  1967-07-01 1968-07-01        12
-#&gt; </span><span style='color: #555555;'> 9</span><span> psavert  1967-07-01 1969-07-01        24
-#&gt; </span><span style='color: #555555;'>10</span><span> uempmed  1967-07-01 1968-01-01         6
-#&gt; </span><span style='color: #555555;'>11</span><span> uempmed  1967-07-01 1968-07-01        12
-#&gt; </span><span style='color: #555555;'>12</span><span> uempmed  1967-07-01 1969-07-01        24
-#&gt; </span><span style='color: #555555;'>13</span><span> unemploy 1967-07-01 1968-01-01         6
-#&gt; </span><span style='color: #555555;'>14</span><span> unemploy 1967-07-01 1968-07-01        12
-#&gt; </span><span style='color: #555555;'>15</span><span> unemploy 1967-07-01 1969-07-01        24</div></span></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'>ggplot2</span><span class='fu'>::</span><span class='va'><a href='https://ggplot2.tidyverse.org/reference/economics.html'>economics_long</a></span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>variable</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>min_date <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='va'>date</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>assign_timepoint</span><span class='op'>(</span></span>
+<span class='r-in'>    id <span class='op'>=</span> <span class='st'>"variable"</span>,</span>
+<span class='r-in'>    ref_date <span class='op'>=</span> <span class='st'>"min_date"</span>,</span>
+<span class='r-in'>    measure_date <span class='op'>=</span> <span class='st'>"date"</span>,</span>
+<span class='r-in'>    timepoints <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>6</span>, <span class='fl'>12</span>, <span class='fl'>24</span><span class='op'>)</span>,</span>
+<span class='r-in'>    windows <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>    time_units <span class='op'>=</span> <span class='st'>"months"</span></span>
+<span class='r-in'>  <span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>timepoint</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 15 x 4</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    variable min_date   date       timepoint</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> pce      1967-07-01 1968-01-01         6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> pce      1967-07-01 1968-07-01        12</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> pce      1967-07-01 1969-07-01        24</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> pop      1967-07-01 1968-01-01         6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> pop      1967-07-01 1968-07-01        12</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> pop      1967-07-01 1969-07-01        24</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> psavert  1967-07-01 1968-01-01         6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> psavert  1967-07-01 1968-07-01        12</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> psavert  1967-07-01 1969-07-01        24</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> uempmed  1967-07-01 1968-01-01         6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>11</span> uempmed  1967-07-01 1968-07-01        12</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>12</span> uempmed  1967-07-01 1969-07-01        24</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>13</span> unemploy 1967-07-01 1968-01-01         6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>14</span> unemploy 1967-07-01 1968-07-01        12</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>15</span> unemploy 1967-07-01 1969-07-01        24</span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -213,11 +222,11 @@ closest to 3 months within a defined window.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Daniel D. Sjoberg.</p>
+  <p><p>Developed by Daniel D. Sjoberg.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -225,6 +234,8 @@ closest to 3 months within a defined window.</p>
 
   
 
+
+  
 
   </body>
 </html>
