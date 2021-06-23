@@ -11,7 +11,7 @@ Description: A mixed-bag of utility functions to ease
     analyses and reporting results.
 License: MIT + file LICENSE
 Depends: 
-    R (>= 3.4)
+    R (>= 3.6)
 Imports: 
     broom (>= 0.7.0),
     dplyr (>= 1.0.0),
