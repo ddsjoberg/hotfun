@@ -4,7 +4,8 @@
 \name{hotfun-package}
 \alias{hotfun}
 \alias{hotfun-package}
-\title{hotfun: Collection of Functions Used in the Health Outcomes Team at MSKCC}
+\title{hotfun: Collection of Functions Used in the Health Outcomes Team
+    at MSKCC}
 \description{
 A mixed-bag of utility functions to ease analyses and
     reporting results.

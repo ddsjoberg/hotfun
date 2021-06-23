@@ -3,7 +3,7 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{\donttest\{
+#' \dontrun{\donttest{
 #' use_hot_rstudio_prefs()
 #' }}
 use_hot_rstudio_prefs <- function() {

@@ -9,3 +9,8 @@ use_hot_rstudio_prefs()
 \description{
 Use H.O.T. RStudio Preferences
 }
+\examples{
+\dontrun{\donttest{
+use_hot_rstudio_prefs()
+}}
+}
