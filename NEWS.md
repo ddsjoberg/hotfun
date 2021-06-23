@@ -1,3 +1,7 @@
+# hotfun (development version)
+
+* Updates to `tbl_propdiff()` for the gtsummary v1.4.0 updates.
+
 # hotfun 0.1.12
 
 - Fixed issue with reversing factor levels for multivariable methods with no covariates specified in `tbl_propdiff`
