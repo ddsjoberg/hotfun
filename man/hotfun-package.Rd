@@ -11,7 +11,7 @@ A mixed-bag of utility functions to ease
     analyses and reporting results.
 }
 \author{
-\strong{Maintainer}: Daniel D. Sjoberg \email{danieldsjoberg@gmail.com}
+\strong{Maintainer}: Daniel D. Sjoberg \email{danield.sjoberg@gmail.com}
 
 }
 \keyword{internal}

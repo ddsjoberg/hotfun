@@ -388,36 +388,44 @@ tbl_propdiff <- function(data, y, x,
     bind_cols(
       tbl_results$table_body,
       df_estci
-    ) %>%
-    rename(stat_1_1 = .data$stat_1, stat_2_1 = .data$stat_2)
-
-  # Update table header
-  if (method %in% c("chisq", "exact")) estlabel <- "**Difference**" else estlabel <- "**Adjusted Difference**"
-
-  # Update header
-  tbl_results$table_header <-
-    left_join(
-      tibble(column = names(tbl_results$table_body)),
-      tbl_results$table_header %>%
-        mutate(
-          column =
-            dplyr::case_when(
-              column == "stat_1" ~ "stat_1_1",
-              column == "stat_2" ~ "stat_2_1",
-              TRUE ~ column
-            )
-        ),
-      by = "column"
-    ) %>%
-    table_header_fill_missing() %>%
-    table_header_fmt_fun(
-      estimate_2 = function(x) as.character(glue("{estimate_fun(x)}%")),
-      p.value_2 = pvalue_fun
     )
 
+  # rename stat_1 to stat_1_1 and stat_2 to stat_2_1
+  tbl_results$table_body <-
+    tbl_results$table_body %>%
+    rename(stat_1_1 = .data$stat_1, stat_2_1 = .data$stat_2)
+  tbl_results$table_styling <-
+    tbl_results$table_styling %>%
+    map(
+      function(.x) {
+        if (!is.data.frame(.x)) return(.x)
+        if (!"column" %in% names(.x)) return(.x)
+        .x %>%
+          mutate(
+            column = dplyr::case_when(
+              .data$column %in% "stat_1" ~ "stat_1_1",
+              .data$column %in% "stat_2" ~ "stat_2_1",
+              TRUE ~ .data$column
+            )
+          )
+      }
+    )
+
+  # Update table header
+  if (method %in% c("chisq", "exact"))
+    estlabel <- "**Difference**"
+  else estlabel <- "**Adjusted Difference**"
+
+  # update styling -------------------------------------------------------------
   tbl_results <-
-    modify_header_internal(
-      tbl_results,
+    tbl_results %>%
+    gtsummary::modify_fmt_fun(
+      list(
+        estimate_2 ~ function(x) as.character(glue("{estimate_fun(x)}%")),
+        p.value_2 ~ pvalue_fun
+      )
+    ) %>%
+    modify_header(
       estimate_2 = estlabel,
       ci = "**95% CI**",
       p.value_2 = "**p-value**"
