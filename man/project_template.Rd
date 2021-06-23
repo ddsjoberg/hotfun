@@ -16,10 +16,12 @@ The \code{project_template} object defines the contents of the H.O.T. project
 template used in \code{create_hot_project()} and \code{use_hot_file()}.
 }
 \examples{
+\donttest{\dontrun{
 create_hot_project(
   path = file.path(tempdir(), "Sjoberg New Project"),
   template = hotfun::project_template
 )
+}}
 }
 \seealso{
 \code{\link[=create_hot_project]{create_hot_project()}}

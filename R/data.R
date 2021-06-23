@@ -26,10 +26,12 @@
 #' @format A quoted list defining the H.O.T. project template. Each item of
 #' the list identifies one script or document that appears in the project template.
 #' @examples
+#' \donttest{\dontrun{
 #' create_hot_project(
 #'   path = file.path(tempdir(), "Sjoberg New Project"),
 #'   template = hotfun::project_template
 #' )
+#' }}
 #' @seealso [create_hot_project()]
 #' @seealso [use_hot_file()]
 "project_template"
