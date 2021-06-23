@@ -46,5 +46,7 @@ Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
+RemoteType: standard
 RemoteRef: ddsjoberg
 RemoteRepos: https://ddsjoberg.r-universe.dev
+RemotePkgType: binary
