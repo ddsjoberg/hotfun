@@ -850,16 +850,6 @@
       "Repository": "CRAN",
       "Hash": "249d8cd1e74a8f6a26194a91b47f21d1"
     },
-    "rstudio.prefs": {
-      "Package": "rstudio.prefs",
-      "Version": "0.1.0",
-      "Source": "Repository",
-      "Repository": "https://ddsjoberg.r-universe.dev",
-      "RemoteUrl": "https://github.com/ddsjoberg/rstudio.prefs",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "70fce0143188c94eea99427253421738684431bc",
-      "Hash": "df059e1c0b4315e3a2afad5d56175a86"
-    },
     "rstudioapi": {
       "Package": "rstudioapi",
       "Version": "0.13",
@@ -922,13 +912,6 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "b8c899a5c83f0d897286550481c91798"
-    },
-    "starter": {
-      "Package": "starter",
-      "Version": "0.0.0.9000",
-      "Source": "Repository",
-      "Repository": "ddsjoberg",
-      "Hash": "5d31b2d1fe6fb0424ba2d160e4d97226"
     },
     "stringi": {
       "Package": "stringi",

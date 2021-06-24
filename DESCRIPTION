@@ -40,12 +40,12 @@ Suggests:
     ggplot2 (>= 3.3.2),
     spelling (>= 2.1),
     testthat (>= 2.3.2)
-Additional_repositories: https://ddsjoberg.r-universe.dev
 Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
+Additional_repositories: https://ddsjoberg.r-universe.dev
 RemoteType: standard
 RemoteRef: ddsjoberg
 RemoteRepos: https://ddsjoberg.r-universe.dev
