@@ -51,7 +51,7 @@ df_raw_data <-
 ```{r save}
 # applying variable labels, and dropping raw variables
 df_master <- df_master %>%
-  set_derived_variables(path = "derived_variables_{{stringr::str_split(folder_name, pattern = ' |-', simplify = T)[, 1] %>% tolower()}}.xlsx")
+  set_derived_variables(path = here::here("scripts/derived_variables_{{stringr::str_split(folder_name, pattern = ' |-', simplify = T)[, 1] %>% tolower()}}.xlsx"))
 
 # overview of master analytic dataset
 skimr::skim(df_master)

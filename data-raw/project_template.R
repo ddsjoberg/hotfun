@@ -45,7 +45,7 @@ project_template <-
   ),
   derived_vars = list(
     template_filename = fs::path_package("project_templates/hot_derived_variables.xlsx", package = 'hotfun'),
-    filename = glue::glue("derived_variables_{stringr::str_split(folder_name, pattern = ' |-', simplify = T)[, 1] %>% tolower()}.xlsx"),
+    filename = glue::glue("scripts/derived_variables_{stringr::str_split(folder_name, pattern = ' |-', simplify = T)[, 1] %>% tolower()}.xlsx"),
     copy = TRUE
   ),
   rproj = list(
