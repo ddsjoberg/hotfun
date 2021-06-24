@@ -1,6 +1,5 @@
 Package: hotfun
-Title: Collection of Functions Used in the Health Outcomes Team
-    at MSKCC
+Title: Collection of Functions Used in the Health Outcomes Team at MSKCC
 Version: 0.1.12.9000
 Authors@R: 
     person(given = "Daniel D.",
@@ -40,11 +39,11 @@ Suggests:
     ggplot2 (>= 3.3.2),
     spelling (>= 2.1),
     testthat (>= 2.3.2)
+Remotes:
+    ddsjoberg/rstudio.prefs,
+    ddsjoberg/starter
 Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
-Remotes:
-    ddsjoberg/starter,
-    ddsjoberg/rstudio.prefs
