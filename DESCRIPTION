@@ -45,8 +45,6 @@ Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
-Additional_repositories: https://ddsjoberg.r-universe.dev
-RemoteType: standard
-RemoteRef: ddsjoberg
-RemoteRepos: https://ddsjoberg.r-universe.dev
-RemotePkgType: binary
+Remotes:
+    ddsjoberg/starter,
+    ddsjoberg/rstudio.prefs
