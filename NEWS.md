@@ -2,6 +2,14 @@
 
 * Updates to `tbl_propdiff()` for the gtsummary v1.4.0 updates.
 
+* Added new function create_hot_project(), a wrapper for starter::create_project() that drops a copy of the HOT project template into a new or existing folder. The function defaults to the HOT template, but any template may be passed.
+
+* Added new functions use_hot_file(), use_hot_gitignore(), and use_hot_readme() to drop files from the HOT template into the active project.
+
+* Migrated the HOT template from the hotverse package (behind a firewall) to the hotfun package.
+
+* Added new function use_hot_rstudio_prefs(), a wrapper for rstudio.prefs::use_rstudio_prefs() that is pre-filled with options that help fulfill best practices.
+
 # hotfun 0.1.12
 
 - Fixed issue with reversing factor levels for multivariable methods with no covariates specified in `tbl_propdiff`

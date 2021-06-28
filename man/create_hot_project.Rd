@@ -30,7 +30,7 @@ When \code{NA}, user will be prompted whether to initialise Git repo.}
 Default is \code{TRUE}. When \code{NA} which interactively asks user preference.}
     \item{\code{overwrite}}{Overwrite any existing files if they exist.  Options are
 \code{TRUE}, \code{FALSE}, and \code{NA} (aka ask interactively).  Default is \code{NA}}
-    \item{\code{open}}{Logicial indicating whether to open new project in fresh RStudio
+    \item{\code{open}}{Logical indicating whether to open new project in fresh RStudio
 session}
   }}
 }
