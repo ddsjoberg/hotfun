@@ -9,10 +9,6 @@
       {
         "Name": "MSK_RSPM",
         "URL": "http://rspm.mskcc.org/MSKREPO/latest"
-      },
-      {
-        "Name": "ddsjoberg",
-        "URL": "https://ddsjoberg.r-universe.dev"
       }
     ]
   },
@@ -850,16 +846,6 @@
       "Repository": "CRAN",
       "Hash": "249d8cd1e74a8f6a26194a91b47f21d1"
     },
-    "rstudio.prefs": {
-      "Package": "rstudio.prefs",
-      "Version": "0.1.0",
-      "Source": "Repository",
-      "Repository": "https://ddsjoberg.r-universe.dev",
-      "RemoteUrl": "https://github.com/ddsjoberg/rstudio.prefs",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "70fce0143188c94eea99427253421738684431bc",
-      "Hash": "df059e1c0b4315e3a2afad5d56175a86"
-    },
     "rstudioapi": {
       "Package": "rstudioapi",
       "Version": "0.13",
@@ -922,16 +908,6 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "b8c899a5c83f0d897286550481c91798"
-    },
-    "starter": {
-      "Package": "starter",
-      "Version": "0.1.0",
-      "Source": "Repository",
-      "Repository": "https://ddsjoberg.r-universe.dev",
-      "RemoteUrl": "https://github.com/ddsjoberg/starter",
-      "RemoteRef": "v0.1.0",
-      "RemoteSha": "4f9816fd4bc593dcac935e75869f94f006971322",
-      "Hash": "aadd3c19ed2be95160fbe26da325f645"
     },
     "stringi": {
       "Package": "stringi",
