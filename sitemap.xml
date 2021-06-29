@@ -40,6 +40,9 @@
     <loc>http://www.danieldsjoberg.com/hotfun/reference/count_na.html</loc>
   </url>
   <url>
+    <loc>http://www.danieldsjoberg.com/hotfun/reference/create_hot_project.html</loc>
+  </url>
+  <url>
     <loc>http://www.danieldsjoberg.com/hotfun/reference/get_mode.html</loc>
   </url>
   <url>
@@ -50,6 +53,9 @@
   </url>
   <url>
     <loc>http://www.danieldsjoberg.com/hotfun/reference/list_labels.html</loc>
+  </url>
+  <url>
+    <loc>http://www.danieldsjoberg.com/hotfun/reference/project_template.html</loc>
   </url>
   <url>
     <loc>http://www.danieldsjoberg.com/hotfun/reference/reexports.html</loc>
@@ -65,5 +71,11 @@
   </url>
   <url>
     <loc>http://www.danieldsjoberg.com/hotfun/reference/trial.html</loc>
+  </url>
+  <url>
+    <loc>http://www.danieldsjoberg.com/hotfun/reference/use_hot_file.html</loc>
+  </url>
+  <url>
+    <loc>http://www.danieldsjoberg.com/hotfun/reference/use_hot_rstudio_prefs.html</loc>
   </url>
 </urlset>
