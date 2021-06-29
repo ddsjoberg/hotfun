@@ -1,6 +1,6 @@
 Package: hotfun
 Title: Collection of Functions Used in the Health Outcomes Team at MSKCC
-Version: 0.1.12.9000
+Version: 0.2.0
 Authors@R: 
     person(given = "Daniel D.",
            family = "Sjoberg",

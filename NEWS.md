@@ -1,4 +1,4 @@
-# hotfun (development version)
+# hotfun 0.2.0
 
 * Updates to `tbl_propdiff()` for the gtsummary v1.4.0 updates.
 
