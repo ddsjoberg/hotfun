@@ -1,6 +1,5 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
 <!-- badges: start -->
 
 [![Codecov test
@@ -11,21 +10,21 @@ status](https://github.com/ddsjoberg/hotfun/workflows/R-CMD-check/badge.svg)](ht
 
 # hotfun
 
-{hotfun} is a collection of functions used in the Health Outcomes Team
-(aka HOT) at MSKCC
+{hotfun} is a collection of functions used in the **H**ealth
+**O**utcomes **T**eam (aka HOT) at MSKCC
 
 ## Installation
 
-You can install the released version of hotfun from
-[GitHub](https://github.com/) with:
+You can install the development version of hotfun from
+[GitHub](https://github.com/ddsjoberg/hotfun) with:
 
 ``` r
-install.packages("hotfun", repos = "http://rspm/MSKREPO/latest")
+devtools::install_github("ddsjoberg/hotfun")
 ```
 
-and the development version with:
+Or the release version with (MSK access required)
 
 ``` r
-# install.packages("remotes")
-remotes::install_github("ddsjoberg/hotfun")
+install.packages("hotfun", repos = c(CRAN = "https://cran.rstudio.com", 
+                                     MSK_RSPM = "http://rspm.mskcc.org/MSKREPO/latest"))
 ```

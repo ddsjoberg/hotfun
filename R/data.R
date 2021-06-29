@@ -16,3 +16,22 @@
 #'     \item{ttdeath}{Months to Death/Censor}
 #' }
 "trial"
+
+
+#' H.O.T. project template
+#'
+#' The `project_template` object defines the contents of the H.O.T. project
+#' template used in `create_hot_project()` and `use_hot_file()`.
+#'
+#' @format A quoted list defining the H.O.T. project template. Each item of
+#' the list identifies one script or document that appears in the project template.
+#' @examples
+#' \donttest{\dontrun{
+#' create_hot_project(
+#'   path = file.path(tempdir(), "Sjoberg New Project"),
+#'   template = hotfun::project_template
+#' )
+#' }}
+#' @seealso [create_hot_project()]
+#' @seealso [use_hot_file()]
+"project_template"
