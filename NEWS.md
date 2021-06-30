@@ -1,3 +1,7 @@
+# hotfun 0.2.2
+
+* Updated `Remotes:` to track the release versions of starter and rstudio.prefs
+
 # hotfun 0.2.1
 
 * Added an `.Rprofile` to the project template.
