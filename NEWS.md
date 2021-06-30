@@ -1,6 +1,10 @@
+# hotfun 0.2.3
+
+* Updated `Remotes:` to **not** track the release versions of starter and rstudio.prefs, because of compatibility issues with renv.
+
 # hotfun 0.2.2
 
-* Updated `Remotes:` to track the release versions of starter and rstudio.prefs
+* Updated `Remotes:` to track the release versions of starter and rstudio.prefs.
 
 # hotfun 0.2.1
 

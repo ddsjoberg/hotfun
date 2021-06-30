@@ -1,6 +1,6 @@
 Package: hotfun
 Title: Collection of Functions Used in the Health Outcomes Team at MSKCC
-Version: 0.2.2
+Version: 0.2.3
 Authors@R: 
     person(given = "Daniel D.",
            family = "Sjoberg",
@@ -40,8 +40,8 @@ Suggests:
     spelling (>= 2.1),
     testthat (>= 2.3.2)
 Remotes:
-    ddsjoberg/rstudio.prefs@*release,
-    ddsjoberg/starter@*release
+    ddsjoberg/rstudio.prefs,
+    ddsjoberg/starter
 Encoding: UTF-8
 Language: en-US
 LazyData: true
