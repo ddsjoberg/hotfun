@@ -62,7 +62,18 @@ project_template <-
     template_filename = fs::path_package("project_templates/european-urology.csl", package = 'hotfun'),
     filename = "templates/european-urology.csl",
     copy = TRUE
-  )
+  ),
+  # only add Rprofile if renv was used
+  rprofile =
+    switch(
+      renv,
+      list(
+        template_filename =
+          fs::path_package(package = "starter", "project_templates/default_rprofile.R"),
+        filename = stringr::str_glue(".Rprofile"),
+        glue = TRUE
+      )
+    )
 ))
 attr(project_template, "label") <- "H.O.T. Project Template"
 usethis::use_data(project_template, overwrite = TRUE)

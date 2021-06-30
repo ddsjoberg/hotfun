@@ -7,14 +7,14 @@ output:
     toc_float: true
     toc_depth: 2
   word_document:
-    reference_docx: "templates/doc_template.docx"
-bibliography: "templates/references.bib"
-csl: "templates/european-urology.csl"
+    reference_docx: "`r here::here('templates/doc_template.docx')`"
+bibliography: "`r here::here('templates/references.bib')`"
+csl: "`r here::here('templates/european-urology.csl')`"
 ---
 
-<!-- YAML options for both HTML and Word documents are given here. Delete output type not being used.
+<!-- YAML options for both HTML and Word documents are given here. Delete output type not being used. -->
 
-To cite a reference within the document, the ref must be included in the `templates/references.bib` file. Use square brackets and @ with the shorthand term. Ex: The generalized additive model models the relationship between the mean of the response variable and sum of smooth functions of the explanatory variables [@hastie1986gam]. -->
+<!-- To cite a reference within the document, the ref must be included in the `templates/references.bib` file. Use square brackets and @ with the shorthand term. Ex: The generalized additive model models the relationship between the mean of the response variable and sum of smooth functions of the explanatory variables [@hastie1986gam]. -->
 
 ```{r setup, include=FALSE}
 # set chunk defaults, code chunks are NOT printed in output for report
