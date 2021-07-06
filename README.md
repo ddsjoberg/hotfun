@@ -2,10 +2,13 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <!-- badges: start -->
 
-[![Codecov test
-coverage](https://codecov.io/gh/ddsjoberg/hotfun/branch/master/graph/badge.svg)](https://codecov.io/gh/ddsjoberg/hotfun?branch=master)
 [![R build
 status](https://github.com/ddsjoberg/hotfun/workflows/R-CMD-check/badge.svg)](https://github.com/ddsjoberg/hotfun/actions)
+[![Codecov test
+coverage](https://codecov.io/gh/ddsjoberg/hotfun/branch/master/graph/badge.svg)](https://codecov.io/gh/ddsjoberg/hotfun?branch=master)
+[![r-universe](https://ddsjoberg.r-universe.dev/badges/hotfun)](https://ddsjoberg.r-universe.dev/ui#builds)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/hotfun)](https://CRAN.R-project.org/package=hotfun)
 <!-- badges: end -->
 
 # hotfun
@@ -15,16 +18,18 @@ status](https://github.com/ddsjoberg/hotfun/workflows/R-CMD-check/badge.svg)](ht
 
 ## Installation
 
+Install the the hotfun package with
+
+``` r
+install.packages(
+  "hotfun", 
+  repos = c(ddsjoberg = 'https://ddsjoberg.r-universe.dev', CRAN = 'https://cran.rstudio.com')
+)
+```
+
 You can install the development version of hotfun from
-[GitHub](https://github.com/ddsjoberg/hotfun) with:
+[GitHub](https://github.com/ddsjoberg/hotfun) with
 
 ``` r
 devtools::install_github("ddsjoberg/hotfun")
-```
-
-Or the release version with (MSK access required)
-
-``` r
-install.packages("hotfun", repos = c(CRAN = "https://cran.rstudio.com", 
-                                     MSK_RSPM = "http://rspm.mskcc.org/MSKREPO/latest"))
 ```

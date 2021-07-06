@@ -3,8 +3,40 @@ url: http://www.danieldsjoberg.com/hotfun/
 template:
   params:
     bootswatch: flatly
+development:
+  mode: auto
+  version_label: default
 
 navbar:
   right:
   - icon: fa-github fa-lg
     href: https://github.com/ddsjoberg/hotfun
+
+reference:
+  - title: "Data Manipulation"
+    contents:
+      - add_splines
+      - assign_timepoint
+      - count_map
+      - count_na
+      - get_mode
+
+  - title: "Project and RStudio Setup"
+    contents:
+      - create_hot_project
+      - set_derived_variables
+      - list_labels
+      - rm_logs
+      - use_hot_rstudio_prefs
+      - use_hot_file
+
+  - title: "Other Functions"
+    contents:
+      - tbl_propdiff
+      - auc_density
+      - auc_histogram
+
+  - title: "Data Objects"
+    contents:
+      - project_template
+      - trial
