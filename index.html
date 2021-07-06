@@ -75,13 +75,15 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor" aria-hidden="true"></a>Installation</h2>
-<p>You can install the development version of hotfun from <a href="https://github.com/ddsjoberg/hotfun" class="external-link">GitHub</a> with:</p>
+<p>Install the the hotfun package with</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ddsjoberg/hotfun"</span><span class="op">)</span></code></pre></div>
-<p>Or the release version with (MSK access required)</p>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span>
+  <span class="st">"hotfun"</span>, 
+  repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>ddsjoberg <span class="op">=</span> <span class="st">'https://ddsjoberg.r-universe.dev'</span>, CRAN <span class="op">=</span> <span class="st">'https://cran.rstudio.com'</span><span class="op">)</span>
+<span class="op">)</span></code></pre></div>
+<p>You can install the development version of hotfun from <a href="https://github.com/ddsjoberg/hotfun" class="external-link">GitHub</a> with</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"hotfun"</span>, repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>CRAN <span class="op">=</span> <span class="st">"https://cran.rstudio.com"</span>, 
-                                     MSK_RSPM <span class="op">=</span> <span class="st">"http://rspm.mskcc.org/MSKREPO/latest"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ddsjoberg/hotfun"</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 
@@ -107,8 +109,10 @@
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://codecov.io/gh/ddsjoberg/hotfun?branch=master" class="external-link"><img src="https://codecov.io/gh/ddsjoberg/hotfun/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
 <li><a href="https://github.com/ddsjoberg/hotfun/actions" class="external-link"><img src="https://github.com/ddsjoberg/hotfun/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
+<li><a href="https://codecov.io/gh/ddsjoberg/hotfun?branch=master" class="external-link"><img src="https://codecov.io/gh/ddsjoberg/hotfun/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://ddsjoberg.r-universe.dev/ui#builds" class="external-link"><img src="https://ddsjoberg.r-universe.dev/badges/hotfun" alt="r-universe"></a></li>
+<li><a href="https://CRAN.R-project.org/package=hotfun" class="external-link"><img src="https://www.r-pkg.org/badges/version/hotfun" alt="CRAN status"></a></li>
 </ul>
 </div>
 
