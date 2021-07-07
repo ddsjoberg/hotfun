@@ -1,3 +1,7 @@
+# hotfun 0.2.4
+
+* Updated hot project template to use `df_main` instead of `df_master`.
+
 # hotfun 0.2.3
 
 * Updated `Remotes:` to **not** track the release versions of starter and rstudio.prefs, because of compatibility issues with renv.
