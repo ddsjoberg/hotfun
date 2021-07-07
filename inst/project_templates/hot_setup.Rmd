@@ -50,15 +50,15 @@ df_raw_data <-
 
 ```{r save}
 # applying variable labels, and dropping raw variables
-df_master <- df_master %>%
+df_main <- df_main %>%
   set_derived_variables(path = here::here("scripts/derived_variables_{{stringr::str_split(folder_name, pattern = ' |-', simplify = T)[, 1] %>% tolower()}}.xlsx"))
 
 # overview of master analytic dataset
-skimr::skim(df_master)
+skimr::skim(df_main)
 
 #saving master analytic data set
 saveRDS(
-  object = df_master,
-  file = here_data("df_master.Rds")
+  object = df_main,
+  file = here_data("df_main.Rds")
 )
 ```

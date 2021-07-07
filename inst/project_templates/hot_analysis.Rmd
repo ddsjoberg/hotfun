@@ -23,7 +23,7 @@ library(hotverse); library(tidyverse)
 theme_set(mskRvis::theme_biostat()); theme_gtsummary_msk("hot"); mskRvis::set_msk_palette()
 
 # importing master analytic data set
-df_master <- readRDS(file = here_data("df_master.Rds"))
+df_main <- readRDS(file = here_data("df_main.Rds"))
 ```
 
 
