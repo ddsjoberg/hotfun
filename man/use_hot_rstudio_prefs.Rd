@@ -7,7 +7,21 @@
 use_hot_rstudio_prefs()
 }
 \description{
-Use H.O.T. RStudio Preferences
+The function wraps \code{rstudio.prefs::use_rstudio_prefs()} and sets the following
+preferences in RStudio.\tabular{ll}{
+   \strong{Preference} \tab \strong{Value} \cr
+   always_save_history \tab FALSE \cr
+   load_workspace \tab FALSE \cr
+   margin_column \tab 80 \cr
+   rainbow_parentheses \tab TRUE \cr
+   restore_last_project \tab FALSE \cr
+   show_hidden_files \tab TRUE \cr
+   show_invisibles \tab TRUE \cr
+   show_last_dot_value \tab TRUE \cr
+   show_line_numbers \tab TRUE \cr
+   show_margin \tab TRUE \cr
+   save_workspace \tab never \cr
+}
 }
 \examples{
 \dontrun{\donttest{
