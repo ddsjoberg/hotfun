@@ -1,3 +1,7 @@
+# hotfun (development version)
+
+* Removed `Remotes: ddsjoberg/rstudio.prefs` from DESCRIPTION in favor of the CRAN release.
+
 # hotfun 0.2.4
 
 * Updated hot project template to use `df_main` instead of `df_master`.
