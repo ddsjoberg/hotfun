@@ -48,7 +48,7 @@ if (isTRUE(fs::path_dir(remote_origin_url) == "https:/github.mskcc.org/Analytic-
   else {
     paste(
       "Cannot finish configuring GitHub repo, because there is no MSK GitHub",
-      "PAT available. Ensure the repo is set to {usethis::ui_field('private')}",
+      "PAT available. Ensure the repo visibility is set to {usethis::ui_field('private')}",
       "and {usethis::ui_field('#phi')} is added as a topic."
     ) %>%
     usethis::ui_oops()
