@@ -14,6 +14,7 @@ use_hot_rstudio_prefs <- function() {
          margin_column = 80L,
          rainbow_parentheses = TRUE,
          restore_last_project = FALSE,
+         rmd_chunk_output_inline = FALSE,
          show_hidden_files = TRUE,
          show_invisibles = TRUE,
          show_last_dot_value = TRUE,
