@@ -75,5 +75,10 @@ project_template <-
       )
     )
 ))
+
+attr(project_template, "script_path") <-
+  expression(fs::path_package("project_templates/hot_script.R", package = 'hotfun'))
+
 attr(project_template, "label") <- "H.O.T. Project Template"
+
 usethis::use_data(project_template, overwrite = TRUE)

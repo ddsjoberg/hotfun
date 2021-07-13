@@ -730,15 +730,9 @@
     "rstudio.prefs": {
       "Package": "rstudio.prefs",
       "Version": "0.1.4",
-      "Source": "GitHub",
-      "RemoteType": "github",
-      "RemoteUsername": "ddsjoberg",
-      "RemoteRepo": "rstudio.prefs",
-      "RemoteRef": "main",
-      "RemoteSha": "ee495533a6a881f0d8eb070aaff91c2a7bc6b560",
-      "RemoteHost": "api.github.com",
-      "Remotes": "ddsjoberg/starter",
-      "Hash": "bd5ba545134d0730dba4335060483396"
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "b57fdadd0c4292347e889b8f227ba05c"
     },
     "rstudioapi": {
       "Package": "rstudioapi",
@@ -787,11 +781,11 @@
       "Version": "0.1.3",
       "Source": "GitHub",
       "RemoteType": "github",
+      "RemoteHost": "api.github.com",
       "RemoteUsername": "ddsjoberg",
       "RemoteRepo": "starter",
       "RemoteRef": "main",
       "RemoteSha": "7178df924216991adb1e436b87d080400bcc6987",
-      "RemoteHost": "api.github.com",
       "Remotes": "ddsjoberg/rstudio.prefs",
       "Hash": "82ec2c506b27bf2f08f5b200f4074485"
     },

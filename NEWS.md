@@ -1,6 +1,8 @@
-# hotfun (development version)
+# hotfun 0.2.5
 
 * Removed `Remotes: ddsjoberg/rstudio.prefs` from DESCRIPTION in favor of the CRAN release.
+
+* Added a script to the HOT project template to set repo to private and add #phi tag.
 
 # hotfun 0.2.4
 
